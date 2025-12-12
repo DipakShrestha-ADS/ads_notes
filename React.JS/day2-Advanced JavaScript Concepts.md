@@ -1,104 +1,90 @@
----
+⭐️ Day 2: Advanced JavaScript Concepts (FULL NOTES)
 
-# ⭐️ Day 2: Advanced JavaScript Concepts (FULL NOTES)
+1. this keyword & Function Binding
+👉 What is this?
+this refers to the object that is currently executing the code.
+Key rules:
+Where used
+What this refers to
+inside object method
+that object
+outside any object
+global object
+in event handlers
+the element
+arrow functions
+does NOT have its own this
 
----
 
-## 1. **this keyword & Function Binding**
-
-### 👉 What is `this`?
-
-`this` refers to the object that is currently executing the code.
-
-| Where used           | What `this` refers to     |
-| -------------------- | ------------------------- |
-| inside object method | the object                |
-| outside any object   | global object             |
-| in event handlers    | the HTML element          |
-| in arrow functions   | ❌ no own `this` (lexical) |
-
----
-
-### 🧠 Example (with comments)
-
-```js
+🧠 Example (with per-line comments)
+```javascript
 const user = {
   name: "Dipak",
   greet: function() {
     console.log("Hello " + this.name); // this refers to user object
   }
-};
+}
 
 user.greet(); // Hello Dipak
-```
+````
 
----
+⚠️ Problem: losing "this"
 
-### ⚠️ Problem: Losing `this`
-
-```js
+```javascript
 const person = {
   name: "John",
   show() {
     console.log(this.name);
   }
-};
+}
 
 const showMethod = person.show;
-showMethod(); // undefined (this is lost)
+showMethod(); // undefined because 'this' is lost
 ```
 
----
+💡 Fix with .bind()
 
-### 💡 Fix with `.bind()`
-
-```js
-const fixedShow = person.show.bind(person);
+```javascript
+const fixedShow = person.show.bind(person); // bind person to this
 fixedShow(); // John
 ```
 
----
-
-### ✔️ 10 Tasks: this & Binding
+✔️ 10 Tasks: this & binding
 
 * Create object with name and method using this.
 * Call method from another variable and see undefined.
 * Fix with .bind().
-* Create two objects and use same method via .bind().
-* Use this inside a click handler.
-* Log this inside strict mode.
-* Convert normal function to arrow and compare.
-* Create nested object and log this.
+* Create two objects and use the same method with .bind().
+* Use this inside a click handler (browser).
+* Write function in strict mode and log this.
+* Convert normal function to arrow and see difference.
+* Create object with nested object and log this.
 * Use .call() to borrow method.
 * Use .apply() to borrow method.
 
----
+2. Modules: import & export
+   Used to split code into multiple files.
 
-## 2. **Modules: import & export**
+👉 Export
 
-Used to split code into reusable files.
-
-### 👉 Export Example (`module1.js`)
-
-```js
-export const PI = 3.14;
-
+```javascript
+// module1.js
+export const PI = 3.14; // export a variable
 export function area(r){
-  return PI * r * r;
+  return PI * r * r; // area of circle
 }
 ```
 
-### 👉 Import Example (`app.js`)
+👉 Import
 
-```js
-import { area } from './module1.js';
+```javascript
+// app.js
+import { area } from './module1.js';  // import function
 
 console.log(area(5));
 ```
 
----
-
-### ✔️ 10 Tasks: Modules
+✔️ 10 Tasks: Modules
 
 * Export a variable.
 * Export a function.
@@ -107,115 +93,230 @@ console.log(area(5));
 * Import default.
 * Export multiple variables.
 * Rename module on import.
-* Export a class.
+* Export class.
 * Export an object.
-* Import everything using `*`.
+* Import everything using *.
 
----
+3. Classes and Inheritance
+   Think of OOP (Object-Oriented Programming) like describing real-world things using objects.
+   Example:
+   A Car has properties (color, model)
 
-## 3. **Classes and Inheritance**
+A Car can do actions (start, stop)
 
-### 🧠 What is a Class?
+This is exactly what OOP tries to model in code.
 
-A class is a **blueprint** for creating objects.
+🧠 What is a Class?
+A class is like a blueprint or design for creating objects.
+Example:
+A “Car” class describes what every car will have (properties, methods)
 
-### 🔥 Example: Class
+But the actual cars are created from that blueprint (objects)
 
-```js
+🔥 Example
+
+```javascript
+// Creating a Car class (blueprint)
 class Car {
+  
+  // constructor runs when we create a new Car
   constructor(brand, color) {
-    this.brand = brand;
-    this.color = color;
+    this.brand = brand;   // property
+    this.color = color;   // property
   }
-
+  
+  // method (action)
   start() {
     console.log(`${this.brand} started...`);
   }
 }
 
+// creating an object (instance)
 const car1 = new Car("Toyota", "Red");
-car1.start();
+
+// using the object
+car1.start();  // Toyota started...
 ```
 
----
+🌍 Real-world explanation
+Think of class as:
+Architecture drawing of a house
 
-### 🧬 What is Inheritance?
+Think of objects (instances) as:
+Real built houses based on that drawing
 
-One class **inherits** features from another.
+🧬 What is Inheritance?
+Inheritance means one class can “inherit” properties and methods of another class.
+Example:
+A Vehicle class
 
-### Example:
+A Car class can inherit Vehicle features
 
-```js
+So Car automatically gets Vehicle functionality
+
+🔥 Example of Inheritance
+
+```javascript
+// Parent class (base class)
 class Vehicle {
   constructor(type) {
     this.type = type;
   }
+
   move() {
     console.log(`${this.type} is moving`);
   }
 }
 
+// Child class (derived class)
 class Car extends Vehicle {
   constructor(brand, color) {
-    super("Car");
+    super("Car"); // calls parent constructor
     this.brand = brand;
     this.color = color;
   }
+
   horn() {
     console.log(`${this.brand} says Beep Beep!`);
   }
 }
 
 const myCar = new Car("Tesla", "Blue");
-myCar.move();
-myCar.horn();
+
+myCar.move();   // Car is moving
+myCar.horn();   // Tesla says Beep Beep!
 ```
 
----
+🧩 Why Inheritance Matters?
+✔ Avoid repeating code
+✔ Keep code organized
+✔ Let child classes reuse parent logic
 
-### ⭐ Terminology
+🚗 Real-world thinking
+Vehicle (Parent)
+moves
 
-| Term        | Meaning                 |
-| ----------- | ----------------------- |
-| Class       | Blueprint               |
-| Object      | Instance                |
-| Constructor | Setup                   |
-| Method      | Function inside class   |
-| Property    | Object data             |
-| extends     | Inherit                 |
-| super()     | Call parent constructor |
+stops
 
----
+Car (Child)
+moves
 
-### ✅ Overriding (Very Important)
+stops
 
-Child class replaces parent method.
+PLUS: plays music, horn, doors
 
-```js
+Bike (Another child)
+moves
+
+stops
+
+PLUS: handle bars
+
+⭐ OOP Terminology in Simple English
+
+| Term        | Meaning                      |
+| ----------- | ---------------------------- |
+| Class       | Blueprint                    |
+| Object      | Product from blueprint       |
+| Constructor | Setup when object is created |
+| Method      | Function inside class        |
+| Property    | Data inside class            |
+| extends     | Inherit features             |
+| super()     | Call parent constructor      |
+
+👉 Define class:
+
+```javascript
+class Animal {
+  constructor(name){
+    this.name = name; // set property
+  }
+  speak(){
+    console.log(`${this.name} makes sound`);
+  }
+}
+```
+
+👉 Inheritance
+
+```javascript
+class Dog extends Animal {
+  speak(){
+    console.log(`${this.name} barks`);
+  }
+}
+
+const d = new Dog("Tommy");
+d.speak(); // Tommy barks
+```
+
+✅ What is Overriding?
+Method overriding happens when a child class (subclass) provides its own version of a method that already exists in the parent class (superclass).
+👉 Same method name
+👉 Same parameters (mostly)
+👉 Defined again in child class
+👉 Child method REPLACES parent's method
+
+🎯 Why do we use overriding?
+To change, extend, or customize how something behaves specifically for the child class.
+Example:
+
+* Animal → speak()
+* Dog → speak() behaves differently
+* Cat → speak() behaves differently
+  This allows polymorphism (many forms).
+
+🧠 Real-life analogy
+A general "Employee" has a method work().
+A "Developer" also has work(), but work is different (coding).
+A "Designer" also has work(), but work is different (designing).
+Same method name → different behavior based on the object.
+
+🧩 Simple Example with Comments
+
+```javascript
+// Parent class
 class Animal {
   speak() {
     console.log("Animal makes a sound");
   }
 }
 
+// Child class
 class Dog extends Animal {
+  // Overriding the speak() method
   speak() {
     console.log("Dog barks: Woof Woof!");
   }
 }
 
+// Another child class
 class Cat extends Animal {
+  // Overriding again with different behavior
   speak() {
     console.log("Cat meows: Meow Meow!");
   }
 }
+
+// Creating objects
+const genericAnimal = new Animal();
+const dog = new Dog();
+const cat = new Cat();
+
+genericAnimal.speak(); // Output: Animal makes a sound
+dog.speak();           // Output: Dog barks: Woof Woof!
+cat.speak();           // Output: Cat meows: Meow Meow!
 ```
 
----
+✔️ Explanation
 
-### Using `super()` inside overriding
+* Dog and Cat both override the parent's speak() method.
+* They use the same method name, but the behavior changes.
+* This allows each object to behave differently even with the same method name.
 
-```js
+⭐ Using super (to call parent method)
+
+```javascript
 class Vehicle {
   start() {
     console.log("Vehicle starting...");
@@ -224,124 +325,321 @@ class Vehicle {
 
 class Car extends Vehicle {
   start() {
-    super.start();
+    super.start(); // Calls parent version
     console.log("Car engine: Vroom Vroom!");
   }
 }
+
+const car = new Car();
+car.start();
 ```
 
----
+Output:
+Vehicle starting...
+Car engine: Vroom Vroom!
 
-### ✔️ 10 Tasks: Classes & Inheritance
+💡 When do we use overriding?
+
+* To specialize behavior in child classes
+* To provide different implementations for the same method
+* In frameworks (React, Express, OOP systems)
+* For polymorphism → same method name, different output
+
+🎉 Super simple definition
+Overriding means writing a new version of a parent class method inside the child class.
+
+✔️ 10 Tasks: Classes & Inheritance
 
 * Create class Vehicle.
 * Add constructor.
-* Add drive() method.
+* Add method drive().
 * Extend class Bike.
 * Override drive().
 * Create class Student.
 * Add marks property.
-* Extend with Programmer class.
-* Use super().
+* Inherit class Programmer.
+* Call parent method using super().
 * Create multiple child classes.
 
----
+4. Promises and Async/Await
 
-## 4. **Promises and Async/Await**
+❓ Why do we need Promises?
+JavaScript is single-threaded, but many operations take time (API calls, reading files, database queries). These are called asynchronous operations.
+Old way:
 
-### ❓ Why Promises?
+```javascript
+setTimeout(function(){
+  doSomething(function(){
+     doSomethingElse(function(){
+        doFinal()
+     })
+  })
+})
+```
 
-To handle asynchronous tasks without callback hell.
+👉 Result: callback hell
 
----
+* Hard to read
+* Hard to debug
 
-### 🌟 Basic Promise Example
+🌟 Promises
+A Promise represents a value that will be available in the future (success or failure).
+Think of it like ordering food at a restaurant:
 
-```js
+* You place order = task started
+* You wait = pending
+* You get food = resolved
+* Kitchen failed = rejected
+
+👍 Basic Promise Example
+
+```javascript
+// create a promise
 const orderPizza = new Promise((resolve, reject) => {
-  const ingredientsAvailable = true;
+    const ingredientsAvailable = true  
 
-  if (ingredientsAvailable) resolve("Pizza is ready 🍕");
-  else reject("Sorry, no ingredients 😢");
-});
+    if (ingredientsAvailable) {
+        resolve("Pizza is ready 🍕")
+    } else {
+        reject("Sorry, no ingredients 😢")
+    }
+})
 
+// consume the promise
 orderPizza
-  .then(msg => console.log(msg))
-  .catch(err => console.log(err))
-  .finally(() => console.log("Order process finished"));
+    .then(message => {
+        console.log(message) // Pizza is ready 🍕
+    })
+    .catch(error => {
+        console.log(error) // if ingredients were false
+    })
+    .finally(() => {
+        console.log("Order process finished")
+    })
 ```
 
----
+💡 What is then/catch/finally?
 
-### ⚡ Async / Await Example
+| keyword | meaning     |
+| ------- | ----------- |
+| then    | success     |
+| catch   | failure     |
+| finally | always runs |
 
-```js
+⚡ Async / Await
+Async/await makes promises look like synchronous code (much easier to read)
+
+🔥 Example using async/await
+
+```javascript
+// promise
 function getUser() {
-  return new Promise(resolve => {
-    setTimeout(() => resolve({ name: "Dipak", age: 26 }), 2000);
-  });
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ name: "Dipak", age: 26 })
+        }, 2000)
+    })
 }
 
+// async function
 async function showUser() {
-  const user = await getUser();
-  console.log(user);
+    const user = await getUser()  
+    console.log(user) 
 }
 
-showUser();
+showUser()
 ```
 
----
+⭐ Output
 
-### Error Handling with Async/Await
+```json
+{ name: 'Dipak', age: 26 }
+```
 
-```js
+⏳ Why await?
+
+* It waits until promise finishes before moving forward
+* Cleaner than .then() chain
+  Old way:
+  `getUser().then(...)`
+
+New way:
+`await getUser()`
+
+⚠ Error Handling (Async/Await)
+
+```javascript
 async function fetchData() {
-  try {
-    const response = await fetch("https://api.example.com");
-    const data = await response.json();
-    console.log(data);
-  } catch (error) {
-    console.log("Something failed:", error);
-  }
+    try {
+        const response = await fetch("https://api.example.com")
+        const data = await response.json()
+        console.log(data)
+    } catch (error) {
+        console.log("Something failed:", error)
+    }
 }
 ```
 
----
+🌍 Real-World Example
 
-### ✔️ 10 Tasks: Promises & Async/Await
+```javascript
+async function loadProducts() {
+    try {
+        const res = await fetch("https://fakestoreapi.com/products")
+        const products = await res.json()
+        console.log("Loaded products:", products)
+    } catch (err) {
+        console.log("Server error", err)
+    }
+}
 
-* Create a resolving promise.
-* Create a rejecting promise.
-* Use `.then()`.
-* Use `.catch()`.
-* Convert to async/await.
-* Wait 2 seconds using a Promise.
-* Create a function returning a Promise.
-* Chain promises.
-* Use await inside async.
-* Use multiple awaits.
+loadProducts()
+```
 
----
+🧠 Result of learning this:
+You can now:
 
-## 5. **Synchronous vs Asynchronous**
+* build APIs
+* fetch data
+* use backend endpoints
+* handle real async operations
 
-### ✅ Synchronous
+🔥 When should I use async/await?
+Use async/await when:
 
-Runs line-by-line, blocking.
+* calling APIs
+* database calls
+* reading files
+* network operations
 
-```js
+⭐ Key Difference
+
+| Promises      | Async/Await    |
+| ------------- | -------------- |
+| uses .then()  | uses try/catch |
+| nested        | flat           |
+| less readable | more readable  |
+| older style   | modern way     |
+
+🧩 One Simple Explanation:
+
+* Promises = I promise I will give you something later.
+* Async/Await = Wait until I give it to you.
+
+💥 Perfect 1-line definitions
+
+* Promise = An object that represents a future value.
+* Async = A function that returns a promise.
+* Await = Pause until promise resolves.
+
+🎯 Real world analogy
+
+* Promise: “I’ll send you that document later.”
+* Await: You reply — “Ok, I’ll wait.”
+
+👍 Small task (practice)
+Task: Create a function that waits 2 seconds then prints “Data received”
+
+Example solution:
+
+```javascript
+function getData(){
+    return new Promise(resolve=>{
+        setTimeout(()=> resolve("Data received"),2000)
+    })
+}
+
+async function show(){
+    const msg = await getData()
+    console.log(msg)
+}
+
+show()
+```
+
+Promise example:
+
+```javascript
+const getData = () => {
+  return new Promise((resolve, reject) => {
+    resolve("Data received"); // resolve success
+  });
+};
+
+getData().then(result => {
+  console.log(result); 
+});
+```
+
+Async–await:
+
+```javascript
+async function load(){
+  const result = await getData(); // wait
+  console.log(result);
+}
+
+load();
+```
+
+✅ 1. What is Synchronous in JavaScript?
+Synchronous = one after another, blocking.
+Each line waits for the previous line to finish.
+
+* Single-threaded execution
+* Code runs step-by-step
+* Nothing else runs until current task completes
+  Example (Synchronous):
+
+```javascript
 console.log("A");
 console.log("B");
 console.log("C");
 ```
 
----
+Output:
 
-### ✅ Asynchronous
+```
+A
+B
+C
+```
 
-Does NOT block.
+Everything waits for the previous operation.
 
-```js
+⚠️ Problem with synchronous code
+If a task takes a long time, everything else stops.
+
+```javascript
+function longTask() {
+  for (let i = 0; i < 1_000_000_000; i++) {}
+}
+
+console.log("Start");
+longTask(); // blocks everything
+console.log("End");
+```
+
+Output:
+
+```
+Start
+(3 seconds freeze)
+End
+```
+
+The UI or program "freezes" until the task completes.
+
+✅ 2. What is Asynchronous in JavaScript?
+Asynchronous = doesn't wait.
+JavaScript continues executing other code while waiting for a slow task to finish.
+
+* Does NOT block
+* Task runs in background using browser APIs / Node APIs
+* When done, callback/promise/async gets executed
+  Example (Asynchronous):
+
+```javascript
 console.log("A");
 
 setTimeout(() => {
@@ -351,26 +649,101 @@ setTimeout(() => {
 console.log("C");
 ```
 
----
+Output:
 
-### 🧩 Quick Comparison
+```
+A
+C
+B
+```
 
-| Feature   | Synchronous  | Asynchronous |
-| --------- | ------------ | ------------ |
-| Execution | sequential   | non-blocking |
-| Waiting   | Yes          | No           |
-| Best for  | simple tasks | API, timers  |
-| Uses      | main thread  | Web APIs     |
+C prints before B, because setTimeout is asynchronous.
 
----
+🧠 Why asynchronous exists?
+Because some tasks are slow:
 
-## Callback Function
+* API requests
+* Reading files
+* Database calls
+* Timers
+* Network requests
+* Heavy computations
 
-### Easy Definition:
+JavaScript cannot wait for them, otherwise the whole app freezes.
 
-**A callback is a function passed to another function to run later.**
+🏡 Real-life analogy
+Synchronous: You stand in line at a counter. You wait until it's your turn. You do nothing else.
+Asynchronous: You take a token number. You sit and do other things. When your number is called, you go to the counter.
 
-```js
+🔥 Real Examples of Synchronous vs Asynchronous
+✔️ Synchronous example:
+
+```javascript
+console.log("Step 1");
+console.log("Step 2");
+console.log("Step 3");
+```
+
+✔️ Asynchronous example with callback:
+
+```javascript
+console.log("Fetching data...");
+
+setTimeout(() => {
+  console.log("Data received!");
+}, 2000);
+
+console.log("Continue with other work...");
+```
+
+✔️ Asynchronous example with Promise:
+
+```javascript
+fetch("https://api.example.com/users")
+  .then(res => res.json())
+  .then(data => console.log(data));
+
+console.log("Fetch started...");
+```
+
+✔️ Asynchronous example with async/await:
+
+```javascript
+async function getUser() {
+  const res = await fetch("https://api.example.com/user");
+  const user = await res.json();
+  console.log(user);
+}
+
+getUser();
+console.log("Waiting for data...");
+```
+
+🧩 Quick Comparison Table
+
+| Feature             | Synchronous        | Asynchronous                |
+| ------------------- | ------------------ | --------------------------- |
+| Execution           | One-by-one         | Non-blocking                |
+| Waiting             | Yes, blocks thread | No waiting                  |
+| Best for            | Simple tasks       | Slow tasks, network, timers |
+| JavaScript behavior | Default mode       | Uses Web APIs, event loop   |
+| Example             | console.log        | setTimeout, fetch           |
+
+🎉 1-line summary
+Synchronous operations block the thread; asynchronous operations allow JavaScript to run other tasks while waiting for something to finish.
+
+👉 Callback Function
+A callback function is simply a function passed into another function as an argument and executed later.
+
+📌 Easy way to explain (in plain words)
+Think of a callback like giving someone your phone number and saying:
+“Call me when the work is finished.”
+You don’t know when the work will finish, but when it finishes, they call you back.
+
+👉 In JavaScript terms
+You pass a function into another function, and that function gets called after something happens.
+
+```javascript
 function greet(name) {
   console.log("Hello " + name);
 }
@@ -380,80 +753,231 @@ function processUser(callback) {
   callback(userName);
 }
 
-processUser(greet);
+processUser(greet);  // greet gets called later
 ```
 
----
+Output:
 
-## ✔️ 10 Tasks: try/catch
+```
+Hello Dipak
+```
 
-* Try undefined function.
-* Divide by zero.
-* Custom error message.
-* Throw error.
-* Function with try/catch.
-* Multiple catch messages.
-* Use finally.
-* Try JSON.parse with invalid JSON.
-* Log error name.
-* try/catch in async function.
+📌 Why do we use callbacks?
+JavaScript is asynchronous, meaning some tasks take time (API call, file reading, timers).
+Callbacks make sure our code runs after the task finishes.
+Example:
 
----
+```javascript
+setTimeout(function() {
+  console.log("This runs after 2 seconds");
+}, 2000);
+```
 
-## ⭐ HANDS–ON SOLUTIONS
+🎯 Real life example explanation
+Imagine ordering food:
 
-### Create module and import
+* You give order to waiter (main function starts)
+* You don’t wait there (code continues running)
+* When food is ready → waiter calls you (callback is executed)
 
-**math.js**
+⭐ Very simple example
 
-```js
-export function add(a,b){
-  return a+b;
+```javascript
+function myCallback() {
+  console.log("Task done!");
+}
+
+function doTask(callback) {
+  console.log("Doing task…");
+  callback();
+}
+
+doTask(myCallback);
+```
+
+🧠 In short:
+
+| Thing         | Meaning                       |
+| ------------- | ----------------------------- |
+| Callback      | A function passed as argument |
+| When executed | Later, not immediately        |
+| Purpose       | Control execution timing      |
+
+🟡 Important point
+Callbacks are heavily used in:
+
+* setTimeout()
+* Event listeners
+* Fetch / API calls
+* Node.js
+
+Example:
+
+```javascript
+button.addEventListener('click', () => {
+  console.log("Button clicked");
+});
+```
+
+The arrow function is the callback.
+
+🚀 One-liner explanation
+A callback is a function you give to another function so it can run later.
+
+NOTE: JavaScript is single-threaded, but it uses asynchronous behavior to avoid waiting for slow tasks.
+
+✔️ 10 Tasks: Promises & async/await
+
+* Create promise that resolves.
+* Create promise that rejects.
+* Use .then().
+* Use .catch
+
+
+().
+
+* Convert to async/await.
+* Wait 2 seconds using setTimeout promise.
+* Create function that returns promise.
+* Chain promises.
+* Use await inside async function.
+* Use multiple awaits.
+
+5. Error Handling – try/catch
+   Used to handle run-time errors.
+
+Example
+
+```javascript
+try {
+  console.log(10 / 0); // valid
+  unknown(); // error
+} catch(error){
+  console.log("Error happened");
 }
 ```
 
-**main.js**
+finally
 
-```js
-import { add } from "./math.js";
+```javascript
+try{
+  throw new Error("Oops");
+}
+catch(e){
+  console.log("Handled");
+}
+finally{
+  console.log("Runs always");
+}
+```
+
+✔️ 10 Tasks: try/catch
+
+* Try using undefined function.
+* Divide number by zero.
+* Use custom error message.
+* Throw error manually.
+* Create function with try/catch.
+* Multiple catch messages.
+* Use finally.
+* Try JSON.parse with invalid JSON.
+* Catch error and log name.
+* Use try/catch in async function.
+
+⭐ HANDS–ON SOLUTIONS
+
+✔️ Task: Create module and import
+
+```javascript
+// math.js
+export function add(a,b){
+  return a+b; // add values
+}
+
+// main.js
+import { add } from "./math.js"; // import add
 
 console.log(add(5,10)); // 15
 ```
 
----
+✔️ Task: async/await + mock API
 
-### async/await mock API example
-
-```js
+```javascript
+// fake API function
 function fakeFetch(){
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ message: "Hello from API" });
-    }, 1000);
-  });
+  return new Promise((resolve)=>{
+    setTimeout(()=>{
+      resolve({ message: "Hello from API" }); // mock data
+    },1000);
+  })
 }
 
 async function loadData(){
-  const result = await fakeFetch();
-  console.log(result.message);
+  const result = await fakeFetch(); // wait
+  console.log(result.message); // print data
 }
 
 loadData();
 ```
 
----
+✅ Day 2 — 10 Real-World Example Tasks
 
-## ✅ Day 2 — 10 Real-World Example Tasks
+**Task 1 — “this” inside an object method**
+Create a user object that has name and login() method.
+Inside login(), print the username using this.name.
+Goal: understand object method context
 
-1. `this` inside an object method
-2. Losing `this` in UI event — fix with `.bind()`
-3. Module: export config
-4. Module: utility functions
-5. Class Product
-6. Inheritance: FoodProduct extends Product
-7. Promise: return settings after 2 sec
-8. async/await: fetchUsers mock
-9. try/catch: handle random API failure
-10. Combine everything into mini app flow
+**Task 2 — “this” losing context**
+Create a button click example (even if simulated) where calling a method loses this, then fix it using .bind(this)
+Goal: experience the common UI bug
 
----
+**Task 3 — Module: Export a config**
+Create a config.js and export API_BASE_URL, then import it inside main.js and print it.
+Goal: share configuration across modules
+
+**Task 4 — Module: Utility functions**
+Make a utils.js with:
+
+* formatCurrency()
+* generateRandomId()
+* getTodayDate()
+  Import and use them in another file.
+  Goal: reusable utility module
+
+**Task 5 — Class representing a Product**
+Create a class Product with:
+
+* name
+* price
+* getInfo()
+  Create an object and print info.
+  Goal: basic classes in real products
+
+**Task 6 — Inheritance example**
+Create Product, then extend a new class FoodProduct that has an expiry date
+Goal: model real objects with OOP
+
+**Task 7 — Promise for fetching settings**
+Create a function that returns a Promise that resolves after 2 seconds with app settings (theme, language).
+Use .then() to print them.
+Goal: simulate async settings
+
+**Task 8 — async/await fetching mock data**
+Create a function fetchUsers() that returns a Promise with an array of users after 1 second.
+Use async/await to get and log users.
+Goal: basic async API task
+
+**Task 9 — try/catch handling API errors**
+Modify the previous task so the promise randomly rejects.
+Add try/catch to show a friendly message.
+Goal: handle API failures safely
+
+**Task 10 — Combine everything**
+Build a tiny app flow:
+
+* Import config
+* Create Product class
+* Fetch mock product list using async/await
+* Handle errors using try/catch
+* Log formatted result using a utility function
+  Goal: mini end-to-end realistic module
