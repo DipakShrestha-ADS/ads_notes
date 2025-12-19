@@ -1,258 +1,269 @@
----
+# React Lesson Plan
 
-# **React – 15-Day Lesson Plan**
+Prepared by Mr. Dipak Shrestha
 
-### **React.JS**
+## OVERVIEW & PURPOSE
 
-**Prepared by: Mr. Dipak Shrestha**
+### Overview
+This 15-day course is designed for beginners who want to build a strong foundation in React.js. The course starts with essential JavaScript concepts specifically related to React, transitions to React basics, and culminates in students developing individual projects. Through hands-on learning and practical assignments, students gain the skills to create dynamic, interactive, and modern web applications.
 
----
+### Purpose
 
-## **📘 OVERVIEW & PURPOSE**
+* To provide a structured introduction to React for beginners.
 
-### **Overview**
+* To equip learners with the necessary JavaScript skills for React development.
 
-This 15-day course is designed for beginners who want a strong foundation in **React.js**. It begins with essential JavaScript concepts, moves into core React fundamentals, and ends with students building their **own independent project**. Through hands-on tasks and real-world exercises, learners will gain the skills to create dynamic and modern web applications.
+* To ensure learners can build, deploy, and manage React applications by the end of the course.
 
-### **Purpose**
-
-* Provide a structured introduction to React for beginners.
-* Equip learners with the necessary JavaScript skills for React development.
-* Enable learners to build, deploy, and maintain React applications.
-
----
-
-## **🎯 OBJECTIVES**
-
+## OBJECTIVES
 By the end of the course, students will be able to:
 
-* Understand and apply JavaScript concepts essential for React.
-* Build functional React components using **state** and **props**.
-* Use React hooks like `useState` and `useEffect`.
-* Style applications using modern CSS.
-* Implement navigation using **React Router**.
-* Fetch and render data from external APIs.
-* Design, build, and deploy a complete React project.
+1. Understand and apply JavaScript concepts essential for React development.
 
----
+2. Build functional React components with proper state and props management.
 
-# **📅 Lesson Plan**
+3. Use React hooks (useState, useEffect, etc.) for managing application behavior.
 
----
+4. Style React applications with modern CSS techniques.
 
-## **Days 1–4: JavaScript Fundamentals for React**
+5. Implement routing and navigation in React using React Router.
 
----
+6. Fetch and display data from external APIs in React applications.
 
-### **Day 1: Core JavaScript Features**
+7. Design and develop a complete project independently.
 
-* Variables: `let`, `const`, scope
-* Template literals
+8. Deploy a React application to the web.
+
+## Lesson Plan
+
+### Days 1–4: JavaScript Fundamentals for React
+
+#### Day 1: Core JavaScript Features
+
+* Variables: let, const, scope & Template Literals
+
 * Arrow functions
-* Destructuring
+
+* Destructuring objects and arrays
+
 * Default parameters
-* Rest & spread operators
 
-**Hands-On**
+* Rest and spread operators
 
-* Create a function to sum numbers using rest & spread.
-* Write a function that merges and destructures objects.
+* Hands-On:
 
----
+  * Create a function that calculates the sum of numbers in an array using rest and spread operators.
 
-### **Day 2: Advanced JavaScript Concepts**
+  * Write a function to merge and destructure objects.
 
-* `this` keyword & function binding
-* Modules: `import` & `export`
-* Classes & inheritance
-* Promises & async/await
-* Error handling with try/catch
+#### Day 2: Advanced JavaScript Concepts
 
-**Hands-On**
+* this keyword and function binding
 
-* Create a module and import it into another file.
-* Write an async/await function that fetches data from a mock API.
+* Modules: import and export
 
----
+* Classes and inheritance
 
-### **Day 3: Functional Programming Basics**
+* Promises and async/await
+
+* Basic error handling with try/catch
+
+* Hands-On:
+
+  * Create a small module and import it into another file.
+
+  * Write a function using async/await to fetch data from a mock API.
+
+#### Day 3: Functional Programming Basics
 
 * Pure functions
-* Arrays & objects
-* Array methods: `map`, `filter`, `reduce`, `find`, `forEach`
-* Immutability
+
+* Arrays & Objects
+
+* Array methods: map, filter, reduce, find, forEach
+
+* Immutability principles
+
 * Higher-order functions
 
-**Hands-On**
+* Hands-On:
 
-* Use `map` and `filter` on an array of objects.
-* Create a function that returns a new object without modifying the original.
+  * Use map and filter to process an array of objects.
 
----
+  * Write a function that returns a new object without modifying the original one.
 
-### **Day 4: React-Specific JavaScript**
+#### Day 4: React-Specific JavaScript
 
-* What is JSX
-* Event handling (`onClick`, `onChange`)
+* Understanding JSX 
+
+* Event handling in React (onClick, onChange)
+
 * Spread operator in props
-* Destructuring props & state
 
-**Hands-On**
+* Destructuring props and state
 
-* Write JSX for a component displaying a user profile.
-* Create a simple button event handler.
+* Hands-On:
 
----
+  * Write JSX for a component that displays a user’s profile using props.
 
----
+  * Create a simple event handler for a button.
 
-## **Days 5–15: React Development**
+### Days 5–15: React Development
 
----
+#### Day 5: React Basics
 
-### **Day 5: React Basics**
+* What is React? Overview and benefits
 
-* What is React?
-* Setting up React (CRA or Vite)
-* Components & JSX
+* Setting up a React project using create-react-app or Vite
+
+* Components and JSX
+
 * Introduction to props
 
-**Hands-On**
+* Hands-On:
 
-* Create a greeting component.
-* Pass props to display user details.
+  * Create a functional component that displays a greeting message.
 
----
+  * Pass props to components to display user information.
 
-### **Day 6: State and Events**
+#### Day 6: State and Events
 
-* Using `useState`
-* Event handling
+* Introduction to state with useState
+
+* Event handling in React
+
 * Conditional rendering
 
-**Hands-On Mini Projects**
+* Hands-On:
 
-* Counter app
-* Toggle button
-* Live text input display
-* Light/Dark theme switcher
-* Color picker
-* Show/Hide image
-* Click tracker
-* Password visibility toggle
-* Random quote generator
-* Traffic light simulator
+  * Build a counter app with increment, decrement, and reset buttons.
 
----
+  * Create a simple toggle button.
 
-### **Day 7: React Lists and Keys**
+  * Build a text input app that displays the entered text below in real-time.
 
-* Rendering lists
-* Keys and their importance
-* Dynamic list updates
+  * Create a light/dark theme switcher using a toggle button.
 
-**Hands-On**
+  * Make a simple color picker that changes the background color based on selection.
 
-* Create a dynamic list (tasks/to-dos).
-* Implement delete functionality.
+  * Create a button that shows/hides an image.
 
----
+  * Build a click tracker that counts how many times a specific area is clicked.
 
-### **Day 8: Forms in React**
+  * Create a simple password visibility toggle.
 
-* Controlled vs uncontrolled components
-* Handling inputs
+  * Make a random quote generator with a "New Quote" button.
+
+  * Build a traffic light simulator with red, yellow, and green lights switching on click.
+
+#### Day 7: React Lists and Keys
+
+* Rendering lists in React
+
+* Importance of keys
+
+* Handling dynamic data in lists
+
+* Hands-On:
+
+  * Create a list of items (e.g., to-dos or tasks) and display them dynamically.
+
+  * Implement a feature to delete an item from the list.
+
+#### Day 8: Forms in React
+
+* Controlled vs. uncontrolled components
+
+* Handling form inputs
+
 * Basic form validation
 
-**Hands-On**
+* Hands-On:
 
-* Build a login form
-* Build a register form (email, password, confirm-password, age, gender, address)
-* Implement validations:
+  * Build a login form with email and password fields.
 
-  * Required fields
-  * Valid email
-  * Password length > 6
-  * Password match
-  * Age > 18
+  * Build a register form with email, password, confirm-password, age, gender & address fields.
 
----
+  * Display validation messages for empty fields, validate email ,validate password length greater than 6, validate password & confirm-password, validate age > 18.
 
-### **Day 9: Hooks Introduction**
+#### Day 9: Hooks Introduction
 
-* Overview of hooks
-* Deep dive: `useState`, `useEffect`
-* Cleanup in `useEffect`
-* Other hooks
-* Custom hooks
+* React Hooks overview
 
-**Hands-On**
+* Deeper dive into useState and useEffect
 
-* Create a live clock component.
-* Fetch & display API data.
+* Cleanup in useEffect
 
----
+* Other important hooks
 
-### **Day 10: Component Hierarchy & Props**
+* Custom Hooks
 
-* Parent → child communication
+* Hands-On:
+
+  * Create a clock component that updates every second using useEffect.
+
+  * Fetch data from an API and display it.
+
+#### Day 10: Component Hierarchy and Props
+
+* Parent-child component structure
+
 * Passing functions as props
+
 * Lifting state up
 
-**Hands-On**
+* Hands-On:
 
-* Build a Celsius ↔ Fahrenheit temperature converter.
+  * Build a temperature converter (Celsius to Fahrenheit) with two components sharing state.
 
----
+#### Day 11: Context API
 
-### **Day 11: Context API**
+* Introduction to Context API
 
-* What is Context API?
 * Creating and using context
+
 * Avoiding prop drilling
 
-**Hands-On**
+* Hands-On:
 
-* Build a theme switcher using React Context.
+  * Create a theme switcher using Context API.
 
----
-
-### **Day 12: Routing in React**
+#### Day 12: Routing in React
 
 * Introduction to React Router
+
 * Setting up routes
-* Dynamic & nested routing
-* Navigation with `Link`
 
-**Hands-On**
+* Dynamic and nested routes
 
-* Create a 3-page app: Home, About, Contact.
+* Navigation using Link
 
----
+* Hands-On:
 
-### **Day 13: API Integration**
+  * Build a simple multi-page app with a home, about, and contact page.
 
-* Fetching data using `fetch` and axios
-* Loading & error states
+#### Day 13: API Integration
 
-**Hands-On**
+* Fetching data from APIs using fetch and axios
 
-* Build a weather app that fetches API data.
+* Handling loading states and errors
 
----
+* Hands-On:
 
-### **Day 14: Project Kickoff**
+  * Build a weather app that fetches and displays data from an API.
 
-* Assign individual projects
-* Setup & planning guidance
+#### Day 14: Project Kickoff
 
----
+* Assign & begin individual projects (assigned based)
 
-### **Day 15: Deployment & Review**
+* Guidance on project setup and planning
 
-* Deploy React apps (Firebase hosting)
+#### Day 15: Deployment and Review
+
+* Deploy React apps (Firebase free hosting)
+
 * Review key concepts
-* Q&A
-* Project review session
 
----
+* Q&A and troubleshooting session
+
+* Reviews of assigned projects
