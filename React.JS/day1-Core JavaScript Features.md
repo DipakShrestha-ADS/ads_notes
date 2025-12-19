@@ -1,326 +1,260 @@
----
+# Core Javascript Features
 
-# **JavaScript Basics for React – Day 1 Notes**
+1. Variables in JavaScript (let, const)
 
-## **1. Variables in JavaScript (`let`, `const`)**
+   JavaScript lets you store data inside variables.\
+   Modern JS prefers let and const:
 
-JavaScript lets you store data inside variables.
-Modern JavaScript mainly uses **let** and **const**.
+   🔹 let
 
-### **🔹 let**
+   * Use it when the value can change later.
 
-Use when the value can change later.
-Block-scoped (lives inside `{ }`).
+   * Block-scoped (lives inside { }).
 
-**Example:**
+   Example
 
-```js
-let age = 25;     // create variable using let
-age = 26;         // updating value is allowed
-```
+   ```js
+   let age = 25;       // create variable using "let"
+   age = 26;           // updating value is allowed
+   ```
 
-### **🔹 const**
+   🔹 const
 
-Use when the value should **not** change.
-Also block-scoped.
+   * Use it when the value should not change.
 
-**Example:**
+   * Also block-scoped.
 
-```js
-const PI = 3.14;  // constant value
-// PI = 3.15;     // ❌ Error: const cannot be reassigned
-```
+   Example
 
----
+   ```js
+   const PI = 3.14;    // constant value
+   // PI = 3.15;       // ❌ Error: const variables cannot be reassigned
+   ```
 
-## **2. Template Literals**
+2. Template Literals
 
-Template literals allow inserting variables inside strings using **backticks (`)**.
+   Template literals allow inserting variables inside strings using backticks (`).
 
-**Example:**
+   Example
 
-```js
-const name = "Dipak";
-const score = 95;
+   ```js
+   const name = "Dipak";        // variable storing a name
+   const score = 95;            // variable storing score
+   const message = `Hello ${name}, your score is ${score}`;  // embed variables inside string
+   console.log(message);        // prints: Hello Dipak, your score is 95
+   ```
 
-const message = `Hello ${name}, your score is ${score}`;
-console.log(message);
-// Output: Hello Dipak, your score is 95
-```
+3. Arrow Functions
 
----
+   Arrow functions are shorter and more modern than traditional functions.
 
-## **3. Arrow Functions**
+   Basic Form
 
-Arrow functions are shorter and more modern.
+   ```js
+   const greet = () => "Hello";   // arrow function returning a value
+   ```
 
-### **Basic Form**
+   With parameters
 
-```js
-const greet = () => "Hello";
-```
+   ```js
+   const add = (a, b) => {       // arrow function taking two parameters
+       return a + b;             // return the sum
+   };
+   ```
 
-### **With Parameters**
+   Clean and beautiful.
 
-```js
-const add = (a, b) => {
-  return a + b;
-};
-```
+4. Destructuring Objects & Arrays
 
-Clean, simple, and widely used in React.
+   Destructuring lets you extract values easily.
 
----
+   🔹 Object Destructuring
 
-## **4. Destructuring Objects & Arrays**
+   Extract properties directly into variables.
 
-Destructuring extracts values easily.
+   Example
 
-### **🔹 Object Destructuring**
+   ```js
+   const person = {
+       name: "Dipak",         // property 1
+       age: 26,               // property 2
+       country: "Nepal"       // property 3
+   };
+   const { name, age } = person;   // extract name and age
+   console.log(name);              // prints: Dipak
+   console.log(age);               // prints: 26
+   ```
 
-```js
-const person = {
-  name: "Dipak",
-  age: 26,
-  country: "Nepal"
-};
+   🔹 Array Destructuring
 
-const { name, age } = person;
+   Extract values from arrays.
 
-console.log(name); // Dipak
-console.log(age);  // 26
-```
+   Example
 
-### **🔹 Array Destructuring**
+   ```js
+   const numbers = [10, 20, 30];  // array with 3 values
+   const [first, second] = numbers; // extract first two elements
+   console.log(first);              // 10
+   console.log(second);             // 20
+   ```
 
-```js
-const numbers = [10, 20, 30];
+5. Default Parameters
 
-const [first, second] = numbers;
+   You can give a parameter a default value.
 
-console.log(first);  // 10
-console.log(second); // 20
-```
+   Example
 
----
+   ```js
+   const greet = (name = "Guest") => {   // default value for name is Guest
+       return `Hello ${name}`;           // using template literal
+   };
+   console.log(greet());                 // prints: Hello Guest
+   console.log(greet("Dipak"));          // prints: Hello Dipak
+   ```
 
-## **5. Default Parameters**
+6. Rest & Spread Operators (...)
 
-Assign default values to function parameters.
+   The three dots (...) have two magical roles.
 
-**Example:**
+   🔹 Rest Operator
 
-```js
-const greet = (name = "Guest") => {
-  return `Hello ${name}`;
-};
+   Collects multiple values into a single array.
 
-console.log(greet());       // Hello Guest
-console.log(greet("Dipak")); // Hello Dipak
-```
+   Example
 
----
+   ```js
+   const sumAll = (...numbers) => {          // rest operator collects all arguments
+       return numbers.reduce((total, n) => total + n, 0); // calculate sum
+   };
+   console.log(sumAll(1, 2, 3));             // prints: 6
+   ```
 
-## **6. Rest & Spread Operators (`...`)**
+   🔹 Spread Operator
 
-The three dots have two powerful uses.
+   Spreads (expands) the elements of arrays or objects.
 
----
+   Example — Array
 
-### **🔹 Rest Operator**
+   ```js
+   const arr1 = [1, 2, 3];        // original array
+   const arr2 = [...arr1, 4, 5];  // spread arr1 into arr2
+   console.log(arr2);             // [1, 2, 3, 4, 5]
+   ```
 
-Collects arguments into an array.
+   Example — Object
 
-```js
-const sumAll = (...numbers) => {
-  return numbers.reduce((total, n) => total + n, 0);
-};
+   ```js
+   const obj1 = { a: 1, b: 2 };      // first object
+   const obj2 = { ...obj1, c: 3 };   // spread obj1 into new object
+   console.log(obj2);                // {a:1, b:2, c:3}
+   ```
 
-console.log(sumAll(1, 2, 3)); // 6
-```
+7. Hands-On Exercises
 
----
+   Exercise 1: Calculate Sum Using Rest + Spread
 
-### **🔹 Spread Operator**
+   Solution
 
-Expands arrays or objects.
+   ```js
+   // function to calculate sum using rest operator
+   const calcSum = (...numbers) => {            // rest collects all arguments
+       return numbers.reduce((total, num) => total + num, 0); // add them
+   };
+   const values = [10, 20, 30];                 // array of numbers
+   console.log(calcSum(...values));             // spread array into arguments → output: 60
+   ```
 
-#### **Array Example**
+   Exercise 2: Merge and Destructure Objects
 
-```js
-const arr1 = [1, 2, 3];
-const arr2 = [...arr1, 4, 5];
+   Solution
 
-console.log(arr2); // [1, 2, 3, 4, 5]
-```
+   ```js
+   // two objects to merge
+   const objA = { name: "Dipak", age: 26 };     // first object
+   const objB = { country: "Nepal", hobby: "Football" }; // second object
+   // merge objects using spread operator
+   const merged = { ...objA, ...objB };         // combine both objects
+   console.log(merged);                         // full merged result
+   // destructure merged object
+   const { name, country } = merged;            // extract name & country
+   console.log(name);                           // prints: Dipak
+   console.log(country);                        // prints: Nepal
+   ```
 
-#### **Object Example**
+   1️⃣ Task: Create a function that calculates the sum of numbers in an array using rest and spread operators.
 
-```js
-const obj1 = { a: 1, b: 2 };
-const obj2 = { ...obj1, c: 3 };
+   ✅ Solution
 
-console.log(obj2); // { a: 1, b: 2, c: 3 }
-```
+   ```js
+   // Using rest + spread
+   function sumNumbers(...numbers) {
+     return numbers.reduce((total, n) => total + n, 0);
+   }
+   const arr = [10, 20, 30, 40];
+   // Spread the array into the function
+   console.log(sumNumbers(...arr)); 
+   // Output: 100
+   ```
 
----
+   🧠 Explanation (short & sharp)
 
-## **7. Hands-On Exercises**
+   * ...numbers collects inputs as an array.
 
-### **Exercise 1: Calculate Sum Using Rest + Spread**
+   * ...arr spreads elements of arr into separate arguments.
 
-**Solution:**
+   * reduce adds everything up.
 
-```js
-const calcSum = (...numbers) => {
-  return numbers.reduce((total, num) => total + num, 0);
-};
+   2️⃣ Task: Write a function to merge and destructure objects.
 
-const values = [10, 20, 30];
+   ✅ Solution
 
-console.log(calcSum(...values)); 
-// Output: 60
-```
+   ```js
+   const person = { name: "Dipak", age: 25 };
+   const job = { role: "Developer", company: "TechCorp" };
+   // Merge both using spread
+   const combined = { ...person, ...job };
+   // Destructure merged object
+   const { name, role, company } = combined;
+   console.log(combined);
+   // { name: 'Dipak', age: 25, role: 'Developer', company: 'TechCorp' }
+   console.log(name, role, company);
+   // Dipak Developer TechCorp
+   ```
 
----
+   🧠 Explanation
 
-### **Exercise 2: Merge and Destructure Objects**
+   * { ...obj1, ...obj2 } merges objects.
 
-**Solution:**
+   * Destructuring pulls specific keys into variables.
 
-```js
-const objA = { name: "Dipak", age: 26 };
-const objB = { country: "Nepal", hobby: "Football" };
+## Day 1: Core JavaScript Hands-On Tasks
 
-// Merge objects
-const merged = { ...objA, ...objB };
-console.log(merged);
+Task 1 – Variables and Template Literals\
+Create two variables, firstName and lastName, and combine them into a greeting message using template literals. Log the message.
 
-// Destructure
-const { name, country } = merged;
+Task 2 – let and const Scope\
+Create a let variable inside a block {} and try to access it outside. Then do the same with a const variable. Observe the errors.
 
-console.log(name);     // Dipak
-console.log(country);  // Nepal
-```
+Task 3 – Arrow Function Simple\
+Write an arrow function greet that takes a name and returns "Hello, <name>!". Test it with your name.
 
----
+Task 4 – Arrow Function with Multiple Parameters\
+Write an arrow function multiply that takes two numbers and returns their product. Log the result for 5 and 6.
 
-## **Bonus Tasks with Solutions**
+Task 5 – Object Destructuring\
+Create an object person with keys name, age, and country. Destructure the object to extract name and country into variables and log them.
 
----
+Task 6 – Array Destructuring\
+Create an array [10, 20, 30, 40]. Destructure the first two elements into variables and log them.
 
-### **1️⃣ Task: Sum Numbers Using Rest + Spread**
+Task 7 – Default Parameters\
+Write a function sayHello with a parameter name that defaults to "Guest" if not provided. Log the output when called with and without an argument.
 
-**Solution:**
+Task 8 – Rest Operator (Sum of Numbers)\
+Write a function sumAll using the rest operator (...numbers) that calculates the sum of any number of inputs. Test with 1, 2, 3, 4.
 
-```js
-function sumNumbers(...numbers) {
-  return numbers.reduce((total, n) => total + n, 0);
-}
+Task 9 – Spread Operator with Arrays\
+Create two arrays [1, 2, 3] and [4, 5]. Merge them into a new array using the spread operator and log the result.
 
-const arr = [10, 20, 30, 40];
-console.log(sumNumbers(...arr));  // 100
-```
-
-**Explanation:**
-
-* `...numbers` → collects inputs
-* `...arr` → spreads array
-* `reduce` → adds all values
-
----
-
-### **2️⃣ Task: Merge & Destructure Objects**
-
-**Solution:**
-
-```js
-const person = { name: "Dipak", age: 25 };
-const job = { role: "Developer", company: "TechCorp" };
-
-const combined = { ...person, ...job };
-
-const { name, role, company } = combined;
-
-console.log(combined);
-console.log(name, role, company);
-```
-
----
-
-# **Day 1: Core JavaScript Hands-On Tasks**
-
-### **Task 1 – Variables & Template Literals**
-
-Create two variables `firstName` and `lastName` and combine them using template literals.
-
----
-
-### **Task 2 – let and const Scope**
-
-Create a `let` and `const` variable inside `{}` and try to access them outside.
-Observe errors.
-
----
-
-### **Task 3 – Arrow Function Simple**
-
-Write a function:
-
-```js
-const greet = (name) => `Hello, ${name}!`;
-```
-
----
-
-### **Task 4 – Arrow Function With Multiple Parameters**
-
-```js
-const multiply = (a, b) => a * b;
-```
-
----
-
-### **Task 5 – Object Destructuring**
-
-Create an object and destructure `name` and `country`.
-
----
-
-### **Task 6 – Array Destructuring**
-
-Destructure `[10, 20, 30, 40]` to get first two values.
-
----
-
-### **Task 7 – Default Parameters**
-
-Create function:
-
-```js
-function sayHello(name = "Guest") { ... }
-```
-
----
-
-### **Task 8 – Rest Operator (Sum of Numbers)**
-
-Write:
-
-```js
-function sumAll(...numbers) { ... }
-```
-
----
-
-### **Task 9 – Spread Operator: Arrays**
-
-Merge `[1,2,3]` and `[4,5]`.
-
----
-
-### **Task 10 – Merge & Destructure Objects**
-
-Merge `{a:1,b:2}` and `{c:3,d:4}`, then destructure `a` and `d`.
-
----
+Task 10 – Merge and Destructure Objects\
+Create two objects: {a: 1, b: 2} and {c: 3, d: 4}. Merge them using the spread operator. Then destructure the merged object to extract a and d and log them.

@@ -1,199 +1,91 @@
----
+# JSX Syntax Checklist
 
-# ⭐️ JSX Syntax Checklist (Full Clean Notes)
+1. Component Basics
 
-## **1. Component Basics**
+* Component names must start with Capital Letters
 
-✔ Component names must **start with Capital Letters**
-✔ Component must **return ONE root element**
-✔ Props use **camelCase** (e.g., `onClick`, `tabIndex`)
-✔ **Do NOT call components as normal functions** → use `<Component />`
+* Return a single root element
 
-**Example:**
+* Use camelCase for most props
 
-```jsx
-function MyComponent() { 
-  return <h1>Hello</h1>; 
-}
-```
+* Do not call components as normal functions
 
----
+2. HTML Differences in JSX
 
-## **2. HTML Differences in JSX**
+* Use className instead of class
 
-JSX is not HTML — some attributes differ:
+* Use htmlFor instead of for
 
-| HTML          | JSX         |
-| ------------- | ----------- |
-| `class`       | `className` |
-| `for`         | `htmlFor`   |
-| Inline events | camelCase   |
+* Attributes use camelCase
 
-✔ Attributes must use **camelCase**
-✔ Boolean attributes must be written explicitly:
+3. JavaScript Inside { }
 
-```jsx
-<input disabled={true} />
-```
+* Wrap JS inside { }
 
----
+* Expressions only, not statements
 
-## **3. JavaScript Inside `{ }`**
+* Example: {total + 1}
 
-✔ Wrap JS expressions inside `{ }`
-✔ Only **expressions** allowed (not statements like `if`, `for`)
+4. Props & Data Flow
 
-**Examples**
+* Props passed like HTML attributes
 
-```jsx
-<p>{total + 1}</p>
-<p>{user?.name}</p>
-<p>{isLoggedIn && "Welcome!"}</p>
-```
+* Dynamic values use {value}
 
-❌ Not allowed:
+* Functions passed as references
 
-```jsx
-{ if(total > 5) return "ok" } // ❌
-```
+5. Conditional Rendering
 
----
+* Use ternary operators
 
-## **4. Props & Data Flow**
+* Use && for single-side rendering
 
-✔ Props passed like attributes
-✔ Dynamic values use `{ }`
-✔ Functions passed by reference (NOT called)
+6. Lists & Keys
 
-```jsx
-<Button title="Click me" count={5} onClick={handleClick} />
-```
+* Use map() for lists
 
----
+* Each item must have a unique key
 
-## **5. Conditional Rendering**
+7. Self-Closing Tags
 
-✔ Ternary operator
+* Use <img />, <input />, etc.
 
-```jsx
-{isLoggedIn ? "Welcome" : "Please Login"}
-```
+8. Fragments
 
-✔ Logical AND (`&&`)
+* Use <>...</> for grouping elements
 
-```jsx
-{cart.length > 0 && <Cart />}
-```
+9. Event Handling
 
----
+* CamelCase events: onClick, onChange
 
-## **6. Lists & Keys**
+* Pass function reference, not a call
 
-✔ Use `.map()` to render lists
-✔ **Each item needs a unique key** (not index if items can reorder)
+10. Styling in JSX
 
-```jsx
-{users.map(user => (
-  <li key={user.id}>{user.name}</li>
-))}
-```
+* Inline styles use objects
 
----
+11. Avoid Pitfalls
 
-## **7. Self-Closing Tags**
+* Must close every tag
 
-Always close tags:
+* Avoid mutating state directly
 
-```jsx
-<img src="" />
-<input />
-<br />
-```
+## Optional Mini Cheat-sheet (Quick Recall)
 
----
+* Components start Capitalized
 
-## **8. Fragments**
+- JS inside {}
 
-To return multiple elements without a wrapper:
+* Use className
 
-```jsx
-<>
-  <h1>Hello</h1>
-  <p>World</p>
-</>
-```
+- One root element
 
-Alternative:
+* Keys for list items
 
-```jsx
-<React.Fragment>...</React.Fragment>
-```
+- CamelCase attributes
 
----
-
-## **9. Event Handling**
-
-✔ Events use camelCase:
-
-* onClick
-* onChange
-* onSubmit
-* onMouseEnter
-
-✔ Pass function reference (not execute)
-
-```jsx
-<button onClick={handleClick}>Click</button>
-```
-
-❌ Wrong:
-
-```jsx
-<button onClick={handleClick()}>Click</button>
-```
-
----
-
-## **10. Styling in JSX**
-
-Inline styles must be **JS objects**:
-
-```jsx
-<div style={{ color: "red", fontSize: "20px" }}>Hello</div>
-```
-
-CSS files still recommended.
-
----
-
-## **11. Avoid Pitfalls**
-
-✔ Must close every tag
-✔ Never mutate state directly
-❌ Wrong:
-
-```jsx
-state.count = 5
-```
-
-✔ Use setter:
-
-```jsx
-setCount(5)
-```
-
----
-
-# ⭐ Optional MINI CHEAT-SHEET (Ultra-Quick Revision)
-
-* Components start **Capitalized**
-* JS expressions go **inside `{}`**
-* Use `className`
-* One root element
-* Use **keys** in lists
-* Props use **camelCase**
 * Functions passed without calling them
-* Inline styles = object
-* Conditional rendering → **ternary / &&**
 
----
+- Inline styles = object
+
+* Conditional rendering: ternary / &&
