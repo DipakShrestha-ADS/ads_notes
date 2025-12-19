@@ -2,90 +2,90 @@
 
 1. Component Basics
 
-- [ ] Component names must start with Capital Letters
+- [x] Component names must start with Capital Letters
 
-- [ ] Return a single root element
+- [x] Return a single root element
 
-- [ ] Use camelCase for most props
+- [x] Use camelCase for most props
 
-- [ ] Do not call components as normal functions
+- [x] Do not call components as normal functions
 
 2. HTML Differences in JSX
 
-- [ ] Use className instead of class
+- [x] Use className instead of class
 
-- [ ] Use htmlFor instead of for
+- [x] Use htmlFor instead of for
 
-- [ ] Attributes use camelCase
+- [x] Attributes use camelCase
 
 3. JavaScript Inside { }
 
-- [ ] Wrap JS inside { }
+- [x] Wrap JS inside { }
 
-- [ ] Expressions only, not statements
+- [x] Expressions only, not statements
 
-- [ ] Example: {total + 1}
+- [x] Example: {total + 1}
 
 4. Props & Data Flow
 
-- [ ] Props passed like HTML attributes
+- [x] Props passed like HTML attributes
 
-- [ ] Dynamic values use {value}
+- [x] Dynamic values use {value}
 
-- [ ] Functions passed as references
+- [x] Functions passed as references
 
 5. Conditional Rendering
 
-- [ ] Use ternary operators
+- [x] Use ternary operators
 
-- [ ] Use && for single-side rendering
+- [x] Use && for single-side rendering
 
 6. Lists & Keys
 
-- [ ] Use map() for lists
+- [x] Use map() for lists
 
-- [ ] Each item must have a unique key
+- [x] Each item must have a unique key
 
 7. Self-Closing Tags
 
-- [ ] Use <img />, <input />, etc.
+- [x] Use <img />, <input />, etc.
 
 8. Fragments
 
-- [ ] Use <>...</> for grouping elements
+- [x] Use <>...</> for grouping elements
 
 9. Event Handling
 
-- [ ] CamelCase events: onClick, onChange
+- [x] CamelCase events: onClick, onChange
 
-- [ ] Pass function reference, not a call
+- [x] Pass function reference, not a call
 
 10. Styling in JSX
 
-- [ ] Inline styles use objects
+- [x] Inline styles use objects
 
 11. Avoid Pitfalls
 
-- [ ] Must close every tag
+- [x] Must close every tag
 
-- [ ] Avoid mutating state directly
+- [x] Avoid mutating state directly
 
 ## Optional Mini Cheat-sheet (Quick Recall)
 
-- [ ] Components start Capitalized
+- [x] Components start Capitalized
 
-- [ ] JS inside {}
+- [x] JS inside {}
 
-- [ ] Use className
+- [x] Use className
 
-- [ ] One root element
+- [x] One root element
 
-- [ ] Keys for list items
+- [x] Keys for list items
 
-- [ ] CamelCase attributes
+- [x] CamelCase attributes
 
-- [ ] Functions passed without calling them
+- [x] Functions passed without calling them
 
-- [ ] Inline styles = object
+- [x] Inline styles = object
 
-- [ ] Conditional rendering: ternary / &&
+- [x] Conditional rendering: ternary / &&
