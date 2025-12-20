@@ -314,5 +314,3 @@ Data is the heart of programs—like ingredients in cooking.
   - Order: char < int < unsigned int < long < unsigned long < float < double < long double.
   - Example: int x=5; float y=2.5; x+y → float result (7.5).
   - Why? Prevents data loss.
-
-These notes are now super detailed and student-friendly! For CSIT exams, focus on writing algorithms, explaining scopes, and coding basics. Practice on paper and compiler. If you need more examples or clarifications, ask!
