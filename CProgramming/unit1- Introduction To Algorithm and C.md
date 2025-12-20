@@ -424,3 +424,21 @@ char → int → unsigned int → long → unsigned long → float → double �
 This prevents data loss during operations.
 
 Now you have a strong foundation in algorithms and C basics – practice these examples daily to become confident!
+
+# Tasks
+
+1. Write a pseudo-code to exchange the values of two variables using a temporary variable and then without using any temporary variable.
+2. Develop an algorithm and pseudo-code to count the number of positive numbers among 10 integers entered by the user.
+3. Write a C program to compute the summation of a set of numbers stored in an array of size 8.
+4. Create an algorithm to reverse the digits of a given positive integer (e.g., 1234 becomes 4321) and implement it in C.
+5. Write a C program to find the smallest positive divisor (other than 1) of a given integer.
+6. Implement Euclid's algorithm in C to find the G.C.D. and L.C.M. of two positive integers, and extend it to three integers.
+7. Write a C program using the Sieve of Eratosthenes to generate all prime numbers up to a given number n.
+8. Write a simple C program that demonstrates the basic structure: inclusion of header (#include <stdio.h>), main function, use of comments, and print a message. Explain the compilation steps.
+9. Declare variables of different basic data types (int, float, char, double) in C and print their sizes using sizeof operator.
+10. Write a C program to demonstrate the use of short and long qualifiers with int and double data types, and display their values and sizes.
+11. Create a program using signed and unsigned qualifiers for int and char, and show how unsigned types handle negative values.
+12. Write a C program with nested blocks to illustrate the scope of variables (local to block) and how a variable in an inner block shadows an outer one.
+13. Demonstrate the hierarchy of data types by writing a C program that performs arithmetic operations involving int, float, and double, and observe automatic type promotion.
+14. Write a complete C program that combines an algorithmic problem (e.g., finding G.C.D.) with proper variable declaration, constants (using #define), and single-line/multi-line comments.
+15. Compare the procedural approach of C with a brief description (in comments of a C program) of how the same task (e.g., swapping values) would differ in Object-Oriented and Event-Driven approaches.

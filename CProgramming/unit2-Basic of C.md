@@ -568,3 +568,21 @@ label:                                // Label here
     return 0;  // End
 }
 ```
+
+# Tasks
+
+1. Write a C program to demonstrate all arithmetic operators (+, -, *, /, %) with two integer variables and print the results.
+2. Use relational and logical operators to check if a number entered by the user is positive and even, then display an appropriate message.
+3. Implement a program using compound assignment operators (+=, -=, *=, /=) to update a variable in different ways and show the final value.
+4. Demonstrate increment (++) and decrement (--) operators in both prefix and postfix forms with a loop that prints values from 1 to 10.
+5. Write a C program using the conditional (ternary) operator to find the maximum of three integers entered by the user.
+6. Create a program that uses bitwise operators (AND, OR, XOR, NOT, shifts) on two integers and displays the results in binary format using printf.
+7. Write a C program to illustrate operator precedence by evaluating a complex expression involving arithmetic, relational, and logical operators without and with parentheses.
+8. Demonstrate automatic and explicit type conversion by mixing int, float, and double in arithmetic operations and casting explicitly.
+9. Use formatted I/O functions: read two integers and a float using scanf(), then print them with proper formatting (width, precision) using printf().
+10. Write a program to read and display a single character using getchar() and putchar(), and a string using gets() and puts().
+11. Implement a simple menu-driven program using switch statement to perform basic arithmetic operations based on user choice.
+12. Write a C program using if-else ladder (else-if) to determine the grade of a student based on marks entered (A, B, C, D, F).
+13. Create a program using while loop to calculate the sum of digits of a number entered by the user.
+14. Demonstrate the difference between while and do-while loop by printing numbers from 1 to 5, and then trying with an initial false condition.
+15. Write a for loop program to generate the multiplication table of a number, and use break, continue, and goto to skip multiples of 3 and exit early at 10.
