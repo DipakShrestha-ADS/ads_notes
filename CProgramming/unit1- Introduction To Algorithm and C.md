@@ -331,16 +331,17 @@ double pi = 3.1415926535;
 ## 6. Qualifiers
 
 Qualifiers modify data types.
-    - Size Qualifiers:
-        - short: Reduces size, e.g., short int (2 bytes, range -32768 to 32767).
-        - long: Increases size, e.g., long int (4-8 bytes, larger range); long double (higher precision).
 
-    - Sign Qualifiers:
-        - signed: Allows negative values (default for int, char).
-        - unsigned: Only non-negative, doubles positive range, e.g., unsigned int (0 to 4E9).
+- Size Qualifiers:
+    - short: Reduces size, e.g., short int (2 bytes, range -32768 to 32767).
+    - long: Increases size, e.g., long int (4-8 bytes, larger range); long double (higher precision).
 
-    - Memory and Range: Qualifiers modify base types; e.g., unsigned short int: 2 bytes, 0 to 65535.
-    - Usage: Choose based on data needs—unsigned for positive-only (e.g., ages), long for large numbers.
+- Sign Qualifiers:
+    - signed: Allows negative values (default for int, char).
+    - unsigned: Only non-negative, doubles positive range, e.g., unsigned int (0 to 4E9).
+
+- Memory and Range: Qualifiers modify base types; e.g., unsigned short int: 2 bytes, 0 to 65535.
+- Usage: Choose based on data needs—unsigned for positive-only (e.g., ages), long for large numbers.
 
 ### 6.1 Short and Long Size Qualifiers
 
