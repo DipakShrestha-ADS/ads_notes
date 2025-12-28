@@ -4,33 +4,26 @@ C is a general-purpose programming language created by Dennis Ritchie at Bell La
 It is a very popular language, despite being old. The main reason for its popularity is because it is a fundamental language in the field of computer science.  
 C is strongly associated with UNIX, as it was developed to write the UNIX operating system.
 
-## 1. Fundamentals of Algorithms
+### Fundamentals of Algorithms: Notion of an Algorithm
+- An algorithm is a step-by-step procedure or a finite sequence of well-defined instructions designed to solve a specific problem or perform a computation, taking inputs and producing outputs.
+- Key properties include: definiteness (each step is precisely stated), effectiveness (each step is basic and executable), finiteness (it terminates after a finite number of steps), input (zero or more well-defined inputs), and output (one or more results).
+- Algorithms are language-independent and focus on logic, making them essential for problem-solving in computing.
+- Benefits: They ensure efficiency, reusability, and correctness; allow analysis of time and space complexity (e.g., Big O notation); and serve as a blueprint for coding in any language.
+- Real-world analogy: A recipe for baking a cake is an algorithm—ingredients (inputs), steps (process), baked cake (output).
+- Importance in programming: Algorithms help break down complex problems into manageable steps, reduce errors, and optimize resource usage.
 
-An algorithm is a step-by-step procedure to solve a problem, like a recipe for making delicious Nepali momos. It must be clear, finite, and effective.
+### Pseudo-code Conventions
+Pseudo-code is like writing algorithms in plain English mixed with code-like words. It's not real code, but it helps plan before writing actual programs. It's "pseudo" because it's fake code—easy to read.
 
-### 1.1 Notion (Idea) of an Algorithm
+- **Assignment**: Use `←` or `=` to set a value. Example: `age ← 20` means "set age to 20".
+- **Input**: `READ` or `INPUT` to get data from user. Example: `READ number`.
+- **Output**: `PRINT` or `WRITE` to show results. Example: `PRINT "Hello"`.
+- **Basic Control Structures** (these control the flow—like decisions or loops):
+  - **Sequence**: Just do steps one after another.
+  - **Selection**: Make decisions with `IF-THEN-ELSE`. Example: If it's raining, take an umbrella; else, go without.
+  - **Repetition**: Loops like `WHILE` (repeat while condition is true), `FOR` (repeat a set number of times), or `REPEAT-UNTIL` (repeat until condition is met).
 
-An algorithm is a finite sequence of well-defined instructions to solve a specific problem. It takes input, processes it, and produces output. Good algorithms are correct, efficient, and easy to understand.
-
-**Characteristics**:
-- Clear and unambiguous
-- Well-defined inputs and outputs
-- Finite steps (must end)
-- Effective (each step doable)
-
-**Real-world scenario**: Finding the way from your home in Lalitpur to Tribhuvan Airport – step-by-step directions (algorithm) ensure you reach on time.
-
-### 1.2 Pseudo-code Conventions
-
-Pseudo-code is a simple way to write algorithms in English-like language, without strict syntax. It uses assignment (← or =), input/output, and control structures (if, while, for).
-
-Common conventions:
-- Assignment: variable ← value
-- Input: READ or INPUT variable
-- Output: PRINT or DISPLAY
-- Basic controls: IF-THEN-ELSE, WHILE, REPEAT-UNTIL, FOR
-
-**Real-world scenario**: Recipe for dal bhat – pseudo-code helps anyone cook it correctly.
+Why use pseudo-code? It's language-independent—you can convert it to C, Java, etc. For exams, practice writing pseudo-code for simple problems.
 
 **Example Pseudo-code** (Calculate area of rectangle):
 ```
@@ -42,243 +35,229 @@ BEGIN
 END
 ```
 
-## 2. Algorithmic Problems
+## Algorithmic Problems: Fundamental Algorithms with Examples
 
-Now we develop simple algorithms for common problems. These build logical thinking.
+These are common problems you'll see in exams. I'll give the pseudo-code, explain how it works, and add a real C code example where relevant. Think of these as building blocks for bigger programs.
 
-### 2.1 Exchange the Values of Two Variables
+1. **Exchange (Swap) Values of Two Variables**
+   - Why? Sometimes you need to switch values, like sorting numbers.
+   - **With Temporary Variable** (easy way):
+     - Pseudo-code:
+       ```
+       READ a, b  // Get two numbers
+       temp ← a   // Store a's value in temp
+       a ← b      // Now a gets b's value
+       b ← temp   // b gets the original a's value from temp
+       PRINT a, b // Show swapped values
+       ```
+     - Explanation: Temp is like a spare cup—if you want to swap tea and coffee in two cups, pour tea into spare, pour coffee into tea's cup, then spare into coffee's cup.
+     - C Code Example:
+       ```c
+       #include <stdio.h>
+       int main() {
+           int a = 5, b = 10, temp;
+           temp = a;
+           a = b;
+           b = temp;
+           printf("Swapped: a=%d, b=%d\n", a, b);
+           return 0;
+       }
+       ```
+       Output: Swapped: a=10, b=5
 
-#### With Temporary Variable
-Use a third variable to hold one value temporarily.
+   - **Without Temporary Variable** (using math—clever but can overflow for big numbers):
+     - Pseudo-code:
+       ```
+       READ a, b
+       a ← a + b  // a now holds sum
+       b ← a - b  // b gets original a (sum - b = a)
+       a ← a - b  // a gets original b (sum - a_original = b)
+       PRINT a, b
+       ```
+     - Explanation: Like swapping without extra space—add them, subtract to isolate values.
+     - C Code: Similar to above, but replace swaps with a=a+b; b=a-b; a=a-b;
 
-**Real-world scenario**: Swapping two cups of tea without spilling – use an empty cup (temp).
+2. **Counting Positive Numbers from a Set of Integers**
+   - Why? Useful for data analysis, like counting passing students.
+   - Pseudo-code:
+     ```
+     READ n     // How many numbers?
+     count ← 0  // Start counter at 0
+     FOR i = 1 to n
+         READ num  // Get each number
+         IF num > 0 THEN
+             count ← count + 1  // Increment if positive
+     PRINT count
+     ```
+   - Explanation: Loop through numbers, check if >0, add to count. Like counting sunny days in a week.
+   - C Code Example:
+     ```c
+     #include <stdio.h>
+     int main() {
+         int n, num, count = 0;
+         printf("Enter n: ");
+         scanf("%d", &n);
+         for(int i=1; i<=n; i++) {
+             scanf("%d", &num);
+             if(num > 0) count++;
+         }
+         printf("Positive count: %d\n", count);
+         return 0;
+     }
+     ```
 
-**Pseudo-code**:
-```
-BEGIN
-    INPUT a, b
-    temp ← a
-    a ← b
-    b ← temp
-    PRINT a, b
-END
-```
+3. **Summation (Adding Up) a Set of Numbers**
+   - Why? Basic math, like calculating total score.
+   - Pseudo-code:
+     ```
+     READ n
+     sum ← 0
+     FOR i = 1 to n
+         READ num
+         sum ← sum + num
+     PRINT sum
+     ```
+   - Explanation: Start sum at 0, add each number in a loop. Like adding groceries in a bill.
+   - C Code: Similar to counting, but sum += num instead of count++.
 
-#### Without Temporary Variable
-Use arithmetic operations.
+4. **Reversing the Digits of an Integer**
+   - Why? For fun or checks, like palindrome numbers.
+   - Pseudo-code:
+     ```
+     READ num   // e.g., 123
+     rev ← 0
+     WHILE num > 0
+         digit ← num MOD 10  // Get last digit (3)
+         rev ← rev * 10 + digit  // Build reverse (0*10+3=3, then 3*10+2=32, etc.)
+         num ← num / 10  // Remove last digit (123→12)
+     PRINT rev  // 321
+     ```
+   - Explanation: Peel off last digit, add to reverse (shift left by *10), repeat. Like reading a number backwards.
+   - C Code Example:
+     ```c
+     #include <stdio.h>
+     int main() {
+         int num = 123, rev = 0, digit;
+         while(num > 0) {
+             digit = num % 10;
+             rev = rev * 10 + digit;
+             num = num / 10;
+         }
+         printf("Reversed: %d\n", rev);
+         return 0;
+     }
+     ```
 
-**Pseudo-code**:
-```
-BEGIN
-    INPUT a, b
-    a ← a + b
-    b ← a - b
-    a ← a - b
-    PRINT a, b
-END
-```
+5. **Find Smallest Positive Divisor of an Integer (Other Than 1)**
+   - Why? To check if prime or find factors.
+   - Pseudo-code:
+     ```
+     READ n  (n > 1)  // e.g., 15
+     FOR i = 2 to n
+         IF n MOD i == 0 THEN
+             PRINT i  // Smallest divisor, e.g., 3 for 15
+             EXIT loop
+     ```
+   - Explanation: Start from 2, check if divides evenly. If none till n, it's prime (but this finds the smallest).
+   - If no divisor, n is prime. C Code: Use a for loop with if(n%i==0) break.
 
-**C Code Example** (both methods):
-```c
-#include <stdio.h>
+6. **Find GCD (Greatest Common Divisor) and LCM (Least Common Multiple)**
+   - GCD: Largest number dividing both without remainder. LCM: Smallest multiple of both.
+   - Why? Math problems, like simplifying fractions.
+   - **GCD for Two Numbers** (Euclidean Algorithm—efficient!):
+     - Pseudo-code:
+       ```
+       READ a, b  // e.g., 12, 18
+       WHILE b ≠ 0
+           temp ← b
+           b ← a MOD b  // Remainder
+           a ← temp
+       PRINT a  // GCD=6
+       LCM = (a_original * b_original) / GCD  // LCM=36
+       ```
+     - Explanation: Replace a with b, b with a%b, repeat till b=0. a is GCD. Like finding common factors quickly.
+   - For Three Numbers: First find GCD of first two, then with third. Same for LCM.
+   - C Code Example for GCD:
+     ```c
+     #include <stdio.h>
+     int main() {
+         int a=12, b=18, temp;
+         while(b != 0) {
+             temp = b;
+             b = a % b;
+             a = temp;
+         }
+         printf("GCD: %d\n", a);
+         return 0;
+     }
+     ```
 
-int main() {
-    int a = 10, b = 20;        // Initial values like two cups
-    
-    printf("Before swap: a=%d, b=%d\n", a, b);
-    
-    // Method 1: With temp
-    int temp = a;              // temp holds a (10)
-    a = b;                     // a gets b (20)
-    b = temp;                  // b gets old a (10)
-    
-    printf("After swap with temp: a=%d, b=%d\n", a, b);
-    
-    // Reset values
-    a = 10; b = 20;
-    
-    // Method 2: Without temp (arithmetic)
-    a = a + b;                 // a becomes 30
-    b = a - b;                 // b becomes 30-20=10
-    a = a - b;                 // a becomes 30-10=20
-    
-    printf("After swap without temp: a=%d, b=%d\n", a, b);
-    
-    return 0;
-}
-```
+7. **Generating Prime Numbers**
+   - Prime: Number >1 with no divisors other than 1 and itself (e.g., 2,3,5,7).
+   - Why? Security (encryption), math.
+   - Pseudo-code (Check if One Number is Prime):
+     ```
+     READ n  // e.g., 7
+     IF n < 2 THEN
+         PRINT "not prime"
+     ELSE
+         is_prime ← true
+         FOR i = 2 to sqrt(n)  // Check up to square root for efficiency
+             IF n MOD i == 0 THEN
+                 is_prime ← false
+                 EXIT
+         IF is_prime THEN PRINT "prime" ELSE PRINT "not prime"
+     ```
+   - Explanation: Check divisors from 2 to sqrt(n)—if any, not prime. To generate many: Loop this for 1 to n.
+   - Advanced: Sieve of Eratosthenes for multiples (mark multiples of primes as non-prime).
+   - C Code: Use loop with sqrt from <math.h>.
 
-### 2.2 Counting Positive Numbers from a Set of Integers
+## Different Approaches in Programming
 
-Count how many numbers are greater than zero.
+Programming isn't one-size-fits-all. Different styles suit different needs. Think of them as ways to build a house.
 
-**Real-world scenario**: Counting how many students scored positive marks in a class test.
+- **Procedural Approach**:
+  - Focus: Break problem into steps/procedures (functions).
+  - Key Concepts:
+    - Procedure/Function (step-by-step tasks)
+    - Sequence (top-to-bottom execution)
+    - Shared Data (global/state variables)
+    - Modularity (split into functions)
+    - Control Flow (loops, conditions)
+    - Reusability (reuse functions)
+  - How: Top-down—start with main task, divide into sub-tasks.
+  - Pros: Simple, efficient for small programs.
+  - Cons: Hard to manage big projects.
+  - Example: C language. Like a recipe book—follow steps.
 
-**Pseudo-code**:
-```
-BEGIN
-    count ← 0
-    INPUT n
-    FOR i = 1 to n
-        INPUT num
-        IF num > 0 THEN
-            count ← count + 1
-        END IF
-    END FOR
-    PRINT count
-END
-```
+- **Object-Oriented Approach (OOP)**:
+  - Focus: Real-world objects (like car: has color, speed; methods: drive, stop).
+  - Key Concepts: 
+    - Classes (blueprint)
+    - Objects (instance)
+    - Encapsulation (hide data)
+    - Inheritance (reuse code)
+    - Polymorphism (same method, different behaviors)
+  - How: Bottom-up—build small objects, combine.
+  - Pros: Reusable, easier for large software.
+  - Cons: Steeper learning curve: Requires more effort and time to learn due to complexity.
+  - Example: C++, Java. Like Lego blocks—build complex from simple parts.
 
-### 2.3 Summation of Set of Numbers
+- **Event-Driven Approach**:
+  - Focus: Respond to events (user clicks, timers).
+  - Key Concepts:
+    - Event (action/change)
+    - Producer (fires event)
+    - Consumer (listens)
+    - Handler (executes logic)
+    - Async (non-blocking)
+    - Loose Coupling (independent parts)
+  - How: Program waits for events, then runs code.
+  - Pros: Great for apps with user interaction.
+  - Cons: Can be unpredictable.
+  - Example: GUI apps like Windows buttons, web (JavaScript). Like a phone—rings (event), you answer.
 
-Find total sum of given numbers.
-
-**Real-world scenario**: Adding daily sales in a small shop in Bhaktapur.
-
-**C Code Example**:
-```c
-#include <stdio.h>
-
-int main() {
-    int n, num, sum = 0;       // sum starts at 0
-    
-    printf("How many numbers? ");
-    scanf("%d", &n);
-    
-    for(int i = 1; i <= n; i++) {  // Loop n times
-        printf("Enter number %d: ", i);
-        scanf("%d", &num);
-        sum = sum + num;           // Add to total
-    }
-    
-    printf("Sum = %d\n", sum);     // Display result
-    
-    return 0;
-}
-```
-
-### 2.4 Reversing the Digits of an Integer
-
-Example: 1234 → 4321
-
-**Real-world scenario**: Reversing a bus route number to read from the back.
-
-**Pseudo-code**:
-```
-BEGIN
-    INPUT num
-    reversed ← 0
-    WHILE num > 0
-        digit ← num % 10
-        reversed ← reversed * 10 + digit
-        num ← num / 10
-    END WHILE
-    PRINT reversed
-END
-```
-
-### 2.5 Find Smallest Positive Divisor of an Integer Other Than 1
-
-Find the smallest divisor greater than 1 (i.e., smallest prime factor).
-
-**Real-world scenario**: Finding the smallest packet size that perfectly divides a big order.
-
-**Pseudo-code**:
-```
-BEGIN
-    INPUT n
-    FOR i = 2 to n-1
-        IF n % i == 0 THEN
-            PRINT i
-            EXIT
-        END IF
-    END FOR
-    PRINT "n is prime"
-END
-```
-
-### 2.6 Find G.C.D. and L.C.M. of Two as Well as Three Positive Integers
-
-GCD (Greatest Common Divisor) – largest common divisor.  
-LCM (Least Common Multiple) – smallest common multiple.  
-LCM(a,b) = (a × b) / GCD(a,b)
-
-**Euclidean Algorithm for GCD**:
-
-**Real-world scenario**: Cutting two ropes of different lengths into equal maximum pieces (GCD).
-
-**C Code Example** (for two numbers):
-```c
-#include <stdio.h>
-
-int findGCD(int a, int b) {    // Function to find GCD
-    while(b != 0) {            // Repeat until b becomes 0
-        int temp = b;
-        b = a % b;
-        a = temp;
-    }
-    return a;                  // a is GCD
-}
-
-int main() {
-    int a = 48, b = 18;
-    int gcd = findGCD(a, b);   // Call function
-    int lcm = (a * b) / gcd;    // Calculate LCM
-    
-    printf("GCD of %d and %d = %d\n", a, b, gcd);
-    printf("LCM of %d and %d = %d\n", a, b, lcm);
-    
-    return 0;
-}
-```
-
-For three numbers: GCD(a, GCD(b,c))
-
-### 2.7 Generating Prime Numbers
-
-Check if a number is prime or generate primes up to n (e.g., Sieve of Eratosthenes).
-
-**Real-world scenario**: Finding prime numbers is like selecting the strongest pillars for a temple.
-
-**Simple Prime Check Pseudo-code**:
-```
-BEGIN
-    INPUT n
-    IF n <= 1 THEN PRINT "Not prime"
-    FOR i = 2 to sqrt(n)
-        IF n % i == 0 THEN PRINT "Not prime" and EXIT
-    END FOR
-    PRINT "Prime"
-END
-```
-
-## 3. Different Approaches in Programming
-
-### 3.1 Procedural Approach
-
-Focus on procedures/functions. Code is written as sequence of steps. C is procedural.
-
-**Example**: Writing a recipe step by step.
-
-### 3.2 Object Oriented Approach
-
-Focus on objects (data + functions). Uses classes, inheritance, polymorphism (like C++, Java).
-
-**Example**: Modeling a "Student" object with marks and methods to calculate grade.
-
-### 3.3 Event Driven Approach
-
-Program responds to events (mouse click, key press). Used in GUI apps (Windows forms, web).
-
-**Example**: Clicking a button in a mobile app to order food.
-
-**Comparison Table**:
-
-| Approach          | Focus              | Languages Example | Real-world Use             |
-|-------------------|--------------------|-------------------|----------------------------|
-| Procedural       | Functions/Steps    | C, Pascal         | System programming, scripts|
-| Object Oriented  | Objects/Classes    | C++, Java, Python | Large applications, games  |
-| Event Driven     | Events/Responses   | Visual Basic, JS  | GUI apps, websites         |
+For exams: Compare them—procedural is function-based, OOP data-based, event-driven reaction-based.
 
 ## 4. Structure of C
 
@@ -318,13 +297,20 @@ int main() {                // Body starts
 
 ### 5.1 Variables
 
-Named memory locations to store data. Must be declared before use.
+- Named memory locations to store changeable data; declared with type, e.g., int x;.
+- Rules: Start with letter/underscore, no spaces/keywords; case-sensitive.
 
 ### 5.2 Constants
-
-Values that don't change. Use const or #define.
+- Fixed values; literal (e.g., 5, "text") or defined (#define PI 3.14);
+- Values that don't change. Use const or #define.
 
 ### 5.3 Data Types
+    - int: Integer, 4 bytes, range ~ -2^31 to 2^31-1 (signed).
+    - float: Single-precision floating-point, 4 bytes, range ~1.2E-38 to 3.4E+38, Precision upto ~6-7 digits.
+    - char: Character, 1 byte, range -128 to 127 (signed) or ASCII values.
+    - double: Double-precision float, 8 bytes, higher precision/range than float, Precision upto ~15-16 digits.
+    - void: No value; used for functions returning nothing or generic pointers.
+- Purpose: Determine memory allocation, operations allowed (e.g., int for counts, float for decimals).
 
 | Data Type | Size (typical) | Range                          | Use Example              |
 |-----------|----------------|--------------------------------|--------------------------|
@@ -345,6 +331,16 @@ double pi = 3.1415926535;
 ## 6. Qualifiers
 
 Qualifiers modify data types.
+    - Size Qualifiers:
+        - short: Reduces size, e.g., short int (2 bytes, range -32768 to 32767).
+        - long: Increases size, e.g., long int (4-8 bytes, larger range); long double (higher precision).
+
+    - Sign Qualifiers:
+        - signed: Allows negative values (default for int, char).
+        - unsigned: Only non-negative, doubles positive range, e.g., unsigned int (0 to 4E9).
+
+    - Memory and Range: Qualifiers modify base types; e.g., unsigned short int: 2 bytes, 0 to 65535.
+    - Usage: Choose based on data needs—unsigned for positive-only (e.g., ages), long for large numbers.
 
 ### 6.1 Short and Long Size Qualifiers
 
@@ -389,6 +385,7 @@ Scope = visibility of variable.
 
 - Local: Inside {} block – only visible there
 - Global: Outside all functions – visible everywhere
+- Block: Limited to {} braces.
 
 **Example**:
 ```c
