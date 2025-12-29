@@ -30,8 +30,231 @@ At the end of this unit, students should be able:
 | **Bitwise Operators**         | `&` (AND)<br>`\|` (OR)<br>`^` (XOR)<br>`~` (NOT)<br>`<<` (left shift)<br>`>>` (right shift) | Manipulate bits. Shifts move bits left/right.                              | `int res = 5 & 3; // Binary 101 & 011 = 001 (1)`                            | Integers only. Useful for flags/masks. High precedence.                   |
 | **Comma Operator**            | `,`                                        | Evaluates multiple expressions; returns last value.                        | `int z = (a=1, b=2, a+b); // z=3`                                           | Lowest precedence. Used in loops for multiple init/evals.                 |
 
+**Arithmetic Operators**
+- Arithmetic operators perform mathematical calculations on numbers (integers, floats, etc.). 
+- They are fundamental for any computation-heavy program, like financial apps or games. 
+- Key points: Integer division truncates decimals (e.g., 5/2 = 2), modulus (%) gives remainder but only for integers, and operations can cause overflow if results exceed data type limits (use larger types like long). 
+- Why important? They handle real-life math efficiently. 
+- Common mistake: Forgetting that / on integers loses fractions—cast to float if needed.
 
-**Bitwise Operators**: Operate on binary bits of integers for low-level manipulation (& AND, | OR, ^ XOR, ~ NOT, << left shift, >> right shift). Key points: Fast for hardware control, shifts multiply/divide by powers of 2. Why important? Used in embedded systems, graphics. Common mistake: Confusing with logical operators (&& vs &).
+| Operator | Description | Example | Result (assuming a=10, b=3) |
+|----------|-------------|---------|-----------------------------|
+| +       | Addition: Adds two operands | a + b | 13 |
+| -       | Subtraction: Subtracts second from first | a - b | 7 |
+| *       | Multiplication: Multiplies two operands | a * b | 30 |
+| /       | Division: Divides first by second | a / b | 3 (integer division) |
+| %       | Modulus: Remainder of division | a % b | 1 |
+
+***Real-world scenario***: In a small grocery shop in a Nepali bazaar (like Asan in Kathmandu), calculating the total bill for rice and dal, applying a 5% discount, and finding the change from a 1000-rupee note. This mimics daily transactions where quick math is needed.
+
+```c
+#include <stdio.h>  // Includes standard input/output library for printf function
+
+int main() {  // Main function: Entry point of the program
+    int rice_price = 100;     // Price per kg of rice in Nepali rupees
+    int dal_price = 150;      // Price per kg of dal
+    int kg_rice = 5;          // Quantity of rice bought
+    int kg_dal = 2;           // Quantity of dal bought
+    
+    int subtotal_rice = rice_price * kg_rice;  // Multiplication: 100 * 5 = 500
+    int subtotal_dal = dal_price * kg_dal;     // Multiplication: 150 * 2 = 300
+    int total = subtotal_rice + subtotal_dal;  // Addition: 500 + 300 = 800
+    int discount = total / 20;                 // Division for 5% discount (800 / 20 = 40, since 5% = 1/20)
+    int final_bill = total - discount;         // Subtraction: 800 - 40 = 760
+    int payment = 1000;                        // Amount paid by customer
+    int change = payment - final_bill;         // Subtraction: 1000 - 760 = 240
+    int extra_notes = change % 100;            // Modulus: Remainder after giving 100-rupee notes (240 % 100 = 40)
+    
+    printf("Total before discount: %d rupees\n", total);      // Prints total: 800
+    printf("Discount applied: %d rupees\n", discount);        // Prints discount: 40
+    printf("Final bill: %d rupees\n", final_bill);            // Prints final: 760
+    printf("Change given: %d rupees (remainder %d)\n", change, extra_notes);  // Prints change and remainder
+    
+    return 0;  // Returns 0 to indicate successful program execution
+}
+```
+
+**Relational Operators**
+- Relational operators compare two values and return a boolean result (1 for true, 0 for false in C). 
+- They are vital for decision-making in code, like in if-statements or loops. 
+- Key points: They don't change values, just compare; work with numbers, chars (via ASCII), but not strings directly. 
+- Precedence is lower than arithmetic, so mix carefully. 
+- Why important? They enable conditional logic, like filtering data. 
+- Common mistake: Using = instead of ==, which assigns instead of comparing.
+
+| Operator | Description | Example | Result (assuming a=10, b=3) |
+|----------|-------------|---------|-----------------------------|
+| ==      | Equal to: Checks if equal | a == b | 0 (false) |
+| !=      | Not equal to: Checks if different | a != b | 1 (true) |
+| >       | Greater than: Checks if first is larger | a > b | 1 (true) |
+| <       | Less than: Checks if first is smaller | a < b | 0 (false) |
+| >=      | Greater than or equal: Checks if first is larger or same | a >= b | 1 (true) |
+| <=      | Less than or equal: Checks if first is smaller or same | a <= b | 0 (false) |
+
+***Real-world scenario***: During SLC/SEE exams in Nepal, comparing a student's marks to the pass threshold (40) to determine if they passed, or if their score is higher than a friend's for bragging rights. This is like teachers grading papers.
+
+```c
+#include <stdio.h>  // For printf to display output
+
+int main() {  // Program starts here
+    int my_marks = 65;        // Your exam marks
+    int friend_marks = 50;    // Friend's marks
+    int pass_threshold = 40;  // Minimum to pass
+    
+    if (my_marks > pass_threshold) {  // Greater than: 65 > 40? True – prints message
+        printf("You passed the exam!\n");
+    }
+    if (my_marks >= 60) {             // Greater than or equal: 65 >= 60? True – first division
+        printf("First division! Great job.\n");
+    }
+    if (my_marks != friend_marks) {   // Not equal: 65 != 50? True – different scores
+        printf("Your marks are different from your friend's.\n");
+    }
+    if (friend_marks < pass_threshold) {  // Less than: 50 < 40? False – no print
+        printf("Friend needs to study more.\n");
+    }
+    if (my_marks <= 100) {            // Less than or equal: 65 <= 100? True – valid score
+        printf("Marks are within range.\n");
+    }
+    if (my_marks == 100) {            // Equal to: 65 == 100? False – no print
+        printf("Perfect score!\n");
+    }
+    
+    return 0;  // End program
+}
+```
+
+**Logical Operators**
+- Logical operators combine or invert boolean expressions (from relational operators). 
+- They support short-circuit evaluation: && skips second if first is false; || skips if first is true—efficient for performance. 
+- Key points: Precedence: ! > && > ||. Use for complex conditions. 
+- Why important? They allow multi-condition checks, like in user login (username correct && password matches). 
+- Common mistake: Forgetting short-circuit can cause side effects if second expression has actions.
+
+| Operator | Description | Example | Result (assuming a=1 (true), b=0 (false)) |
+|----------|-------------|---------|-------------------------------------------|
+| &&      | Logical AND: True if both are true | a && b | 0 (false) |
+| ||      | Logical OR: True if at least one is true | a || b | 1 (true) |
+| !       | Logical NOT: Inverts true/false | !a | 0 (false) |
+
+***Real-world scenario***: Planning a trip to Chitwan National Park from Nepal—go only if it's holiday && weather is good, or if you have a car || a bus ticket. This mirrors decision-making in daily life.
+
+```c
+#include <stdio.h>  // For output functions
+
+int main() {  // Main entry
+    int is_holiday = 1;       // 1=true, it's a public holiday like Dashain
+    int is_good_weather = 0;  // 0=false, it's raining
+    int has_transport = 1;    // 1=true, you have a bus ticket
+    
+    if (is_holiday && is_good_weather) {  // AND: 1 && 0 = 0 (false) – skip print
+        printf("Perfect time for the trip!\n");
+    }
+    if (is_holiday || has_transport) {    // OR: 1 || 1 = 1 (true) – print
+        printf("You can still go somehow.\n");
+    }
+    if (!is_good_weather) {               // NOT: !0 = 1 (true) – print
+        printf("Weather is bad, stay safe.\n");
+    }
+    
+    return 0;  // Exit
+}
+```
+
+**Compound Assignment Operators**
+- Compound assignment operators combine an arithmetic operation with assignment (=), making code shorter and readable. 
+- They are like shortcuts: x += 5 is x = x + 5. 
+- Key points: Evaluated right to left, useful in loops. 
+- Why important? Reduces typing errors, improves efficiency in large codes.
+- Common mistake: Using on non-variables (e.g., 5 += x is invalid).
+
+| Operator | Description | Example | Equivalent | Result (assuming x=10) |
+|----------|-------------|---------|------------|------------------------|
+| +=      | Add and assign | x += 3 | x = x + 3 | 13 |
+| -=      | Subtract and assign | x -= 3 | x = x - 3 | 7 |
+| *=      | Multiply and assign | x *= 3 | x = x * 3 | 30 |
+| /=      | Divide and assign | x /= 3 | x = x / 3 | 3 |
+| %=      | Modulus and assign | x %= 3 | x = x % 3 | 1 |
+
+***Real-world scenario***: Managing daily earnings in a tea shop in Thamel, Kathmandu—adding sales, subtracting costs, multiplying for bulk, to update total profit quickly.
+
+```c
+#include <stdio.h>  // For printf
+
+int main() {  // Start
+    int total_profit = 2000;  // Initial profit in rupees
+    
+    total_profit += 500;      // Add today's sales: 2000 + 500 = 2500
+    total_profit -= 200;      // Subtract costs: 2500 - 200 = 2300
+    total_profit *= 2;        // Double for partnership: 2300 * 2 = 4600 (example)
+    total_profit /= 4;        // Divide among workers: 4600 / 4 = 1150
+    total_profit %= 1000;     // Remainder after withdrawing 1000s: 1150 % 1000 = 150
+    
+    printf("Final profit: %d rupees\n", total_profit);  // Prints 150
+    
+    return 0;  // End
+}
+```
+**Increment and Decrement Operators**
+- Increment (++) adds 1, decrement (--) subtracts 1. 
+- Prefix (++x) changes before use; postfix (x++) after. 
+- Key points: Unary, high precedence. 
+- Why important? Ideal for counters in loops. 
+- Common mistake: Misunderstanding postfix in expressions (e.g., y = x++ uses old x).
+
+| Operator | Description | Example | Result (assuming x=5) |
+|----------|-------------|---------|-----------------------|
+| ++ (prefix) | Increment before use | ++x | x=6, result=6 |
+| ++ (postfix) | Increment after use | x++ | result=5, x=6 |
+| -- (prefix) | Decrement before use | --x | x=4, result=4 |
+| -- (postfix) | Decrement after use | x-- | result=5, x=4 |
+
+***Real-world scenario***: Counting vehicles at a traffic chowk in Nepal during rush hour—increasing count as each bus passes, decreasing when one leaves.
+
+```c
+#include <stdio.h>  // Output library
+
+int main() {  // Main
+    int bus_count = 0;  // Initial count
+    
+    bus_count++;        // Postfix: Use 0, then increment to 1
+    ++bus_count;        // Prefix: Increment to 2, then use 2
+    int temp = bus_count++;  // Postfix: temp=2, bus_count=3
+    bus_count--;        // Postfix: Use 3, then decrement to 2
+    --bus_count;        // Prefix: Decrement to 1, use 1
+    
+    printf("Final bus count: %d, Temp: %d\n", bus_count, temp);  // Prints 1 and 2
+    
+    return 0;  // End
+}
+```
+
+**Conditional or Ternary Operator**
+- The ternary operator (?:) is a shorthand for if-else, with format: condition ? true_expression : false_expression. 
+- It's the only ternary operator in C. 
+- Key points: Evaluates only one expression based on condition, efficient. 
+- Why important? Makes code concise for simple decisions. 
+- Common mistake: Nesting too many—use if-else for complexity.
+
+***Real-world scenario***: Calculating taxi fare in Nepal—if distance > 5km, full rate; else, minimum— like deciding charges based on trip length.
+
+```c
+#include <stdio.h>  // For printf
+
+int main() {  // Start
+    int distance = 3;             // Trip distance in km
+    int fare = (distance > 5) ? (distance * 20) : 100;  // Ternary: If >5, 20 per km; else flat 100
+    
+    printf("Taxi fare: %d rupees\n", fare);  // Prints 100 (since 3 <=5)
+    
+    return 0;  // End
+}
+```
+**Bitwise Operators**: 
+- Operate on binary bits of integers for low-level manipulation (& AND, | OR, ^ XOR, ~ NOT, << left shift, >> right shift). 
+- Key points: Fast for hardware control, shifts multiply/divide by powers of 2. 
+- Why important? Used in embedded systems, graphics. 
+- Common mistake: Confusing with logical operators (&& vs &).
 
 | Operator | Description | Example | Result (assuming a=5 (101), b=3 (011)) |
 |----------|-------------|---------|----------------------------------------|
@@ -90,6 +313,22 @@ int main() {  // Main
     
     printf("Bit AND: %d, OR: %d, XOR: %d, NOT: %d\n", bit_and, bit_or, bit_xor, bit_not);
     printf("Left Shift: %d, Right Shift: %d\n", left_shift, right_shift);
+    printf("Comma result: %d\n", comma_result);  // Prints 30
+    
+    return 0;  // End
+}
+```
+**Comma Operator (,)**: 
+- Evaluates multiple expressions left to right, returns the last one's value. 
+- Key points: Lowest precedence, used in for loops or initializations. Why important? Groups statements. 
+- Common mistake: Overusing—keep code readable.
+```c
+#include <stdio.h>  // For output
+
+int main() {  // Main
+    
+    int comma_result = (a=10, b=20, a + b);  // Comma: Set a=10, b=20, result=30 (last)
+
     printf("Comma result: %d\n", comma_result);  // Prints 30
     
     return 0;  // End
