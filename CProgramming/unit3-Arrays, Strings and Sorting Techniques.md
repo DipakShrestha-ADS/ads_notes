@@ -2,18 +2,65 @@
 
 ## 1. Arrays
 
-An array is a collection of similar data items stored in contiguous memory locations. All elements have the same data type and can be accessed using an index (starting from 0).
+An **array** is a collection of **similar data items** stored in **contiguous (continuous) memory locations**.
 
-### 1.1 One-Dimensional and Multidimensional Arrays
+* All elements are of the **same data type**
+* Each element is accessed using an **index**
+* **Index always starts from 0 in C**
 
-- **One-Dimensional Array**: Like a single row or list.  
-  Example: Marks of 10 students in one subject.
+📌 **Why index starts from 0?**
+Because the array name stores the **base address** (address of the first element).
 
-- **Multidimensional Array**: Like a table or grid.  
-  Most common is **Two-Dimensional** (rows and columns).  
-  Example: Marks of 10 students in 5 different subjects.
+---
 
-**Real-world scenario**: In a school in Pokhara, storing monthly sales of 12 months (1D array) or sales of 5 shops over 12 months (2D array).
+### 🧠 Memory Concept (Very Important)
+
+```c
+int a[5] = {10, 20, 30, 40, 50};
+```
+
+| Index | 0  | 1  | 2  | 3  | 4  |
+| ----- | -- | -- | -- | -- | -- |
+| Value | 10 | 20 | 30 | 40 | 50 |
+
+Stored in memory like:
+
+```
+a → 1000  1004  1008  1012  1016
+```
+
+📌 Access formula:
+
+```c
+a[i] = *(a + i)
+```
+
+---
+
+## 1.1 One-Dimensional and Multidimensional Arrays
+
+### 1. One-Dimensional Array (1D):
+* Looks like a **single list or row**
+* Used to store multiple values of the same type
+* 📘 Example: Marks of 10 students in one subject *
+```c
+    int marks[10];
+```
+
+### 2. Multidimensional Array: 
+* Looks like a **table (rows × columns)**
+* Most commonly used: **Two-Dimensional Array (2D)**
+* 📘 **Example:**
+Marks of 10 students in 5 subjects
+
+```c
+    int marks[10][5];
+```
+
+### 🌍 Real-World Examples (Nepal Context)
+
+* Monthly sales of a shop (12 months) → **1D array**
+* Sales of 5 shops over 12 months → **2D array**
 
 ### 1.2 Declaring Array Variables
 
@@ -21,21 +68,59 @@ Syntax:
 `data_type array_name[size];`  // 1D  
 `data_type array_name[row_size][column_size];`  // 2D
 
+📘 Example:
+
+```c
+int numbers[5];
+int matrix[3][4];
+```
+
 ### 1.3 Initialization of Arrays
 
-You can initialize at declaration:  
-`int marks[5] = {85, 90, 78, 92, 88};`  
-Partial initialization: remaining elements become 0.  
-For 2D:  
-`int matrix[3][3] = {{1,2,3}, {4,5,6}, {7,8,9}};`
+### 🔹 Initialization at Declaration
+```c
+int marks[5] = {85, 90, 78, 92, 88};
+```
+📌 **Partial Initialization**
+
+```c
+int a[5] = {1, 2};
+```
+
+* Remaining elements become `0`.
+---
+
+### 🔹 2D Array Initialization
+
+```c
+int matrix[3][3] = {
+    {1, 2, 3},
+    {4, 5, 6},
+    {7, 8, 9}
+};
+```
+
+Stored **row by row** (row-major order).
+
+---
 
 ### 1.4 Accessing Array Elements
 
-Use subscript/index: `array_name[index]`  
-Index starts from 0.  
-For 2D: `array_name[row_index][column_index]`
+### 🔹 1D Array
 
-**C Code Example** (1D and 2D arrays):
+```c
+array_name[index]
+```
+
+### 🔹 2D Array
+
+```c
+array_name[row_index][column_index]
+```
+
+---
+
+### **C Code Example** (1D and 2D arrays):
 ```c
 #include <stdio.h>
 
@@ -70,16 +155,30 @@ int main() {
 
 ## 2. Strings
 
-In C, a string is a one-dimensional array of characters terminated by a null character `\0`.
+* A **string** is a **one-dimensional array of characters** that **ends with a null character (`\0`)**.
+
+* 📌 Without `\0`, C cannot detect the end of a string.
 
 ### 2.1 Declaring and Initializing String Variables
 
-Declaration:  
-`char name[20];`  // Can hold up to 19 chars + \0
+#### 🔹 Declaration
 
-Initialization:  
-`char name[] = "Ram Bahadur";`  // Size automatically calculated  
-`char city[10] = {'K','a','t','h','m','a','n','d','u','\0'};`
+```c
+char name[20];
+```
+
+* Can store **19 characters + `\0`**
+
+---
+
+### 🔹 Initialization
+
+```c
+char name[] = "Ram Bahadur"; //size automatically calculated
+char city[10] = {'K','a','t','h','m','a','n','d','u','\0'};
+```
+
+---
 
 ### 2.2 Character and String Handling Functions
 
@@ -92,7 +191,7 @@ Common functions:
 | strlen()      | Returns length (without \0)          | strlen("Nepal") → 5              |
 | strcpy()      | Copies one string to another         | strcpy(dest, "Hello");           |
 | strcat()      | Concatenates (joins) two strings     | strcat(s1, s2);                  |
-| strcmp()      | Compares two strings (returns 0 if equal) | strcmp("abc","abc") → 0     |
+| strcmp()      | Compares two strings (returns 0 if equal, returns -1 if less and 1 if greater) | strcmp("abc","abc") → 0     |
 | strrev()      | Reverses string (not standard, some compilers) |                          |
 | gets() / puts() | Input/output string (gets unsafe)  | Use fgets instead                |
 
@@ -282,8 +381,27 @@ int main() {
     return 0;
 }
 ```
+## Difference between Bubble, Selection, Insertion & Merge Sort
 
-Practice these programs regularly. Start with small arrays and understand how each sort works step by step. This unit builds strong foundation for handling real data in C programming!
+| Feature                        | Bubble Sort                                                                         | Selection Sort                                                                  | Insertion Sort                                                                          | Merge Sort                                                                   |
+| ------------------------------ | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Basic Idea                     | Repeatedly compares adjacent elements and swaps them if they are in the wrong order | Finds the minimum element from the unsorted part and places it at the beginning | Takes one element at a time and inserts it into its correct position in the sorted part | Divides the array into halves, sorts them, and then merges the sorted halves |
+| Sorting Technique              | Exchange-based                                                                      | Selection-based                                                                 | Insertion-based                                                                         | Divide and Conquer                                                           |
+| Time Complexity (Best Case)    | O(n)                                                                                | O(n²)                                                                           | O(n)                                                                                    | O(n log n)                                                                   |
+| Time Complexity (Average Case) | O(n²)                                                                               | O(n²)                                                                           | O(n²)                                                                                   | O(n log n)                                                                   |
+| Time Complexity (Worst Case)   | O(n²)                                                                               | O(n²)                                                                           | O(n²)                                                                                   | O(n log n)                                                                   |
+| Space Complexity               | O(1)                                                                                | O(1)                                                                            | O(1)                                                                                    | O(n)                                                                         |
+| Stability                      | Stable                                                                              | Not Stable                                                                      | Stable                                                                                  | Stable                                                                       |
+| In-Place Sorting               | Yes                                                                                 | Yes                                                                             | Yes                                                                                     | No                                                                           |
+| Adaptive                       | Yes                                                                                 | No                                                                              | Yes                                                                                     | No                                                                           |
+| Suitable For                   | Very small datasets and teaching basics                                             | Small datasets where swaps are costly                                           | Nearly sorted data and small datasets                                                   | Large datasets and performance-critical applications                         |
+| Implementation Difficulty      | Very Easy                                                                           | Easy                                                                            | Easy to Moderate                                                                        | Moderate to Difficult                                                        |
+| Real-Life Analogy              | Repeatedly swapping misplaced items                                                 | Picking the smallest item and placing it first                                  | Sorting playing cards in hand                                                           | Sorting exam papers by dividing into groups and merging                      |
+
+
+----
+
+### Practice these programs regularly. Start with small arrays and understand how each sort works step by step. This unit builds strong foundation for handling real data in C programming!
 
 # Tasks
 
