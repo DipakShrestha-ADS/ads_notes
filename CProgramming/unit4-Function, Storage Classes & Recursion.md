@@ -831,10 +831,9 @@ A `register` variable is a request to the compiler to store the variable in a CP
 - **static local:** local scope but permanent lifetime (retains value)
 - **static global:** file-private global (cannot be used in other files)
 - **register:** faster access request; **no address** using `&`
-
-## Recursion — (Definition, Algorithms, C Programs + Tasks)
-
 ---
+---
+# Recursion — (Definition, Algorithms, C Programs + Tasks)
 
 ## 1) Definition of Recursion
 
@@ -1092,6 +1091,225 @@ int main(void) {
     return 0;
 }
 ```
+---
+
+# 6. Line-by-Line Explanation of the Program
+
+## Header File
+
+```c
+#include <stdio.h>
+```
+
+This header file allows us to use:
+
+* `printf()` → display output
+* `scanf()` → read user input
+
+---
+
+# 7. Hanoi Function
+
+```
+void hanoi(int n, char source, char auxiliary, char destination)
+```
+
+This function performs the **Tower of Hanoi solution**.
+
+### Parameters
+
+| Parameter   | Meaning         |
+| ----------- | --------------- |
+| n           | number of disks |
+| source      | starting rod    |
+| auxiliary   | helper rod      |
+| destination | final rod       |
+
+Example call:
+
+```
+hanoi(n, 'A', 'B', 'C')
+```
+
+Meaning:
+
+```
+Move n disks from A → C using B
+```
+
+---
+
+# 8. Base Case (Stopping Condition)
+
+```c
+if(n == 1)
+{
+    printf("Move disk 1 from %c to %c\n", source, destination);
+    return;
+}
+```
+
+Explanation:
+
+If there is **only one disk**, we simply move it from **source → destination**.
+
+Example output:
+
+```
+Move disk 1 from A to C
+```
+
+This stops the recursion.
+
+---
+
+# 9. First Recursive Step
+
+```c
+hanoi(n-1, source, destination, auxiliary);
+```
+
+This step moves **n-1 disks** from **source → auxiliary**.
+
+Example for `n = 3`:
+
+```
+Move 2 disks from A → B
+```
+
+This frees the **largest disk**.
+
+---
+
+# 10. Move the Largest Disk
+
+```c
+printf("Move disk %d from %c to %c\n", n, source, destination);
+```
+
+Now the **largest disk** can move from **source → destination**.
+
+Example:
+
+```
+Move disk 3 from A to C
+```
+
+---
+
+# 11. Second Recursive Step
+
+```c
+hanoi(n-1, auxiliary, source, destination);
+```
+
+Now move the **n-1 disks** from **auxiliary → destination**.
+
+Example:
+
+```
+Move 2 disks from B → C
+```
+
+This completes the puzzle.
+
+---
+
+# 12. Main Function
+
+```
+int main()
+```
+
+Every C program starts execution from **main()**.
+
+---
+
+## Variable Declaration
+
+```
+int n;
+```
+
+`n` represents the **number of disks**.
+
+---
+
+## Taking Input
+
+```
+printf("Enter number of disks: ");
+scanf("%d", &n);
+```
+
+User enters the number of disks.
+
+Example:
+
+```
+Enter number of disks: 3
+```
+
+---
+
+## Calling the Function
+
+```
+hanoi(n, 'A', 'B', 'C');
+```
+
+Meaning:
+
+```
+Move disks from rod A → rod C
+Using rod B as helper
+```
+
+---
+
+# 13. Example Execution (n = 3)
+
+Call:
+
+```
+hanoi(3, A, B, C)
+```
+
+Steps:
+
+```
+Move disk 1 from A to C
+Move disk 2 from A to B
+Move disk 1 from C to B
+Move disk 3 from A to C
+Move disk 1 from B to A
+Move disk 2 from B to C
+Move disk 1 from A to C
+```
+
+Total moves:
+
+```
+7
+```
+
+---
+
+# 14. Recursion Tree
+
+```
+hanoi(3)
+ ├── hanoi(2)
+ │    ├── hanoi(1)
+ │    └── hanoi(1)
+ └── hanoi(2)
+      ├── hanoi(1)
+      └── hanoi(1)
+```
+
+Each recursive call reduces the problem size until `n = 1`.
+
+---
 
 ### Practice Tasks (Tower of Hanoi Recursion) — 5
 1. Run the Tower of Hanoi program for `n=1`, `n=2`, `n=3` and write the exact sequence of moves for each case.
