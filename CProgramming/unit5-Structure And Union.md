@@ -1,44 +1,30 @@
 # Unit V: Structure and Union in C
 
-## 1. Structure
+# 1. Structure
 
-### 1.1 What is a Structure?
+## 1.1 What is a Structure?
 
-In C programming, a **structure** is a user-defined data type that allows us to **store multiple variables of different data types under a single name**.
+A **structure** in C is a **user-defined data type that allows grouping variables of different data types under a single name**.
 
-For example:
+Structures are used to represent **real-world entities** such as:
 
-A student has:
+* Student
+* Employee
+* Book
+* Product
+* Car
 
-* Name (string)
-* Roll number (int)
-* Marks (float)
+Each entity contains **multiple related attributes**, and structures help organize them together.
 
-Instead of storing them separately, we can group them into **one structure**.
+### Example Concept
 
-### Why Structures are Needed
+A **student** may have:
 
-Without structure:
+* Roll number → `int`
+* Name → `char`
+* Marks → `float`
 
-```c
-int roll;
-char name[50];
-float marks;
-```
-
-For 100 students we would need many variables.
-
-With structure:
-
-```c
-struct Student {
-    int roll;
-    char name[50];
-    float marks;
-};
-```
-
-Now we can create many students easily.
+Instead of storing them in separate variables, we group them into a structure.
 
 ```
 Student
@@ -49,9 +35,21 @@ Student
 
 ---
 
+## Advantages of Structure
+
+Structures provide several benefits:
+
+1. They allow **grouping of different data types** into a single unit.
+2. They help represent **complex real-world data** easily.
+3. They make programs **more organized and readable**.
+4. They allow **handling multiple records efficiently**.
+5. They can be used with **arrays, pointers, and functions**.
+
+---
+
 # Declaration of Structure
 
-### Syntax
+## Syntax
 
 ```c
 struct structure_name {
@@ -61,7 +59,15 @@ struct structure_name {
 };
 ```
 
-### Example
+### Explanation
+
+* `struct` → keyword used to declare structure
+* `structure_name` → name of the structure
+* `member` → variables inside the structure
+
+---
+
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -86,9 +92,11 @@ int main() {
 }
 ```
 
-### Accessing Structure Members
+---
 
-We use **dot operator (.)**
+## Accessing Structure Members
+
+Structure members are accessed using the **dot operator (`.`)**.
 
 ```
 structure_variable.member
@@ -104,33 +112,7 @@ s1.marks
 
 ---
 
-### Example Program
-
-```c
-#include <stdio.h>
-
-struct Student {
-    int roll;
-    float marks;
-};
-
-int main() {
-
-    struct Student s1;
-
-    s1.roll = 10;
-    s1.marks = 92.3;
-
-    printf("Roll Number: %d\n", s1.roll);
-    printf("Marks: %.2f\n", s1.marks);
-
-    return 0;
-}
-```
-
----
-
-### Practice Tasks (Declaration)
+## Practice Tasks (Declaration)
 
 1. Create a structure **Book** with title, price, and pages.
 2. Create a structure **Car** with brand, model, and price.
@@ -139,7 +121,7 @@ int main() {
 5. Declare a structure **City** with name and population.
 6. Create a **Movie** structure with title, year, rating.
 7. Create a structure **Laptop** with brand, RAM, price.
-8. Declare a structure **Teacher** with name, subject.
+8. Declare a structure **Teacher** with name and subject.
 9. Define **BankAccount** with account number and balance.
 10. Create structure **Animal** with name and age.
 
@@ -147,9 +129,11 @@ int main() {
 
 # Reading and Assignment of Structure Variables
 
-We can read values using **scanf()** and assign values.
+Structure members can be assigned values manually or read using **`scanf()`**.
 
-### Example
+---
+
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -185,7 +169,7 @@ int main() {
 
 ---
 
-### Memory Visualization
+## Memory Visualization
 
 ```
 s1
@@ -194,9 +178,11 @@ s1
  └── marks → 78.5
 ```
 
+Each member **occupies its own memory location**.
+
 ---
 
-### Practice Tasks
+## Practice Tasks
 
 1. Read and print a student's details.
 2. Read employee id, name, salary.
@@ -213,15 +199,17 @@ s1
 
 # Array of Structures
 
-When we need **many structures of the same type**, we use **array of structures**.
+When we need to store **multiple records of the same type**, we use **array of structures**.
 
-### Syntax
+---
+
+## Syntax
 
 ```c
 struct Student s[10];
 ```
 
-This means **10 students**.
+This means we can store **10 student records**.
 
 ```
 s[0]
@@ -231,7 +219,7 @@ s[2]
 s[9]
 ```
 
-Each contains:
+Each element contains:
 
 ```
 roll
@@ -241,7 +229,7 @@ marks
 
 ---
 
-### Example Program
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -277,7 +265,7 @@ int main() {
 
 ---
 
-### Visualization
+## Visualization
 
 ```
 s[0] → roll , marks
@@ -287,7 +275,7 @@ s[2] → roll , marks
 
 ---
 
-### Practice Tasks
+## Practice Tasks
 
 1. Store 5 students and print details.
 2. Store 3 employees and print salary.
@@ -315,11 +303,11 @@ Student
  └── marks[5]
 ```
 
-This means **5 subjects marks**.
+Here a student has **marks of 5 subjects**.
 
 ---
 
-### Example Program
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -358,7 +346,7 @@ int main() {
 
 ---
 
-### Practice Tasks
+## Practice Tasks
 
 1. Student with 5 subject marks.
 2. Employee with salary history of 3 months.
@@ -375,9 +363,11 @@ int main() {
 
 # Structures within Structures (Nested Structures)
 
-A structure can contain **another structure inside it**.
+A **nested structure** means **a structure inside another structure**.
 
-Example:
+---
+
+## Example Concept
 
 ```
 Date
@@ -392,7 +382,7 @@ Student
 
 ---
 
-### Example Program
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -431,7 +421,7 @@ int main() {
 
 ---
 
-### Practice Tasks
+## Practice Tasks
 
 1. Student with Address structure.
 2. Employee with Date of Joining.
@@ -448,15 +438,15 @@ int main() {
 
 # Structures and Functions
 
-Structures can be used with functions in **three ways**:
+Structures can interact with functions in three ways:
 
-1. Passing structure to function
-2. Returning structure
-3. Using pointer to structure
+1. **Passing structure to a function**
+2. **Returning structure from a function**
+3. **Using pointer to structure**
 
 ---
 
-### Example: Passing Structure to Function
+## Example: Passing Structure to Function
 
 ```c
 #include <stdio.h>
@@ -493,7 +483,7 @@ int main() {
 
 ---
 
-### Practice Tasks
+## Practice Tasks
 
 1. Pass student structure to function.
 2. Function to print employee details.
@@ -508,19 +498,215 @@ int main() {
 
 ---
 
+# Structure Input / Output in C
+
+## Introduction
+
+In C programming, after **declaring a structure**, we often need to:
+
+* **Read values** into its members
+* **Display the values** stored in it
+
+This is called **Structure Input and Output (I/O)**.
+
+* **Input** → using `scanf()` or user-defined values
+* **Output** → using `printf()`
+
+> Each structure member is accessed using the **dot operator (`.`)** for reading and printing.
+
+---
+
+## Syntax for Input / Output
+
+### Accessing a structure member
+
+```c
+structure_variable.member
+```
+
+### Example:
+
+```c
+s1.roll     // Access roll number
+s1.name     // Access name
+s1.marks    // Access marks
+```
+
+---
+
+## Example Program: Basic Input / Output
+
+```c
+#include <stdio.h>
+
+struct Student {
+    int roll;
+    char name[50];
+    float marks;
+};
+
+int main() {
+
+    struct Student s1;
+
+    // Input
+    printf("Enter Roll: ");
+    scanf("%d", &s1.roll);
+
+    printf("Enter Name: ");
+    scanf("%s", s1.name);
+
+    printf("Enter Marks: ");
+    scanf("%f", &s1.marks);
+
+    // Output
+    printf("\nStudent Details\n");
+    printf("Roll: %d\n", s1.roll);
+    printf("Name: %s\n", s1.name);
+    printf("Marks: %.2f\n", s1.marks);
+
+    return 0;
+}
+```
+
+---
+
+## Input / Output with Array of Structures
+
+When storing **multiple records**, we use **array of structures** and loops.
+
+### Example Program
+
+```c
+#include <stdio.h>
+
+struct Student {
+    int roll;
+    float marks;
+};
+
+int main() {
+
+    struct Student s[3];  // Array of 3 students
+
+    // Input
+    for(int i=0; i<3; i++) {
+        printf("Enter Roll for student %d: ", i+1);
+        scanf("%d", &s[i].roll);
+
+        printf("Enter Marks for student %d: ", i+1);
+        scanf("%f", &s[i].marks);
+    }
+
+    // Output
+    printf("\nStudent Details:\n");
+    for(int i=0; i<3; i++) {
+        printf("Roll: %d, Marks: %.2f\n", s[i].roll, s[i].marks);
+    }
+
+    return 0;
+}
+```
+
+---
+
+## 5. Memory Visualization
+
+For a single structure:
+
+```
+s1
+ ├── roll  → 10
+ ├── name  → "Ram"
+ └── marks → 78.5
+```
+
+For array of structures:
+
+```
+s[0] → roll, marks
+s[1] → roll, marks
+s[2] → roll, marks
+```
+
+Each **structure element has separate memory** for its members.
+
+---
+
+## Example: Input / Output with Arrays inside Structure
+
+```c
+#include <stdio.h>
+
+struct Student {
+    int roll;
+    int marks[3]; // Marks for 3 subjects
+};
+
+int main() {
+
+    struct Student s;
+
+    printf("Enter Roll: ");
+    scanf("%d", &s.roll);
+
+    for(int i=0; i<3; i++) {
+        printf("Enter Marks for subject %d: ", i+1);
+        scanf("%d", &s.marks[i]);
+    }
+
+    printf("\nStudent Details\n");
+    printf("Roll: %d\n", s.roll);
+    for(int i=0; i<3; i++) {
+        printf("Marks %d: %d\n", i+1, s.marks[i]);
+    }
+
+    return 0;
+}
+```
+
+---
+
+## Tips
+
+* Always **use dot operator (`.`)** to access members.
+* **Array members** inside structure require **looping with index**.
+* For **strings**, `scanf("%s", s.name);` is enough, but note it **stops at space**.
+* For **multiple records**, use **array of structures**.
+
+---
+
+## Practice Tasks: Structure Input / Output
+
+1. Read and print a student's roll, name, and marks.
+2. Read 3 employees’ id, name, and salary; display all.
+3. Input 5 books with title and price; display details.
+4. Input 4 cars with brand, model, and price; display all.
+5. Store 6 products with name and cost; display them.
+6. Read 3 teachers’ name and subject; print details.
+7. Input 5 laptops with brand, RAM, and price; display all.
+8. Read 8 cities with name and population; print all.
+9. Input 4 movies with title, year, and rating; display all.
+10. Read student roll and marks of 5 subjects; calculate and display total marks.
+
+---
+
 # 2. Union
 
 ## What is a Union?
 
-A **union** is similar to a structure, but **all members share the same memory location**.
+A **union** is a **user-defined data type in C where all members share the same memory location**.
 
-Meaning:
+This means:
 
-Only **one member can store value at a time**.
+* Only **one member can store a value at a time**.
+* Changing one member **overwrites the previous value**.
+
+Unions are mainly used when **memory optimization is required**.
 
 ---
 
-### Syntax
+## Syntax
 
 ```c
 union union_name {
@@ -533,7 +719,7 @@ union union_name {
 
 ---
 
-### Example
+## Example Program
 
 ```c
 #include <stdio.h>
@@ -562,38 +748,43 @@ int main() {
 
 ---
 
-### Memory Visualization
+## Memory Visualization
 
-Structure memory:
+### Structure Memory
 
 ```
 roll  → 4 bytes
 marks → 4 bytes
+
 Total → 8 bytes
 ```
 
-Union memory:
+### Union Memory
 
 ```
 roll
 marks
 share same memory
+
 Total → 4 bytes
 ```
 
----
-
-### Difference Between Structure and Union
-
-| Feature     | Structure                 | Union                |
-| ----------- | ------------------------- | -------------------- |
-| Memory      | Separate for each member  | Shared               |
-| Usage       | All members used together | One member at a time |
-| Memory size | Sum of members            | Largest member       |
+The size of a union is equal to **the size of its largest member**.
 
 ---
 
-### Practice Tasks (Union)
+# Difference Between Structure and Union
+
+| Feature           | Structure                                   | Union                                     |
+| ----------------- | ------------------------------------------- | ----------------------------------------- |
+| Memory allocation | Separate memory for each member             | Members share the same memory             |
+| Memory size       | Sum of all members                          | Size of largest member                    |
+| Value storage     | All members can store values simultaneously | Only one member can store value at a time |
+| Usage             | Used for complex records                    | Used for memory optimization              |
+
+---
+
+## Practice Tasks (Union)
 
 1. Create union for int and float.
 2. Store integer then float.
@@ -603,5 +794,5 @@ Total → 4 bytes
 6. Compare structure vs union size.
 7. Create union with char array.
 8. Store multiple values sequentially.
-9. Print memory size using sizeof().
+9. Print memory size using `sizeof()`.
 10. Create union for sensor data.
