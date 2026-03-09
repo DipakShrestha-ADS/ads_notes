@@ -381,6 +381,415 @@ int main() {
     return 0;
 }
 ```
+
+# Merge Sort in C (Step-by-Step Visualization)
+
+Merge Sort is a **Divide and Conquer** sorting algorithm.
+
+It works in **three main steps**:
+
+```
+
+1. Divide the array into two halves
+2. Sort each half recursively
+3. Merge the sorted halves
+
+```
+
+Time Complexity:
+
+```
+
+O(n log n)
+
+````
+
+---
+
+# 1. Example Program (Merge Sort in C)
+
+```c
+#include <stdio.h>
+
+// Function to merge two sorted halves
+void merge(int arr[], int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    int L[n1], R[n2];
+
+    // Copy data to temporary arrays
+    for(int i = 0; i < n1; i++)
+        L[i] = arr[left + i];
+
+    for(int j = 0; j < n2; j++)
+        R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+
+    // Merge the temp arrays back into arr[]
+    while(i < n1 && j < n2)
+    {
+        if(L[i] <= R[j])
+            arr[k++] = L[i++];
+        else
+            arr[k++] = R[j++];
+    }
+
+    // Copy remaining elements
+    while(i < n1)
+        arr[k++] = L[i++];
+
+    while(j < n2)
+        arr[k++] = R[j++];
+}
+
+// Recursive merge sort function
+void mergeSort(int arr[], int left, int right)
+{
+    if(left < right)
+    {
+        int mid = (left + right) / 2;
+
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid+1, right);
+
+        merge(arr, left, mid, right);
+    }
+}
+
+int main()
+{
+    int arr[] = {8, 3, 5, 4};
+    int n = 4;
+
+    mergeSort(arr, 0, n-1);
+
+    for(int i = 0; i < n; i++)
+        printf("%d ", arr[i]);
+
+    return 0;
+}
+````
+
+---
+
+# 2. Initial Array
+
+```
+Index : 0 1 2 3
+Array : 8 3 5 4
+```
+
+Goal:
+
+```
+3 4 5 8
+```
+
+---
+
+# 3. Step 1 — First Divide
+
+```
+mergeSort(arr,0,3)
+
+mid = (0+3)/2 = 1
+```
+
+Divide into two halves:
+
+```
+Left  : 8 3
+Right : 5 4
+```
+
+Visualization:
+
+```
+        8 3 5 4
+       /       \
+    8 3        5 4
+```
+
+---
+
+# 4. Step 2 — Divide Left Half
+
+Now sort:
+
+```
+mergeSort(arr,0,1)
+```
+
+mid = 0
+
+Split again:
+
+```
+8 | 3
+```
+
+Visualization:
+
+```
+      8 3
+     /   \
+    8     3
+```
+
+Single elements are **already sorted**.
+
+---
+
+# 5. Step 3 — Merge (8 and 3)
+
+Now we merge them.
+
+Temporary arrays:
+
+```
+L = [8]
+R = [3]
+```
+
+Comparison:
+
+```
+8 vs 3
+```
+
+Smallest is **3**
+
+```
+arr = 3
+```
+
+Remaining element:
+
+```
+8
+```
+
+After merge:
+
+```
+3 8
+```
+
+Array now becomes:
+
+```
+3 8 5 4
+```
+
+---
+
+# 6. Step 4 — Divide Right Half
+
+Now sort:
+
+```
+mergeSort(arr,2,3)
+```
+
+Split:
+
+```
+5 | 4
+```
+
+Visualization:
+
+```
+      5 4
+     /   \
+    5     4
+```
+
+---
+
+# 7. Step 5 — Merge (5 and 4)
+
+Temporary arrays:
+
+```
+L = [5]
+R = [4]
+```
+
+Comparison:
+
+```
+5 vs 4
+```
+
+Smallest = **4**
+
+```
+arr = 4
+```
+
+Remaining element:
+
+```
+5
+```
+
+After merge:
+
+```
+4 5
+```
+
+Array now:
+
+```
+3 8 4 5
+```
+
+---
+
+# 8. Step 6 — Final Merge
+
+Now merge the two sorted halves:
+
+```
+Left  = 3 8
+Right = 4 5
+```
+
+Temporary arrays:
+
+```
+L = [3 8]
+R = [4 5]
+```
+
+Start merging.
+
+---
+
+### Comparison 1
+
+```
+3 vs 4
+```
+
+Smallest = **3**
+
+Array:
+
+```
+3
+```
+
+---
+
+### Comparison 2
+
+```
+8 vs 4
+```
+
+Smallest = **4**
+
+Array:
+
+```
+3 4
+```
+
+---
+
+### Comparison 3
+
+```
+8 vs 5
+```
+
+Smallest = **5**
+
+Array:
+
+```
+3 4 5
+```
+
+---
+
+### Remaining Element
+
+```
+8
+```
+
+Final array:
+
+```
+3 4 5 8
+```
+
+---
+
+# 9. Complete Merge Sort Tree
+
+```
+           8 3 5 4
+         /         \
+      8 3          5 4
+     /   \        /   \
+    8     3      5     4
+     \   /        \   /
+      3 8          4 5
+           \      /
+            3 4 5 8
+```
+
+---
+
+# 10. Final Output
+
+```
+3 4 5 8
+```
+
+---
+
+# 11. Key Idea [Must Remember]
+
+```
+Merge Sort = Divide + Sort + Merge
+```
+
+Process:
+
+```
+1. Divide the array into smaller parts
+2. Sort small parts
+3. Merge them into a sorted array
+```
+
+---
+
+# 12. Why Merge Sort is Powerful
+
+| Feature         | Value              |
+| --------------- | ------------------ |
+| Time Complexity | O(n log n)         |
+| Worst Case      | O(n log n)         |
+| Stable Sort     | Yes                |
+| Technique       | Divide and Conquer |
+
+---
+
+# 13. Merge Sort Summary
+
+```text
+Merge Sort repeatedly divides the array until single elements remain,
+then merges them back in sorted order.
+```
 ## Difference between Bubble, Selection, Insertion & Merge Sort
 
 | Feature                        | Bubble Sort                                                                         | Selection Sort                                                                  | Insertion Sort                                                                          | Merge Sort                                                                   |
