@@ -1,292 +1,782 @@
-### 25-Day Course: Mastering HTML, CSS, and JavaScript
+# 25-Day Complete HTML, CSS & JavaScript Course Plan
 
-This course is designed for beginners to advanced learners, assuming no prior knowledge. It progresses logically: starting with an expanded HTML section for deeper structure mastery, followed by an extended CSS for comprehensive styling and layouts, then JavaScript for interactivity (kept unchanged in scope), and integrating all three for real-world projects. Each day includes:
+This course plan is designed to cover **almost all essential front-end development topics** in a structured progression:
 
-- **Key Topics**: Core concepts with brief explanations.
-- **Hands-On Exercises**: Practical tasks to reinforce learning. Use a code editor like VS Code and a browser for testing. Aim to spend 1-2 hours coding per day.
-- **Resources**: Free tools like MDN Web Docs, freeCodeCamp, or W3Schools for reference.
-- **Tips for All Learners**: Read explanations first, code along, experiment, and debug errors. If you're a slow learner, revisit previous days; if advanced, add challenges like optimizing code or adding accessibility features.
+**HTML → CSS → Layout → JavaScript → DOM → APIs → Projects**
 
-By Day 25, you'll build a full interactive website, making you proficient in front-end development.
+---
 
-#### Day 1: HTML Basics - Introduction to Web Structure
-**Key Topics**:
-- What is HTML? HyperText Markup Language for creating web page structure.
-- Basic syntax: Tags, elements, attributes.
-- Document structure: `<!DOCTYPE html>`, `<html>`, `<head>`, `<body>`.
-- Common elements: Headings (`<h1>` to `<h6>`), paragraphs (`<p>`), links (`<a>`), images (`<img>`).
+# Phase 1 — HTML Fundamentals (Day 1–6)
 
-**Hands-On Exercises**:
-1. Create an `index.html` file with a basic structure.
-2. Add a heading, paragraph, a link to Google, and an image (use a placeholder URL like "https://via.placeholder.com/150").
-3. Open in a browser and inspect elements (right-click > Inspect).
+## Day 1 — Introduction to Web & HTML Basics
+- How the Web Works (Browser, Server, HTTP)
+- Introduction to HTML
+- HTML Document Structure
+- HTML Tags, Elements, Attributes
+- Basic Tags
+  - `<html>`
+  - `<head>`
+  - `<body>`
+  - `<title>`
+- Headings (`<h1>` – `<h6>`)
+- Paragraph (`<p>`)
+- Comments in HTML
+- File structure and naming
 
-#### Day 2: HTML Text Formatting and Inline Elements
-**Key Topics**:
-- Text elements: Bold (`<strong>`), italic (`<em>`), underline (`<u>`), strikethrough (`<del>`), code (`<code>`).
-- Inline vs. block elements.
-- Spans (`<span>`) for grouping inline content.
-- Line breaks (`<br>`) and horizontal rules (`<hr>`).
+## Tasks
+1. Create your first `index.html`.
+2. Add a `<title>` to your page.
+3. Write six headings from `<h1>` to `<h6>`.
+4. Add three paragraphs describing yourself.
+5. Add an HTML comment explaining the page.
+6. Create a second HTML file named `about.html`.
+7. Add a paragraph in `about.html`.
+8. Open both pages in the browser.
+9. Change the page title and observe the tab name.
+10. Inspect the page using browser developer tools.
 
-**Hands-On Exercises**:
-1. Enhance Day 1's page with formatted text (e.g., bold a heading, italicize a quote).
-2. Use spans to group and later style phrases.
-3. Create a simple resume section with formatted text and breaks.
+---
 
-#### Day 3: HTML Lists and Tables
-**Key Topics**:
-- Lists: Unordered (`<ul>`), ordered (`<ol>`), definition (`<dl>`).
-- Tables: `<table>`, `<tr>`, `<th>`, `<td>`, attributes like `rowspan` and `colspan`.
-- Nesting elements for complex structures.
+## Day 2 — Text Formatting & Hyperlinks
+- Text formatting tags
+  - `<strong>`
+  - `<em>`
+  - `<b>`
+  - `<i>`
+  - `<u>`
+  - `<del>`
+  - `<mark>`
+  - `<small>`
+- Line break (`<br>`)
+- Horizontal rule (`<hr>`)
+- Anchor tag (`<a>`)
+- Absolute vs Relative links
+- Opening links in new tab
+- Internal page linking
 
-**Hands-On Exercises**:
-1. Build a shopping list using `<ul>` and nest a sub-list.
-2. Create a table for a weekly schedule (e.g., days vs. tasks).
-3. Add links within list items to external sites and nest a table inside a list.
+## Tasks
+1. Write a paragraph and make some words **bold**.
+2. Make some words *italic*.
+3. Underline a word.
+4. Strike through a word.
+5. Highlight text using `<mark>`.
+6. Insert a horizontal line using `<hr>`.
+7. Create a link to Google.
+8. Create a link to your `about.html`.
+9. Make a link open in a new tab.
+10. Create a paragraph containing at least 5 formatted elements.
 
-#### Day 4: HTML Forms and Input Elements - Part 1
-**Key Topics**:
-- Forms: `<form>`, attributes like `action` and `method`.
-- Basic input types: Text (`<input type="text">`), password, email.
-- Labels (`<label>`) and fieldsets (`<fieldset>`) for organization.
+---
 
-**Hands-On Exercises**:
-1. Create a simple login form with username, password, and submit button.
-2. Add labels and group inputs in a fieldset.
-3. Test submission (use a placeholder action like "#").
+## Day 3 — Images, Lists & Tables
+- Image tag (`<img>`)
+- Image attributes
+  - `src`
+  - `alt`
+  - `width`
+  - `height`
+- Image formats (PNG, JPG, SVG, WebP)
 
-#### Day 5: HTML Forms and Input Elements - Part 2
-**Key Topics**:
-- Advanced inputs: Radio, checkbox, select (`<select>`), textarea, file.
-- Buttons: Submit, reset, button types.
-- Form validation basics (required, pattern attributes).
+### Lists
+- Ordered list (`<ol>`)
+- Unordered list (`<ul>`)
+- Description list (`<dl>`)
+- Nested lists
 
-**Hands-On Exercises**:
-1. Expand Day 4's form to include gender (radio), hobbies (checkbox), country (select), and a message (textarea).
-2. Add validation (e.g., required email, pattern for phone number).
-3. Create a survey form combining all input types.
+### Tables
+- `<table>`
+- `<tr>`
+- `<th>`
+- `<td>`
+- Table attributes
+  - `rowspan`
+  - `colspan`
+- Table header, body, footer
 
-#### Day 6: Semantic HTML and Multimedia
-**Key Topics**:
-- Semantic elements: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`, `<aside>` for better SEO and accessibility.
-- Multimedia: Audio (`<audio>`), video (`<video>`), iframes (`<iframe>` for embedding).
+## Tasks
+1. Insert an image on your webpage.
+2. Add `alt` text to the image.
+3. Create an unordered list of 5 fruits.
+4. Create an ordered list of your daily routine.
+5. Create a nested list.
+6. Create a table with 3 columns.
+7. Add 5 rows to the table.
+8. Add a header row using `<th>`.
+9. Merge two table cells using `colspan`.
+10. Create a table showing student marks.
 
-**Hands-On Exercises**:
-1. Refactor a previous page using semantic tags (e.g., wrap content in `<main>`).
-2. Embed a YouTube video via `<iframe>` and add an audio player with controls.
-3. Ensure accessibility (add alt text to images, captions to media).
+---
 
-#### Day 7: Advanced HTML - Meta Tags, Accessibility, and Best Practices
-**Key Topics**:
-- Meta tags in `<head>`: Charset, viewport for mobile, title, description, keywords for SEO.
-- HTML5 features: Canvas (`<canvas>` for drawing), SVG basics.
-- Accessibility: ARIA roles, alt attributes, keyboard navigation.
-- Review: Validating HTML with tools like W3C Validator, best practices for clean code.
+## Day 4 — HTML Forms
+- Introduction to forms
+- `<form>` tag
+- Input fields
+  - `text`
+  - `password`
+  - `email`
+  - `number`
+  - `tel`
+  - `url`
+- `<label>`
+- Placeholder attribute
+- Required attribute
+- Basic input validation
 
-**Hands-On Exercises**:
-1. Add meta tags to your survey form for responsiveness and SEO.
-2. Create a simple drawing on `<canvas>` and an inline SVG shape.
-3. Build a full accessible portfolio page combining all HTML elements, validate it online.
+## Tasks
+1. Create a simple form.
+2. Add a name input field.
+3. Add an email input field.
+4. Add a password field.
+5. Add placeholder text to inputs.
+6. Make the email field required.
+7. Add labels to each field.
+8. Add a submit button.
+9. Add a reset button.
+10. Test the form in the browser.
 
-#### Day 8: CSS Basics - Introduction to Styling
-**Key Topics**:
-- What is CSS? Cascading Style Sheets for presentation.
-- Syntax: Selectors, properties, values.
-- Linking CSS: Inline, internal (`<style>`), external (link to .css file).
-- Basic properties: Color, background, font-family, font-size, text-align.
+---
 
-**Hands-On Exercises**:
-1. Create a `styles.css` file and link it to your Day 7 portfolio.
-2. Style headings (e.g., color: blue), paragraphs (font: Arial), and add a background color to the body.
-3. Experiment with text properties like line-height and letter-spacing.
+## Day 5 — Advanced Form Elements
+- Radio buttons
+- Checkboxes
+- Select dropdown (`<select>`)
+- Textarea (`<textarea>`)
+- File upload
+- Hidden input
+- Date input
+- Range input
+- Color input
 
-#### Day 9: CSS Selectors and Specificity
-**Key Topics**:
-- Advanced selectors: Element, class (`.class`), ID (`#id`), attribute selectors, combinators (descendant, child, sibling).
-- Specificity rules: How styles override (inline > ID > class > element).
-- Pseudo-classes (:hover, :active, :focus) and pseudo-elements (::before, ::after).
+### Form Buttons
+- `submit`
+- `reset`
+- `button`
 
-**Hands-On Exercises**:
-1. Add classes and IDs to your HTML and style them specifically.
-2. Use combinators to style nested elements (e.g., ul li).
-3. Add hover effects and pseudo-elements for content insertion (e.g., add arrows to links).
+### Form Grouping
+- `<fieldset>`
+- `<legend>`
 
-#### Day 10: CSS Box Model and Display Properties
-**Key Topics**:
-- Box model: Content, padding, border, margin.
-- Display properties: Block, inline, inline-block, none.
-- Overflow handling, box-sizing.
+## Tasks
+1. Add gender radio buttons.
+2. Add hobby checkboxes.
+3. Create a country dropdown.
+4. Add a textarea for feedback.
+5. Add a file upload field.
+6. Add a date input.
+7. Add a color picker.
+8. Add a range slider.
+9. Group inputs using fieldset.
+10. Create a complete registration form.
 
-**Hands-On Exercises**:
-1. Style a div as a box with custom padding, border, and margin.
-2. Change display types to rearrange elements (e.g., make list items inline).
-3. Create a card component with overflow hidden for images.
+---
 
-#### Day 11: CSS Layout - Positioning and Floats
-**Key Topics**:
-- Positioning: Static, relative, absolute, fixed, sticky.
-- Floats: Float left/right for wrapping text around images.
-- Clearing floats with clearfix.
+## Day 6 — Semantic HTML & Multimedia
+### Semantic Elements
+- `<header>`
+- `<nav>`
+- `<main>`
+- `<section>`
+- `<article>`
+- `<aside>`
+- `<footer>`
 
-**Hands-On Exercises**:
-1. Build a simple navigation bar using floats.
-2. Position a fixed header and an absolute sidebar on your portfolio.
-3. Create a magazine-style layout with floated images and text wrap.
+### Accessibility Basics
+- Importance of `alt`
+- Semantic meaning
 
-#### Day 12: Flexbox for Responsive Layouts - Part 1
-**Key Topics**:
-- Flexbox basics: Container (`display: flex;`), flex-direction, justify-content, align-items.
-- Flex items: flex-grow, flex-shrink, flex-basis.
+### Multimedia
+- `<audio>`
+- `<video>`
+- `<iframe>`
 
-**Hands-On Exercises**:
-1. Convert a floated layout to Flexbox for a header with logo and nav.
-2. Align items in a container (e.g., center vertically and horizontally).
-3. Build a flexible footer with evenly spaced links.
+### Additional Topics
+- HTML entities
+- HTML validation
 
-#### Day 13: Flexbox for Responsive Layouts - Part 2
-**Key Topics**:
-- Advanced Flexbox: Wrapping (flex-wrap), ordering (order), aligning content.
-- Media queries for responsiveness (@media screen and (max-width: 600px)).
-- Combining with other layouts.
+## Tasks
+1. Create a `<header>` section.
+2. Create a navigation menu using `<nav>`.
+3. Add a `<main>` section.
+4. Add an `<article>` with content.
+5. Add a `<footer>`.
+6. Embed a YouTube video.
+7. Add an audio player.
+8. Add an image inside a `<section>`.
+9. Use `<aside>` for sidebar content.
+10. Create a full blog layout using semantic elements.
 
-**Hands-On Exercises**:
-1. Create a responsive card gallery that wraps and stacks on mobile.
-2. Use order to rearrange items on smaller screens.
-3. Add media queries to your portfolio for mobile views.
+---
 
-#### Day 14: CSS Grid and Advanced Styling
-**Key Topics**:
-- Grid: Container (`display: grid;`), grid-template-columns/rows, gaps, grid areas.
-- Naming grid lines and areas for complex layouts.
-- Nested grids.
+# Phase 2 — CSS Fundamentals (Day 7–12)
 
-**Hands-On Exercises**:
-1. Build a dashboard layout with CSS Grid (e.g., header, sidebar, main, footer).
-2. Assign grid areas and span items across cells.
-3. Make it responsive with media queries.
+## Day 7 — Introduction to CSS
+- What is CSS
+- CSS Syntax
+- CSS Types
+  - Inline CSS
+  - Internal CSS
+  - External CSS
+- CSS comments
 
-#### Day 15: CSS Transitions, Animations, and Best Practices
-**Key Topics**:
-- Transitions: Transition property for smooth changes (e.g., on hover).
-- Animations: @keyframes, animation properties.
-- Variables (custom properties: --var-name).
-- Best practices: Performance, vendor prefixes, organizing CSS.
+### Colors
+- Named colors
+- Hex colors
+- RGB
+- RGBA
 
-**Hands-On Exercises**:
-1. Add transitions to buttons (e.g., color change on hover).
-2. Create a loading spinner with @keyframes.
-3. Use variables for a theme switcher and refactor your styles for efficiency.
+### Background properties
 
-#### Day 16: JavaScript Basics - Introduction to Programming
-**Key Topics**:
-- What is JS? Scripting language for interactivity.
-- Syntax: Variables (let, const, var), data types (strings, numbers, booleans).
-- Operators: Arithmetic, comparison, logical.
-- Console logging for debugging.
+## Tasks
+1. Add inline CSS to change text color.
+2. Add internal CSS in `<style>`.
+3. Create `style.css`.
+4. Link external CSS file.
+5. Change page background color.
+6. Change heading color.
+7. Change paragraph font size.
+8. Center align text.
+9. Add background color to a div.
+10. Experiment with different colors.
 
-**Hands-On Exercises**:
-1. Create a `script.js` file and link it to your HTML.
-2. Declare variables (e.g., let name = "John";) and log them to console.
-3. Write a simple calculator: Add two numbers input by prompt() and alert the result.
+---
 
-#### Day 17: JS Control Structures
-**Key Topics**:
-- Conditionals: If/else, switch.
-- Loops: For, while, do-while.
-- Arrays: Creation, methods (push, pop, splice).
+## Day 8 — CSS Selectors
+- Element selector
+- Class selector
+- ID selector
+- Group selector
+- Universal selector
+- Descendant selector
+- Child selector
+- Sibling selectors
+- Attribute selectors
 
-**Hands-On Exercises**:
-1. Build a grade calculator: Use if/else on a score to output pass/fail.
-2. Loop through an array of names and log each.
-3. Create a to-do list array and add/remove items.
+### CSS Concepts
+- CSS specificity
+- CSS cascade
 
-#### Day 18: JS Functions and Scope
-**Key Topics**:
-- Functions: Declaration, expressions, arrow functions.
-- Parameters, return values.
-- Scope: Global vs. local.
-- ES6 features: Template literals.
+## Tasks
+1. Style all paragraphs.
+2. Create a class and apply styles.
+3. Create an ID selector.
+4. Apply style to multiple elements using grouping.
+5. Use universal selector.
+6. Style elements inside a div.
+7. Change color using class selector.
+8. Create two different classes.
+9. Apply different styles to two paragraphs.
+10. Test selector specificity.
 
-**Hands-On Exercises**:
-1. Write a function to calculate factorial using recursion.
-2. Create an arrow function that greets a user by name.
-3. Build a simple game: Guess a number (use loops and conditionals).
+---
 
-#### Day 19: DOM Manipulation
-**Key Topics**:
-- Document Object Model: Accessing elements (getElementById, querySelector).
-- Modifying: innerHTML, textContent, style.
-- Creating/removing elements dynamically.
+## Day 9 — Text & Font Styling
+### Font Properties
+- `font-family`
+- `font-size`
+- `font-weight`
+- `font-style`
 
-**Hands-On Exercises**:
-1. Select and change the text of a heading on your portfolio.
-2. Add a button that creates a new list item on click.
-3. Toggle a class to change styles (e.g., dark mode).
+### Web Fonts
+- Google Fonts
 
-#### Day 20: JS Events and Forms
-**Key Topics**:
-- Events: addEventListener (click, submit, keydown).
-- Event objects, preventing default.
-- Form handling: Validate inputs on submit.
+### Text Properties
+- `text-align`
+- `text-decoration`
+- `text-transform`
+- `line-height`
+- `letter-spacing`
 
-**Hands-On Exercises**:
-1. Add a click event to a button that alerts a message.
-2. Validate your form: Check if email is valid before submit.
-3. Create an interactive quiz: Buttons that check answers and update score.
+### Other Styling
+- List styling
+- Link styling
+- Hover effects
 
-#### Day 21: Advanced JS - Objects and Arrays
-**Key Topics**:
-- Objects: Creation, properties, methods.
-- Array methods: map, filter, reduce.
-- JSON: Parsing and stringifying.
+## Tasks
+1. Change font family.
+2. Increase font size.
+3. Make text bold.
+4. Align text center.
+5. Underline links.
+6. Transform text to uppercase.
+7. Increase line height.
+8. Add letter spacing.
+9. Import a Google Font.
+10. Apply Google Font to headings.
 
-**Hands-On Exercises**:
-1. Create an object for a user profile and log its properties.
-2. Filter an array of numbers to evens using filter().
-3. Build a contact list: Store objects in an array and display them.
+---
 
-#### Day 22: Asynchronous JS - Promises and Fetch
-**Key Topics**:
-- Async basics: Callbacks, promises (then/catch).
-- Fetch API for HTTP requests.
-- Async/await for cleaner code.
+## Day 10 — CSS Box Model
+- Box model concept
+- Content
+- Padding
+- Border
+- Margin
 
-**Hands-On Exercises**:
-1. Fetch data from a public API (e.g., JSONPlaceholder users) and log it.
-2. Use async/await to get and display posts on your page.
-3. Handle errors with try/catch.
+### Border
+- Border styles
+- Border radius
 
-#### Day 23: JS Modules and ES6+ Features
-**Key Topics**:
-- Modules: Import/export for code organization.
-- Destructuring, spread/rest operators.
-- Classes and inheritance.
+### Visual Effects
+- Box shadow
+- Outline
 
-**Hands-On Exercises**:
-1. Split your JS into modules (e.g., utils.js) and import functions.
-2. Create a class for a "Car" with methods and extend it.
-3. Refactor your quiz to use classes.
+### Layout Control
+- Overflow
+- `box-sizing`
 
-#### Day 24: Integrating HTML, CSS, JS - Building Components
-**Key Topics**:
-- Combining: Dynamic styling, event-driven layouts.
-- LocalStorage for persistence.
-- Best practices: Clean code, error handling.
+## Tasks
+1. Create a box using a div.
+2. Add padding.
+3. Add margin.
+4. Add border.
+5. Add border-radius.
+6. Add shadow.
+7. Change box width.
+8. Use box-sizing.
+9. Create a card layout.
+10. Create three boxes with spacing.
 
-**Hands-On Exercises**:
-1. Build a to-do app: Add tasks (JS), style with CSS, store in LocalStorage.
-2. Make it responsive and add animations (e.g., fade out on delete).
-3. Fetch and display API data in a grid layout.
+---
 
-#### Day 25: Final Project - Full Interactive Website
-**Key Topics**:
-- Review all concepts.
-- Deployment basics (e.g., GitHub Pages).
-- Debugging and optimization.
+## Day 11 — CSS Layout Basics
+### Display Property
+- `block`
+- `inline`
+- `inline-block`
+- `none`
 
-**Hands-On Exercises**:
-1. Build a complete website: E.g., a personal blog with navigation, forms for comments, dynamic content from API, responsive design, and animations.
-2. Deploy to GitHub Pages.
-3. Test across devices and fix bugs. Challenge: Add user authentication simulation.
+### Visibility
 
-Congratulations! You've completed the course. Practice by building more projects, contribute to open-source, or explore frameworks like React for next steps. If stuck, review days or seek forums like Stack Overflow.
+### Float Layout
+- `float`
+- `clear`
+
+### Positioning
+- `static`
+- `relative`
+- `absolute`
+- `fixed`
+- `sticky`
+
+### Layering
+- `z-index`
+
+## Tasks
+1. Change element display to block.
+2. Create inline elements.
+3. Use inline-block.
+4. Float an image left.
+5. Float an image right.
+6. Clear floats.
+7. Create relative positioning.
+8. Create absolute positioning.
+9. Create fixed header.
+10. Use z-index.
+
+---
+
+## Day 12 — Flexbox Layout
+### Flex Container
+- `display: flex`
+- `flex-direction`
+- `justify-content`
+- `align-items`
+- `align-content`
+
+### Flex Items
+- `flex-wrap`
+- `flex-grow`
+- `flex-shrink`
+- `flex-basis`
+- `order`
+
+## Tasks
+1. Create flex container.
+2. Align items horizontally.
+3. Align items vertically.
+4. Space items evenly.
+5. Reverse flex direction.
+6. Wrap items.
+7. Create responsive row.
+8. Change item order.
+9. Build navigation bar.
+10. Create flex card layout.
+
+---
+
+# Phase 3 — Advanced CSS (Day 13–15)
+
+## Day 13 — CSS Grid
+- `display: grid`
+- Grid columns
+- Grid rows
+- Grid gap
+- Grid template areas
+- Grid spanning
+- Nested grids
+
+### Layout Comparison
+- Grid vs Flexbox
+
+## Tasks
+1. Create grid container.
+2. Create 3 columns.
+3. Add rows.
+4. Add grid gap.
+5. Place items in grid.
+6. Span columns.
+7. Span rows.
+8. Create photo gallery.
+9. Create dashboard layout.
+10. Create 2D layout using grid.
+
+---
+
+## Day 14 — Responsive Web Design
+- Mobile-first design
+- Media queries
+- Breakpoints
+
+### Responsive Techniques
+- Responsive images
+- Responsive typography
+- Responsive layouts
+- Responsive navigation
+
+## Tasks
+1. Add media query.
+2. Change layout on mobile.
+3. Change font size for small screens.
+4. Stack columns on mobile.
+5. Resize images.
+6. Hide element on mobile.
+7. Change navigation layout.
+8. Create responsive grid.
+9. Test in browser resize.
+10. Test on phone.
+
+---
+
+## Day 15 — CSS Effects & Best Practices
+### CSS Effects
+- CSS transitions
+- CSS transforms
+  - `rotate`
+  - `scale`
+  - `translate`
+
+### Animations
+- `@keyframes`
+- Animation properties
+
+### Modern CSS
+- CSS variables (custom properties)
+
+### Best Practices
+- CSS organization
+- Performance optimization
+
+## Tasks
+1. Add button hover transition.
+2. Scale element on hover.
+3. Rotate element.
+4. Move element using translate.
+5. Create simple animation.
+6. Create loading animation.
+7. Use keyframes.
+8. Create animated button.
+9. Define CSS variable.
+10. Apply CSS variable in styles.
+
+---
+
+# Phase 4 — JavaScript Fundamentals (Day 16–20)
+
+## Day 16 — JavaScript Introduction
+- What is JavaScript
+- Linking JavaScript
+
+### Debugging
+- Browser console
+
+### Variables
+- `var`
+- `let`
+- `const`
+
+### Data Types
+- String
+- Number
+- Boolean
+- Null
+- Undefined
+
+## Tasks
+1. Link JS file.
+2. Print text in console.
+3. Declare variable.
+4. Create string variable.
+5. Create number variable.
+6. Create boolean variable.
+7. Change variable value.
+8. Print multiple values.
+9. Combine text and variable.
+10. Use template literal.
+
+---
+
+## Day 17 — Operators & Control Flow
+### Operators
+- Arithmetic operators
+- Assignment operators
+- Comparison operators
+- Logical operators
+
+### Conditional Statements
+- `if`
+- `else`
+- `else if`
+- `switch`
+
+## Tasks
+1. Add two numbers.
+2. Subtract numbers.
+3. Multiply numbers.
+4. Divide numbers.
+5. Compare numbers.
+6. Use if statement.
+7. Use if-else.
+8. Create grade checker.
+9. Use logical operators.
+10. Create login condition.
+
+---
+
+## Day 18 — Loops & Functions
+### Loops
+- `for`
+- `while`
+- `do while`
+
+### Functions
+- Function declaration
+- Function expression
+- Arrow functions
+- Parameters
+- Return values
+
+### Scope
+- Global scope
+- Local scope
+
+## Tasks
+1. Print numbers 1–10 using for loop.
+2. Print numbers using while loop.
+3. Print even numbers.
+4. Create simple function.
+5. Create function with parameters.
+6. Create function with return.
+7. Create arrow function.
+8. Call function multiple times.
+9. Create sum function.
+10. Create multiplication function.
+
+---
+
+## Day 19 — Arrays & Objects
+### Arrays
+- Creating arrays
+- Accessing elements
+
+### Array Methods
+- `push`
+- `pop`
+- `shift`
+- `unshift`
+- `splice`
+
+### Iterating Arrays
+
+### Objects
+- Creating objects
+- Object properties
+- Object methods
+
+### JSON Basics
+
+## Tasks
+1. Create array.
+2. Print array elements.
+3. Add element using push.
+4. Remove element using pop.
+5. Loop through array.
+6. Create object.
+7. Access object property.
+8. Update property.
+9. Create array of objects.
+10. Display student list.
+
+---
+
+## Day 20 — DOM Manipulation
+### DOM Concept
+
+### Selecting Elements
+- `getElementById`
+- `getElementsByClassName`
+- `querySelector`
+- `querySelectorAll`
+
+### Modifying Elements
+- Changing text
+- Changing HTML
+- Changing styles
+
+### DOM Operations
+- Creating elements
+- Removing elements
+- Class manipulation
+
+## Tasks
+1. Select element by ID.
+2. Change text content.
+3. Change HTML content.
+4. Change CSS style using JS.
+5. Create new element.
+6. Append element.
+7. Remove element.
+8. Toggle class.
+9. Change image source.
+10. Build dynamic list.
+
+---
+
+# Phase 5 — JavaScript Interactivity (Day 21–23)
+
+## Day 21 — Events
+- Event handling
+- Event listeners
+- Mouse events
+- Keyboard events
+- Form events
+
+### Event Flow
+- Event propagation
+- Prevent default
+
+## Tasks
+1. Add click event.
+2. Create alert button.
+3. Change text on click.
+4. Change color on click.
+5. Handle keyboard event.
+6. Handle mouse hover.
+7. Handle form submit.
+8. Prevent form default.
+9. Create click counter.
+10. Build interactive button.
+
+---
+
+## Day 22 — Modern JavaScript
+### ES6 Features
+- Template literals
+- Destructuring
+- Spread operator
+- Rest operator
+
+### Array Functional Methods
+- `map`
+- `filter`
+- `reduce`
+
+### Browser Storage
+- `localStorage`
+
+## Tasks
+1. Use template literals.
+2. Use destructuring.
+3. Use spread operator.
+4. Use rest operator.
+5. Use map().
+6. Use filter().
+7. Use reduce().
+8. Store data in localStorage.
+9. Retrieve data from localStorage.
+10. Remove data from localStorage.
+
+---
+
+## Day 23 — Asynchronous JavaScript
+- Callbacks
+- Promises
+- Fetch API
+- Async / Await
+- Error handling
+
+## Tasks
+1. Create callback example.
+2. Create promise.
+3. Use promise `.then`.
+4. Use `.catch`.
+5. Fetch API data.
+6. Display API response.
+7. Convert response to JSON.
+8. Use async function.
+9. Use await.
+10. Handle fetch error.
+
+---
+
+# Phase 6 — Projects & Integration (Day 24–25)
+
+## Day 24 — Building Real Components
+- Dynamic UI with JavaScript
+- Form validation
+- DOM-based applications
+- Using APIs
+- Component structure
+- Code organization
+
+## Tasks
+1. Build to-do list UI.
+2. Add task using JS.
+3. Delete task.
+4. Store tasks in localStorage.
+5. Display tasks on reload.
+6. Validate form.
+7. Add animation on task add.
+8. Add dark mode.
+9. Use Flexbox layout.
+10. Style tasks using CSS.
+
+---
+
+## Day 25 — Final Project & Deployment
+### Build a Complete Website
+- Responsive layout
+- Navigation
+- Forms
+- Dynamic content
+
+### Development Skills
+- Debugging techniques
+- Performance basics
+- Code cleanup
+
+### Deployment
+- GitHub Pages
+- Netlify
+- Firebase Hosting
+
+## Tasks
+1. Create portfolio layout.
+2. Add navigation menu.
+3. Add project section.
+4. Add contact form.
+5. Add responsive layout.
+6. Add interactive elements.
+7. Fetch API data.
+8. Add animations.
+9. Debug the project.
+10. Deploy website using GitHub Pages / Firebase Hosting.
