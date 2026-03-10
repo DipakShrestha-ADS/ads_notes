@@ -16,11 +16,10 @@ Every HTML element is a **rectangular box** consisting of:
 
 ### Diagram
 
-```
 
-![Box Model](assets/box-model-css.png)
 
-````
+![Box Model diagram showing content area surrounded by padding, border, and margin layers in concentric rectangles with labeled measurements and spacing](assets/box-model-css.png)
+
 
 ---
 
