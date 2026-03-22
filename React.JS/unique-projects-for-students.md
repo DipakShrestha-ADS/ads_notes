@@ -99,3 +99,84 @@
 49. Animal Sounds App: Play animal sounds when their icons are clicked,
 
 50. Random Password Generator: Generate secure passwords with custom settings,
+
+
+
+# New List
+
+---
+
+## Task & Planning Tools
+
+1. Smart To-Do (priority + deadline auto-sorting)
+2. Eisenhower Matrix Task Manager (urgent vs important)
+3. Kanban Board (drag & drop like Trello)
+4. Daily Checklist App (repeatable tasks)
+5. Task Streak Tracker (gamified productivity)
+6. Micro Task Splitter (big task → smaller tasks)
+7. Deadline Countdown Dashboard
+8. Task Timer (time spent per task)
+9. Recurring Task Manager
+10. Project Milestone Tracker
+
+---
+
+## Time Management
+
+11. Deep Work Timer (with session history)
+12. Screen Time Tracker (manual input version)
+13. Distraction Log App (track wasted time)
+14. Work vs Break Analyzer
+15. Custom Routine Scheduler (morning/evening routines)
+16. Time Audit Tool (analyze daily usage)
+17. Meeting Timer with alerts
+18. Time Zone Converter (for remote teams)
+19. Weekly Time Planner Grid
+20. Focus Music Timer UI (with embedded audio)
+
+---
+
+## Notes & Organization
+
+21. Hierarchical Notes App (nested folders)
+22. Tag-based Notes Organizer
+23. Sticky Notes Board (drag anywhere)
+24. Voice Notes Saver (record + save)
+25. Quick Capture Notes (instant save popup)
+26. Idea Inbox (capture random ideas quickly)
+27. Notes with Markdown Support
+28. Meeting Minutes Generator (structured notes)
+29. Bookmark + Notes Combo App
+30. Knowledge Base App (mini wiki)
+
+---
+
+## Personal Management
+
+31. Daily Routine Tracker (with completion %)
+32. Personal OKR Tracker (Goals + Key Results)
+33. Decision Log (track past decisions)
+34. Life Dashboard (goals, habits, notes in one place)
+35. Digital Vision Board
+36. Daily Reflection App (3 questions per day)
+37. Gratitude Journal
+38. Mood + Productivity Correlator
+39. Personal Rules / Principles Tracker
+40. Habit + Reward System App
+
+---
+
+## Utility Tools
+
+41. File Renamer Tool (batch rename UI simulation)
+42. Unit Converter (length, weight, etc.)
+43. Password Strength Checker
+44. Local Storage Manager Viewer (see saved data)
+45. JSON → CSV Converter
+46. Text Diff Checker (compare two texts)
+47. URL Shortener UI (mock backend)
+48. QR Code Generator + Scanner
+49. File Upload Organizer UI
+50. Clipboard Notes Saver (manual paste history)
+
+---
