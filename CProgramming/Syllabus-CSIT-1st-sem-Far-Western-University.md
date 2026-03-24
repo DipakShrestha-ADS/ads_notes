@@ -268,6 +268,7 @@ Different types of functions
 - fopen()
 - fclose()
 - fputc()
+- fgetc()
 - fscanf()
 - fprintf()
 - getw()
