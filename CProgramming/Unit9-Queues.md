@@ -244,6 +244,211 @@ int main() {
 
 ---
 
+## 🔵 **1. Full Circular Queue Code (Array Implementation)**
+
+```c
+#include <stdio.h>
+#define MAX 5
+
+int queue[MAX];
+int front = -1, rear = -1;
+
+// Enqueue (Insertion)
+void enqueue(int value) {
+    // Condition for FULL queue (important for circular)
+    if ((rear + 1) % MAX == front) {
+        printf("Queue Overflow\n");
+        return;
+    }
+
+    // First element
+    if (front == -1) {
+        front = 0;
+        rear = 0;
+    } else {
+        // Circular increment
+        rear = (rear + 1) % MAX;
+    }
+
+    queue[rear] = value;
+    printf("%d inserted\n", value);
+}
+
+// Dequeue (Deletion)
+void dequeue() {
+    if (front == -1) {
+        printf("Queue Underflow\n");
+        return;
+    }
+
+    printf("%d deleted\n", queue[front]);
+
+    // If only one element
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        // Circular increment
+        front = (front + 1) % MAX;
+    }
+}
+
+// Display queue
+void display() {
+    if (front == -1) {
+        printf("Queue is empty\n");
+        return;
+    }
+
+    printf("Queue elements: ");
+
+    int i = front;
+    while (1) {
+        printf("%d ", queue[i]);
+        if (i == rear) break;
+        i = (i + 1) % MAX; // circular move
+    }
+    printf("\n");
+}
+
+// Main function
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50);
+
+    display();
+
+    dequeue();
+    dequeue();
+
+    display();
+
+    enqueue(60);
+    enqueue(70);
+
+    display();
+
+    return 0;
+}
+```
+---
+
+# 🔴 **3. EXACT Differences (Linear → Circular)**
+
+This is the **MOST IMPORTANT part** 👇
+
+---
+
+## ✅ **(1) Overflow Condition**
+
+### Linear Queue:
+
+```c
+if (rear == MAX - 1)
+```
+
+### Circular Queue:
+
+```c
+if ((rear + 1) % MAX == front)
+```
+
+👉 Why?
+
+* Linear: checks end of array
+* Circular: checks if next position is already occupied
+
+---
+
+## ✅ **(2) Rear Movement**
+
+### Linear:
+
+```c
+rear++;
+```
+
+### Circular:
+
+```c
+rear = (rear + 1) % MAX;
+```
+
+👉 Why?
+
+* Linear: moves forward only
+* Circular: wraps around to index 0
+
+---
+
+## ✅ **(3) Front Movement**
+
+### Linear:
+
+```c
+front++;
+```
+
+### Circular:
+
+```c
+front = (front + 1) % MAX;
+```
+
+👉 Why?
+
+* Circular queue reuses space
+
+---
+
+## ✅ **(4) Display Logic**
+
+### Linear:
+
+```c
+for (i = front; i <= rear; i++)
+```
+
+### Circular:
+
+```c
+while (1) {
+    printf("%d ", queue[i]);
+    if (i == rear) break;
+    i = (i + 1) % MAX;
+}
+```
+
+👉 Why?
+
+* Circular queue is not continuous in memory
+
+---
+
+## ✅ **(5) Full Reset Condition (Important)**
+
+Only in circular:
+
+```c
+if (front == rear) {
+    front = rear = -1;
+}
+```
+
+👉 Why?
+
+* When last element is removed → queue becomes empty
+
+---
+
+# 🧠 **Super Simple Summary**
+
+“Circular queue is just linear queue + modulo (%) operator.”
+
+---
+
 ## **8. 10 Tasks for Students**
 
 1. Write a program to enqueue 5 integers and display the queue.
