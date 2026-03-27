@@ -129,12 +129,15 @@ Head
 
 // Define Node structure
 struct Node {
-    int data;          // Data part
-    struct Node* next; // Pointer to next node
+    int data;
+    struct Node* next;
 };
 
+// Global head pointer
+struct Node* head = NULL;
+
 // Function to traverse the list
-void traverse(struct Node* head) {
+void traverse() {
     struct Node* temp = head;
     while (temp != NULL) {
         printf("%d -> ", temp->data);
@@ -144,11 +147,12 @@ void traverse(struct Node* head) {
 }
 
 // Insert at beginning
-void insertAtBeginning(struct Node** head_ref, int new_data) {
+void insertAtBeginning(int new_data) {
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
-    new_node->data = new_data;        // Assign data
-    new_node->next = *head_ref;       // Link new node to previous head
-    *head_ref = new_node;             // Update head
+    
+    new_node->data = new_data;
+    new_node->next = head;
+    head = new_node;
 }
 
 // Insert after a given node
@@ -157,20 +161,22 @@ void insertAfter(struct Node* prev_node, int new_data) {
         printf("Previous node cannot be NULL.\n");
         return;
     }
+
     struct Node* new_node = (struct Node*) malloc(sizeof(struct Node));
-    new_node->data = new_data;             // Assign data
-    new_node->next = prev_node->next;      // Link new node to next
-    prev_node->next = new_node;            // Link previous node to new node
+
+    new_node->data = new_data;
+    new_node->next = prev_node->next;
+    prev_node->next = new_node;
 }
 
 // Delete node by key
-void deleteNode(struct Node** head_ref, int key) {
-    struct Node* temp = *head_ref;
+void deleteNode(int key) {
+    struct Node* temp = head;
     struct Node* prev = NULL;
 
-    // If head node itself holds the key
+    // If head node holds the key
     if (temp != NULL && temp->data == key) {
-        *head_ref = temp->next;
+        head = temp->next;
         free(temp);
         return;
     }
@@ -182,48 +188,54 @@ void deleteNode(struct Node** head_ref, int key) {
     }
 
     // If key not found
-    if (temp == NULL) return;
+    if (temp == NULL) {
+        printf("Value not found.\n");
+        return;
+    }
 
-    // Unlink the node and free memory
+    // Unlink node
     prev->next = temp->next;
     free(temp);
 }
 
 // Search for a value
-struct Node* search(struct Node* head, int key) {
+struct Node* search(int key) {
     struct Node* current = head;
+
     while (current != NULL) {
         if (current->data == key)
             return current;
         current = current->next;
     }
-    return NULL; // Not found
+
+    return NULL;
 }
 
+// Main function
 int main() {
-    struct Node* head = NULL;
 
-    // Insert nodes at beginning
-    insertAtBeginning(&head, 30);
-    insertAtBeginning(&head, 20);
-    insertAtBeginning(&head, 10);
+    // Insert nodes
+    insertAtBeginning(30);
+    insertAtBeginning(20);
+    insertAtBeginning(10);
 
     printf("Linked List: ");
-    traverse(head);
+    traverse();
 
-    // Insert after a node
-    insertAfter(head->next, 25); // After 20
+    // Insert after second node (20)
+    insertAfter(head->next, 25);
     printf("After inserting 25: ");
-    traverse(head);
+    traverse();
 
     // Delete a node
-    deleteNode(&head, 20);
+    deleteNode(20);
     printf("After deleting 20: ");
-    traverse(head);
+    traverse();
 
     // Search a node
     int key = 25;
-    struct Node* result = search(head, key);
+    struct Node* result = search(key);
+
     if (result != NULL)
         printf("Node with value %d found.\n", key);
     else
@@ -264,69 +276,82 @@ int main() {
 10. Reverse a linked list (without creating a new list).
 
 ---
-
-# Linear Linked List – Visual Diagrams
+# 📘 Linear Linked List – Visual Diagrams
 
 ---
 
-## 1. Traversing a Linked List
+## 🔹 1. Traversing a Linked List
 
-**Example List:** `10 -> 20 -> 30 -> NULL`
-
-**Steps:**
-
-1. Start at `Head`
+**Example List:**
 
 ```
 Head -> 10 -> 20 -> 30 -> NULL
-^
-Current
 ```
 
-2. Print current node, move to next:
+**Steps:**
+
+1. Start from `head`
+
+```
+Head -> 10 -> 20 -> 30 -> NULL
+         ^
+      Current
+```
+
+2. Print and move:
 
 ```
 Print: 10
 Current -> 20 -> 30 -> NULL
 ```
 
-3. Print current node, move to next:
+3. Continue:
 
 ```
 Print: 20
 Current -> 30 -> NULL
 ```
 
-4. Print current node, move to next:
+4. Continue:
 
 ```
 Print: 30
 Current -> NULL
 ```
 
-5. Stop when `Current == NULL`.
-   **Output:** `10 -> 20 -> 30 -> NULL`
+5. Stop when `Current == NULL`
+
+✅ **Output:**
+
+```
+10 -> 20 -> 30 -> NULL
+```
 
 ---
 
-## 2. Insertion at Beginning
+## 🔹 2. Insertion at Beginning
 
-**Before Insertion:**
+**Before:**
 
 ```
 Head -> 20 -> 30 -> NULL
 ```
 
-**Insert 10 at Beginning:**
+**Insert 10:**
 
-1. Create new node with data = 10
-2. Link new node to head:
+1. Create new node:
 
 ```
-NewNode(10) -> 20 -> 30 -> NULL
+NewNode = 10
 ```
 
-3. Update head to new node:
+2. Link new node to current head:
+
+```
+NewNode -> 20 -> 30 -> NULL
+```
+
+3. Move head to new node:
 
 ```
 Head -> 10 -> 20 -> 30 -> NULL
@@ -334,26 +359,76 @@ Head -> 10 -> 20 -> 30 -> NULL
 
 ---
 
-## 3. Insertion After a Given Node
+## 🔹 3. Insertion After a Given Node
 
-**Before Insertion:**
+**Before:**
 
 ```
 Head -> 10 -> 20 -> 30 -> NULL
 ```
 
-**Insert 25 after 20:**
+**Insert 25 after 20**
 
-1. Identify previous node (`prev = 20`)
-2. Create new node with data = 25
-3. Update links:
+👉 Let:
+
+```
+prev = node with value 20
+```
+
+---
+
+### ❗ Correct Order (VERY IMPORTANT)
+
+1. Create new node:
+
+```
+NewNode = 25
+```
+
+2. First connect new node to next node:
+
+```
+NewNode->next = prev->next
+```
+
+```
+25 -> 30
+```
+
+3. Then connect previous node to new node:
+
+```
+prev->next = NewNode
+```
+
+---
+
+### ✅ Final Result:
+
+```
+Head -> 10 -> 20 -> 25 -> 30 -> NULL
+```
+
+---
+
+### 🚨 Common Student Mistake (tell this!)
+
+❌ Wrong:
 
 ```
 prev->next = newNode
-newNode->next = prev->next(original)
+newNode->next = prev->next   (WRONG ORDER ❌)
 ```
 
-**After Insertion:**
+👉 This causes wrong linking / loop.
+
+---
+
+## 🔹 4. Deletion of a Node
+
+**Delete 20**
+
+**Before:**
 
 ```
 Head -> 10 -> 20 -> 25 -> 30 -> NULL
@@ -361,32 +436,34 @@ Head -> 10 -> 20 -> 25 -> 30 -> NULL
 
 ---
 
-## 4. Deletion of a Node
+### Steps:
 
-**Before Deletion:** Delete node 20
-
-```
-Head -> 10 -> 20 -> 25 -> 30 -> NULL
-```
-
-**Steps:**
-
-1. Find node to delete and previous node
+1. Find node and previous:
 
 ```
 Prev -> 10
 Temp -> 20
 ```
 
-2. Update previous node link:
+2. Skip the node:
 
 ```
 Prev->next = Temp->next
 ```
 
-3. Free the memory of node 20
+```
+10 -> 25 -> 30
+```
 
-**After Deletion:**
+3. Free memory:
+
+```
+free(Temp)
+```
+
+---
+
+### ✅ After:
 
 ```
 Head -> 10 -> 25 -> 30 -> NULL
@@ -394,80 +471,52 @@ Head -> 10 -> 25 -> 30 -> NULL
 
 ---
 
-## 5. Searching a Node
+### 🧠 Special Case (IMPORTANT)
 
-**Example:** Search for `25`
-
-```
-Head -> 10 -> 25 -> 30 -> NULL
-```
-
-**Steps:**
-
-1. Start at Head:
+If deleting first node:
 
 ```
-Current = 10 -> 25 -> 30
-10 != 25 -> move to next
+Head -> 10 -> 20 -> 30
 ```
 
-2. Next node:
+Then:
 
 ```
-Current = 25 -> 30
-25 == 25 -> found
+Head = Head->next
 ```
-
-**Output:** Node found
 
 ---
 
-## 6. Reversing a Linked List (Extra Visualization)
+## 🔹 5. Searching a Node
 
-**Before:**
+**Search = 25**
 
 ```
 Head -> 10 -> 25 -> 30 -> NULL
 ```
 
-**Step-by-Step Reversal:**
+---
 
-1. Initialize: `Prev = NULL`, `Current = Head`
-2. Iteration 1:
+### Steps:
 
-```
-Next = Current->next (25)
-Current->next = Prev (NULL)
-Prev = Current (10)
-Current = Next (25)
-```
-
-**List now:** 10 -> NULL
-
-3. Iteration 2:
+1. Start:
 
 ```
-Next = 30
-Current->next = Prev (10)
-Prev = 25
-Current = 30
+Current = 10
+10 != 25 → move next
 ```
 
-**List now:** 25 -> 10 -> NULL
-
-4. Iteration 3:
+2. Next:
 
 ```
-Next = NULL
-Current->next = Prev (25)
-Prev = 30
-Current = NULL
+Current = 25
+25 == 25 → FOUND ✅
 ```
 
-**List now:** 30 -> 25 -> 10 -> NULL
+---
 
-5. Update Head = Prev
+### ❌ If not found:
 
 ```
-Head -> 30 -> 25 -> 10 -> NULL
+Current becomes NULL
 ```
