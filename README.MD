@@ -2,7 +2,7 @@
 
 > A comprehensive, student-friendly collection of programming notes with a built-in **neon-themed web viewer**.
 
-🌐 **Live Site:** [https://dipakshrestha-ads.github.io/ads_notes/](https://dipakshrestha-ads.github.io/ads_notes/)
+🌐 **Live Site:** [https://ads-notes.web.app/](https://ads-notes.web.app/)
 
 ---
 
@@ -129,7 +129,7 @@
 ## 🚀 How to Use
 
 ### Option 1: Browse Online (Recommended)
-Visit the **[live site](https://dipakshrestha-ads.github.io/ads_notes/)** — no setup needed!
+Visit the **[live site](https://ads-notes.web.app/)** — no setup needed!
 
 ### Option 2: Browse on GitHub
 Click through the folders directly on this repository page.
@@ -138,8 +138,17 @@ Click through the folders directly on this repository page.
 ```bash
 git clone https://github.com/DipakShrestha-ADS/ads_notes.git
 cd ads_notes
-# Open index.html in your browser for the web viewer
-# Or read the .md files directly
+
+# To ensure everyone can access the course materials of c programming easily, I have updated the viewing options for our notes:
+
+# Live Website: You can now view all notes in a dedicated reading mode at: https://ads-notes.web.app/
+
+# Local Viewing: If you prefer using GitHub but find Markdown files difficult to read:
+# 1. please download/clone the repository, 
+# 2. ⁠open the folder in VS Code, and 
+# 3. ⁠use the Live Server extension for an optimized reading experience.
+
+# Please use the method that works best for you!
 ```
 
 ---
