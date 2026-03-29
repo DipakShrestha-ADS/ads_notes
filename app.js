@@ -1,5 +1,7 @@
 // ============================================
 //  ADS Notes — Main Application Script
+//  LOCAL-FIRST: Uses local files by default,
+//  upgrades to GitHub API only if confirmed online.
 // ============================================
 
 (() => {
@@ -7,381 +9,390 @@
 
     // --- CONFIG ---
     const REPO_OWNER = 'DipakShrestha-ADS';
-    const REPO_NAME = 'ads_notes';
-    const API_BASE = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents`;
-    const RAW_BASE = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main`;
+    const REPO_NAME  = 'ads_notes';
+    const API_BASE   = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents`;
+    const RAW_BASE   = `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/main`;
     const CACHE_PREFIX = 'ads_notes_';
     const HIDDEN_FILES = ['.DS_Store', '.gitignore', 'LICENSE', '.git'];
     const FOLDER_ICONS = {
-        'CProgramming': '💻',
-        'Golang': '🐹',
-        'HtmlCssJS': '🌐',
-        'React.JS': '⚛️'
+        CProgramming : '💻',
+        Golang       : '🐹',
+        HtmlCssJS    : '🌐',
+        'React.JS'   : '⚛️'
     };
     const DEFAULT_FONT_SIZE = 16;
-    const FONT_STEP = 2;
-    const MIN_FONT = 12;
-    const MAX_FONT = 28;
+    const FONT_STEP  = 2;
+    const MIN_FONT   = 12;
+    const MAX_FONT   = 28;
+    const PROBE_TIMEOUT = 3000;   // ms — max wait when probing connectivity
+
+    // --- MODE ---
+    //  'offline' = local files + manifest   (DEFAULT on startup)
+    //  'online'  = GitHub API + raw CDN
+    let connectionMode = 'offline';          // ← start offline always!
 
     // --- ELEMENTS ---
-    const $sidebar = document.getElementById('sidebar');
-    const $fileTree = document.getElementById('file-tree');
-    const $content = document.getElementById('content');
-    const $markdownBody = document.getElementById('markdown-body');
-    const $welcome = document.getElementById('welcome');
-    const $subjectsOverview = document.getElementById('subjects-overview');
-    const $breadcrumb = document.getElementById('breadcrumb');
-    const $docMeta = document.getElementById('doc-meta');
-    const $readingTime = document.getElementById('reading-time');
-    const $searchInput = document.getElementById('search-input');
-    const $scrollProgress = document.getElementById('scroll-progress');
-    const $scrollTop = document.getElementById('scroll-top');
-    const $tocToggle = document.getElementById('toc-toggle');
-    const $tocPanel = document.getElementById('toc-panel');
-    const $tocList = document.getElementById('toc-list');
-    const $tocClose = document.getElementById('toc-close');
-    const $sidebarToggle = document.getElementById('sidebar-toggle');
-    const $sidebarOverlay = document.getElementById('sidebar-overlay');
-    const $fontDecrease = document.getElementById('font-decrease');
-    const $fontIncrease = document.getElementById('font-increase');
-    const $fontReset = document.getElementById('font-reset');
-    const $fullscreenToggle = document.getElementById('fullscreen-toggle');
+    const $ = id => document.getElementById(id);
+    const $sidebar         = $('sidebar');
+    const $fileTree        = $('file-tree');
+    const $content         = $('content');
+    const $markdownBody    = $('markdown-body');
+    const $welcome         = $('welcome');
+    const $subjectsOverview= $('subjects-overview');
+    const $breadcrumb      = $('breadcrumb');
+    const $docMeta         = $('doc-meta');
+    const $readingTime     = $('reading-time');
+    const $searchInput     = $('search-input');
+    const $scrollProgress  = $('scroll-progress');
+    const $scrollTop       = $('scroll-top');
+    const $tocToggle       = $('toc-toggle');
+    const $tocPanel        = $('toc-panel');
+    const $tocList         = $('toc-list');
+    const $tocClose        = $('toc-close');
+    const $sidebarToggle   = $('sidebar-toggle');
+    const $sidebarOverlay  = $('sidebar-overlay');
+    const $fontDecrease    = $('font-decrease');
+    const $fontIncrease    = $('font-increase');
+    const $fontReset       = $('font-reset');
+    const $fullscreenToggle= $('fullscreen-toggle');
+    const $offlineBanner   = $('offline-banner');
 
     // --- STATE ---
     let currentFontSize = DEFAULT_FONT_SIZE;
     let currentFilePath = null;
     let folderDataCache = {};
-    let debounceTimer = null;
+    let debounceTimer   = null;
+
+    // --- MANIFEST (embedded in index.html <script>) ---
+    const MANIFEST = window.ADS_NOTES_MANIFEST || {};
 
     // ============================================
-    //  MARKED CONFIGURATION
+    //  MARKED — custom renderer for image / link
     // ============================================
-
-    // Custom renderer to rewrite relative image/link paths
     const renderer = new marked.Renderer();
 
-    // Store original image renderer
-    const originalImage = renderer.image.bind(renderer);
     renderer.image = function (href, title, text) {
-        // If href is an object (marked v5+), extract the href string
         if (typeof href === 'object' && href !== null) {
-            title = href.title || '';
-            text = href.text || href.alt || '';
-            href = href.href || '';
+            title = href.title || ''; text = href.text || href.alt || ''; href = href.href || '';
         }
-        href = resolveAssetUrl(href);
-        title = title || '';
-        text = text || '';
-        return `<img src="${escapeHtml(href)}" alt="${escapeHtml(text)}" title="${escapeHtml(title)}" loading="lazy">`;
+        href = resolveAssetUrl(href); title = title || ''; text = text || '';
+        return `<img src="${esc(href)}" alt="${esc(text)}" title="${esc(title)}" loading="lazy">`;
     };
 
-    // Rewrite links to other .md files as in-app navigation; rewrite relative asset links
-    const originalLink = renderer.link.bind(renderer);
     renderer.link = function (href, title, text) {
         if (typeof href === 'object' && href !== null) {
-            title = href.title || '';
-            text = href.text || '';
-            href = href.href || '';
+            title = href.title || ''; text = href.text || ''; href = href.href || '';
         }
-        title = title || '';
-        text = text || '';
+        title = title || ''; text = text || '';
 
-        // If it's a relative .md link, make it navigate within the app
+        // Relative .md → in-app navigation
         if (href && !href.startsWith('http') && !href.startsWith('#') && /\.md$/i.test(href)) {
-            const resolvedPath = resolveRelativePath(href);
-            return `<a href="#${encodeURIComponent(resolvedPath)}" title="${escapeHtml(title)}">${text}</a>`;
+            const resolved = resolveRelativePath(href);
+            return `<a href="#${encodeURIComponent(resolved)}" title="${esc(title)}">${text}</a>`;
         }
-
-        // Relative asset links (e.g., PDFs) — resolve to raw GitHub
+        // Relative asset → resolve
         if (href && !href.startsWith('http') && !href.startsWith('#') && !href.startsWith('mailto:')) {
             href = resolveAssetUrl(href);
         }
-
-        const targetAttr = href && href.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '';
-        return `<a href="${escapeHtml(href)}" title="${escapeHtml(title)}"${targetAttr}>${text}</a>`;
+        const ext = href && href.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '';
+        return `<a href="${esc(href)}" title="${esc(title)}"${ext}>${text}</a>`;
     };
 
     marked.setOptions({
-        renderer: renderer,
-        highlight: function (code, lang) {
+        renderer,
+        highlight(code, lang) {
             if (lang && hljs.getLanguage(lang)) {
                 try { return hljs.highlight(code, { language: lang }).value; } catch (_) {}
             }
             return hljs.highlightAuto(code).value;
         },
-        breaks: true,
-        gfm: true
+        breaks: true, gfm: true
     });
 
     // ============================================
     //  UTILITIES
     // ============================================
-    function isMarkdown(name) {
-        return /\.(md|markdown)$/i.test(name);
+    function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+    function isMd(n) { return /\.(md|markdown)$/i.test(n); }
+    function isHidden(n) { return HIDDEN_FILES.includes(n) || n.startsWith('.'); }
+    function fmtName(n) { return n.replace(/\.md$/i, '').replace(/[-_]/g, ' '); }
+    function readTime(t) {
+        const w = t.trim().split(/\s+/).length;
+        return `📖 ${Math.ceil(w / 200)} min read · ${w.toLocaleString()} words`;
     }
 
-    function isHidden(name) {
-        return HIDDEN_FILES.includes(name) || name.startsWith('.');
-    }
+    function cacheGet(k) { try { const d = sessionStorage.getItem(CACHE_PREFIX+k); return d ? JSON.parse(d) : null; } catch { return null; } }
+    function cacheSet(k,v) { try { sessionStorage.setItem(CACHE_PREFIX+k, JSON.stringify(v)); } catch {} }
 
-    function escapeHtml(str) {
-        const div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    function formatFileName(name) {
-        return name.replace(/\.md$/i, '').replace(/[-_]/g, ' ');
-    }
-
-    function estimateReadingTime(text) {
-        const words = text.trim().split(/\s+/).length;
-        const minutes = Math.ceil(words / 200);
-        return `📖 ${minutes} min read · ${words.toLocaleString()} words`;
-    }
-
-    function cacheGet(key) {
-        try {
-            const data = sessionStorage.getItem(CACHE_PREFIX + key);
-            return data ? JSON.parse(data) : null;
-        } catch { return null; }
-    }
-
-    function cacheSet(key, data) {
-        try {
-            sessionStorage.setItem(CACHE_PREFIX + key, JSON.stringify(data));
-        } catch {}
-    }
-
-    /**
-     * Given the currently open file path and a relative URL from the markdown,
-     * resolve it to the full raw.githubusercontent.com URL.
-     *
-     * Example:
-     *   currentFilePath = "CProgramming/unit1- Introduction To Algorithm and C.md"
-     *   relativeUrl     = "d-assets/2080.png"
-     *   result          = "https://raw.githubusercontent.com/.../CProgramming/d-assets/2080.png"
-     */
-    function resolveAssetUrl(url) {
-        if (!url) return url;
-        // Already absolute
-        if (/^https?:\/\//i.test(url) || url.startsWith('data:') || url.startsWith('blob:')) {
-            return url;
+    // ============================================
+    //  PATH RESOLUTION
+    // ============================================
+    function resolveRelativePath(rel) {
+        if (!currentFilePath) return rel;
+        const base = currentFilePath.split('/'); base.pop();
+        for (const seg of rel.split('/')) {
+            if (seg === '..') base.pop();
+            else if (seg !== '.' && seg !== '') base.push(seg);
         }
-        // Anchor-only
-        if (url.startsWith('#')) return url;
+        return base.join('/');
+    }
 
+    function resolveAssetUrl(url) {
+        if (!url || /^(https?:\/\/|data:|blob:|#)/i.test(url)) return url;
         const resolved = resolveRelativePath(url);
-        // Encode each path segment individually (handles spaces and special chars)
-        return RAW_BASE + '/' + resolved.split('/').map(encodeURIComponent).join('/');
+        if (connectionMode === 'online') {
+            return RAW_BASE + '/' + resolved.split('/').map(encodeURIComponent).join('/');
+        }
+        return resolved;                       // local relative path
+    }
+
+    // ============================================
+    //  CONNECTIVITY
+    // ============================================
+    function showBanner(msg, isError) {
+        $offlineBanner.textContent = msg || '📡 Offline mode — reading from local files';
+        $offlineBanner.style.display = 'flex';
+        $offlineBanner.classList.toggle('error-banner', !!isError);
+    }
+    function hideBanner() { $offlineBanner.style.display = 'none'; }
+
+    /**
+     * Fast connectivity probe.
+     * Returns true if GitHub API is reachable within PROBE_TIMEOUT ms.
+     */
+    async function probeOnline() {
+        try {
+            const ctrl = new AbortController();
+            const timer = setTimeout(() => ctrl.abort(), PROBE_TIMEOUT);
+            const res = await fetch(
+                `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}`,
+                { method: 'HEAD', signal: ctrl.signal, cache: 'no-store' }
+            );
+            clearTimeout(timer);
+            return res.ok || res.status === 403;   // 403 = rate-limit but still "online"
+        } catch {
+            return false;
+        }
     }
 
     /**
-     * Resolve a relative path against the directory of the currently open file.
-     * Handles ../ and ./ prefixes.
+     * Attempt to upgrade to online mode (non-blocking).
+     * If successful, rebuild the tree with live data.
      */
-    function resolveRelativePath(relativePath) {
-        if (!currentFilePath) return relativePath;
+    async function tryUpgradeToOnline() {
+        if (connectionMode === 'online') return;
+        const ok = await probeOnline();
+        if (ok) {
+            connectionMode = 'online';
+            hideBanner();
+            console.log('[ADS Notes] Upgraded to ONLINE mode.');
+            // Optionally rebuild tree from API for freshest data
+            // (folders already loaded will use cache)
+        }
+    }
 
-        // Get the directory of the current file
-        const parts = currentFilePath.split('/');
-        parts.pop(); // remove filename
-        let baseParts = [...parts];
-
-        // Process the relative path
-        const relParts = relativePath.split('/');
-        for (const segment of relParts) {
-            if (segment === '..') {
-                baseParts.pop();
-            } else if (segment !== '.' && segment !== '') {
-                baseParts.push(segment);
+    // ============================================
+    //  MANIFEST → GitHub-API-shaped array
+    // ============================================
+    function manifestDir(dirPath) {
+        let node = MANIFEST;
+        if (dirPath) {
+            for (const seg of dirPath.split('/')) {
+                node = node && typeof node === 'object' ? node[seg] : undefined;
+                if (!node) return [];
             }
         }
+        if (!node || typeof node !== 'object') return [];
 
-        return baseParts.join('/');
-    }
-
-    // ============================================
-    //  GITHUB API
-    // ============================================
-    async function fetchDirectoryContents(path) {
-        path = path || '';
-        const cacheKey = 'dir_' + (path || 'root');
-        const cached = cacheGet(cacheKey);
-        if (cached) return cached;
-
-        const apiUrl = path
-            ? `${API_BASE}/${path.split('/').map(encodeURIComponent).join('/')}`
-            : API_BASE;
-
-        const res = await fetch(apiUrl);
-        if (!res.ok) {
-            if (res.status === 403) throw new Error('API rate limit exceeded. Please try again later.');
-            throw new Error(`Failed to fetch: ${res.status}`);
+        const out = [];
+        for (const key of Object.keys(node)) {
+            if (key === '_files' || key === '_rootFiles') continue;
+            out.push({ name: key, path: dirPath ? `${dirPath}/${key}` : key, type: 'dir' });
         }
+        const files = node._files || [];
+        for (const f of files) out.push({ name: f, path: dirPath ? `${dirPath}/${f}` : f, type: 'file' });
 
-        const data = await res.json();
-        cacheSet(cacheKey, data);
-        return data;
-    }
-
-    async function fetchMarkdownContent(path) {
-        const cacheKey = 'file_' + path;
-        const cached = cacheGet(cacheKey);
-        if (cached) return cached;
-
-        const url = `${RAW_BASE}/${path.split('/').map(encodeURIComponent).join('/')}`;
-        const res = await fetch(url);
-        if (!res.ok) throw new Error(`Failed to fetch file: ${res.status}`);
-
-        const text = await res.text();
-        cacheSet(cacheKey, text);
-        return text;
+        if (!dirPath && node._rootFiles) {
+            for (const f of node._rootFiles) {
+                if (!out.find(o => o.name === f)) out.push({ name: f, path: f, type: 'file' });
+            }
+        }
+        return out;
     }
 
     // ============================================
-    //  FILE TREE RENDERING
+    //  DATA FETCHING — local-first
+    // ============================================
+
+    /** Directory listing */
+    async function fetchDir(path) {
+        path = path || '';
+        const ck = 'dir_' + (path || 'root');
+        const cached = cacheGet(ck);
+        if (cached) return cached;
+
+        // --- OFFLINE: manifest ---
+        if (connectionMode === 'offline') return manifestDir(path);
+
+        // --- ONLINE: API ---
+        try {
+            const url = path
+                ? `${API_BASE}/${path.split('/').map(encodeURIComponent).join('/')}`
+                : API_BASE;
+            const ctrl = new AbortController();
+            const timer = setTimeout(() => ctrl.abort(), 6000);
+            const res = await fetch(url, { signal: ctrl.signal });
+            clearTimeout(timer);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            cacheSet(ck, data);
+            return data;
+        } catch (err) {
+            console.warn('[ADS Notes] API fail →', err.message, '→ manifest');
+            connectionMode = 'offline';
+            showBanner('📡 Offline mode — reading from local files');
+            return manifestDir(path);
+        }
+    }
+
+    /** Markdown file content */
+    async function fetchMd(path) {
+        const ck = 'file_' + path;
+        const cached = cacheGet(ck);
+        if (cached) return cached;
+
+        // --- OFFLINE: local fetch ---
+        if (connectionMode === 'offline') return fetchLocal(path);
+
+        // --- ONLINE: raw GitHub ---
+        try {
+            const url = `${RAW_BASE}/${path.split('/').map(encodeURIComponent).join('/')}`;
+            const ctrl = new AbortController();
+            const timer = setTimeout(() => ctrl.abort(), 6000);
+            const res = await fetch(url, { signal: ctrl.signal });
+            clearTimeout(timer);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const txt = await res.text();
+            cacheSet(ck, txt);
+            return txt;
+        } catch (err) {
+            console.warn('[ADS Notes] Raw fetch fail →', err.message, '→ local');
+            connectionMode = 'offline';
+            showBanner('📡 Offline mode — reading from local files');
+            return fetchLocal(path);
+        }
+    }
+
+    /** Local file fetch (relative to index.html) */
+    async function fetchLocal(path) {
+        const ck = 'file_' + path;
+        const cached = cacheGet(ck);
+        if (cached) return cached;
+
+        const res = await fetch(path);
+        if (!res.ok) throw new Error(`Local file not found: ${path} (${res.status})`);
+        const txt = await res.text();
+        cacheSet(ck, txt);
+        return txt;
+    }
+
+    // ============================================
+    //  FILE TREE
     // ============================================
     async function buildFileTree() {
         $fileTree.innerHTML = `<div class="sidebar-loading"><div class="neon-spinner"></div><p>Loading notes…</p></div>`;
 
         try {
-            const rootItems = await fetchDirectoryContents('');
-            const folders = rootItems
-                .filter(item => item.type === 'dir' && !isHidden(item.name))
-                .sort((a, b) => a.name.localeCompare(b.name));
-
-            const rootFiles = rootItems
-                .filter(item => item.type === 'file' && isMarkdown(item.name) && !isHidden(item.name));
+            const root = await fetchDir('');
+            const folders = root.filter(i => i.type === 'dir'  && !isHidden(i.name)).sort((a,b) => a.name.localeCompare(b.name));
+            const files   = root.filter(i => i.type === 'file' && isMd(i.name) && !isHidden(i.name));
 
             $fileTree.innerHTML = '';
-
-            for (const folder of folders) {
-                const folderEl = createFolderNode(folder.name, folder.path);
-                $fileTree.appendChild(folderEl);
-            }
-
-            for (const file of rootFiles) {
-                const fileEl = createFileNode(file.name, file.path);
-                $fileTree.appendChild(fileEl);
-            }
+            for (const f of folders) $fileTree.appendChild(mkFolder(f.name, f.path));
+            for (const f of files)   $fileTree.appendChild(mkFile(f.name, f.path));
 
             buildWelcome(folders);
 
+            // Restore hash-based navigation
             if (location.hash) {
-                const path = decodeURIComponent(location.hash.slice(1));
-                if (path) navigateToFile(path);
+                const p = decodeURIComponent(location.hash.slice(1));
+                if (p) navigateToFile(p);
             }
-
         } catch (err) {
-            $fileTree.innerHTML = `<div class="content-error"><h2>⚠️ Error</h2><p>${escapeHtml(err.message)}</p><button onclick="location.reload()">Retry</button></div>`;
+            $fileTree.innerHTML = `<div class="content-error"><h2>⚠️ Error</h2><p>${esc(err.message)}</p><button onclick="location.reload()">Retry</button></div>`;
         }
     }
 
-    function createFolderNode(name, path) {
+    function mkFolder(name, path) {
         const el = document.createElement('div');
         el.className = 'tree-folder';
         el.dataset.path = path;
         el.dataset.name = name.toLowerCase();
-
         const icon = FOLDER_ICONS[name] || '📁';
-
         el.innerHTML = `
-            <div class="tree-folder-header" data-path="${escapeHtml(path)}">
+            <div class="tree-folder-header" data-path="${esc(path)}">
                 <span class="folder-arrow">▶</span>
                 <span class="folder-icon">${icon}</span>
-                <span class="folder-name">${escapeHtml(name)}</span>
+                <span class="folder-name">${esc(name)}</span>
                 <span class="folder-badge">…</span>
             </div>
-            <div class="tree-folder-children" data-path="${escapeHtml(path)}"></div>
-        `;
-
-        const header = el.querySelector('.tree-folder-header');
-        header.addEventListener('click', () => toggleFolder(el, path));
-
+            <div class="tree-folder-children" data-path="${esc(path)}"></div>`;
+        el.querySelector('.tree-folder-header').addEventListener('click', () => toggleFolder(el, path));
         return el;
     }
 
-    async function toggleFolder(folderEl, path) {
-        const header = folderEl.querySelector('.tree-folder-header');
-        const children = folderEl.querySelector('.tree-folder-children');
-        const isExpanded = header.classList.contains('expanded');
-
-        if (isExpanded) {
-            header.classList.remove('expanded');
-            children.classList.remove('expanded');
-            return;
+    async function toggleFolder(el, path) {
+        const hdr = el.querySelector('.tree-folder-header');
+        const box = el.querySelector('.tree-folder-children');
+        if (hdr.classList.contains('expanded')) {
+            hdr.classList.remove('expanded'); box.classList.remove('expanded'); return;
         }
+        hdr.classList.add('expanded'); box.classList.add('expanded');
 
-        header.classList.add('expanded');
-        children.classList.add('expanded');
-
-        if (!children.dataset.loaded) {
-            children.innerHTML = `<div class="sidebar-loading" style="padding:12px"><div class="neon-spinner" style="width:20px;height:20px;border-width:2px"></div></div>`;
+        if (!box.dataset.loaded) {
+            box.innerHTML = `<div class="sidebar-loading" style="padding:12px"><div class="neon-spinner" style="width:20px;height:20px;border-width:2px"></div></div>`;
             try {
-                const items = await fetchDirectoryContents(path);
-                children.innerHTML = '';
+                const items = await fetchDir(path);
+                box.innerHTML = '';
+                const subs  = items.filter(i => i.type === 'dir'  && !isHidden(i.name)).sort((a,b) => a.name.localeCompare(b.name));
+                const files = items.filter(i => i.type === 'file' && isMd(i.name) && !isHidden(i.name)).sort((a,b) => a.name.localeCompare(b.name));
 
-                const subfolders = items
-                    .filter(i => i.type === 'dir' && !isHidden(i.name))
-                    .sort((a, b) => a.name.localeCompare(b.name));
+                for (const s of subs)  box.appendChild(mkFolder(s.name, s.path));
+                for (const f of files) box.appendChild(mkFile(f.name, f.path));
 
-                // Show markdown files AND other viewable files (exclude asset-only folders' binary files from listing)
-                const files = items
-                    .filter(i => i.type === 'file' && isMarkdown(i.name) && !isHidden(i.name))
-                    .sort((a, b) => a.name.localeCompare(b.name));
-
-                for (const sf of subfolders) {
-                    children.appendChild(createFolderNode(sf.name, sf.path));
+                const badge = hdr.querySelector('.folder-badge');
+                if (badge) badge.textContent = files.length + subs.length;
+                if (!files.length && !subs.length) {
+                    box.innerHTML = `<div style="padding:8px 28px;font-size:12px;color:var(--text-muted);">No markdown files</div>`;
                 }
-
-                for (const f of files) {
-                    children.appendChild(createFileNode(f.name, f.path));
-                }
-
-                const badge = header.querySelector('.folder-badge');
-                if (badge) badge.textContent = files.length + subfolders.length;
-
-                if (files.length === 0 && subfolders.length === 0) {
-                    children.innerHTML = `<div style="padding:8px 28px;font-size:12px;color:var(--text-muted);">No markdown files</div>`;
-                }
-
-                children.dataset.loaded = 'true';
-                folderDataCache[path] = { files, subfolders };
-                updateWelcomeBadge(path, files.length);
-
-            } catch (err) {
-                children.innerHTML = `<div style="padding:8px 28px;font-size:12px;color:var(--neon-magenta);">Failed to load</div>`;
+                box.dataset.loaded = 'true';
+                folderDataCache[path] = { files, subs };
+                updateBadge(path, files.length);
+            } catch {
+                box.innerHTML = `<div style="padding:8px 28px;font-size:12px;color:var(--neon-magenta);">Failed to load</div>`;
             }
         }
     }
 
-    function createFileNode(name, path) {
+    function mkFile(name, path) {
         const el = document.createElement('div');
         el.className = 'tree-file';
         el.dataset.path = path;
         el.dataset.name = name.toLowerCase();
-
-        el.innerHTML = `
-            <span class="file-icon">📄</span>
-            <span class="file-name" title="${escapeHtml(name)}">${escapeHtml(formatFileName(name))}</span>
-        `;
-
+        el.innerHTML = `<span class="file-icon">📄</span><span class="file-name" title="${esc(name)}">${esc(fmtName(name))}</span>`;
         el.addEventListener('click', () => navigateToFile(path));
         return el;
     }
 
-    async function expandToPath(path) {
+    async function expandTo(path) {
         const parts = path.split('/');
-        let current = '';
+        let cur = '';
         for (let i = 0; i < parts.length - 1; i++) {
-            current = current ? current + '/' + parts[i] : parts[i];
-            const folderEl = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(current)}"]`);
-            if (folderEl) {
-                const header = folderEl.querySelector('.tree-folder-header');
-                if (!header.classList.contains('expanded')) {
-                    await toggleFolder(folderEl, current);
-                }
+            cur = cur ? cur + '/' + parts[i] : parts[i];
+            const f = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(cur)}"]`);
+            if (f) {
+                const h = f.querySelector('.tree-folder-header');
+                if (!h.classList.contains('expanded')) await toggleFolder(f, cur);
             }
         }
     }
@@ -390,52 +401,41 @@
     //  FILE NAVIGATION
     // ============================================
     async function navigateToFile(path) {
-        if (!isMarkdown(path)) return;
+        if (!isMd(path)) return;
         currentFilePath = path;
         location.hash = encodeURIComponent(path);
 
-        document.querySelectorAll('.tree-file.active').forEach(el => el.classList.remove('active'));
-        const fileEl = $fileTree.querySelector(`.tree-file[data-path="${CSS.escape(path)}"]`);
-        if (fileEl) {
-            fileEl.classList.add('active');
-        } else {
-            await expandToPath(path);
-            const el2 = $fileTree.querySelector(`.tree-file[data-path="${CSS.escape(path)}"]`);
-            if (el2) el2.classList.add('active');
-        }
+        document.querySelectorAll('.tree-file.active').forEach(e => e.classList.remove('active'));
+        let fe = $fileTree.querySelector(`.tree-file[data-path="${CSS.escape(path)}"]`);
+        if (fe) { fe.classList.add('active'); }
+        else { await expandTo(path); fe = $fileTree.querySelector(`.tree-file[data-path="${CSS.escape(path)}"]`); if (fe) fe.classList.add('active'); }
 
         updateBreadcrumb(path);
-
         $welcome.style.display = 'none';
         $markdownBody.innerHTML = `<div class="content-loading"><div class="neon-spinner"></div><p>Loading note…</p></div>`;
         $docMeta.style.display = 'none';
         $tocToggle.style.display = 'none';
 
         try {
-            const markdown = await fetchMarkdownContent(path);
-
-            // Render markdown (the custom renderer handles image/link rewriting)
-            const html = marked.parse(markdown);
-            $markdownBody.innerHTML = `<div class="fade-in">${html}</div>`;
-
-            // Post-process: add copy buttons, highlight code
-            addCodeBlockHeaders();
+            const md = await fetchMd(path);
+            $markdownBody.innerHTML = `<div class="fade-in">${marked.parse(md)}</div>`;
+            addCopyButtons();
             hljs.highlightAll();
             buildTOC();
             $content.scrollTop = 0;
             window.scrollTo(0, 0);
-
-            $readingTime.textContent = estimateReadingTime(markdown);
+            $readingTime.textContent = readTime(md);
             $docMeta.style.display = 'flex';
             $tocToggle.style.display = 'block';
-
             closeSidebar();
-
         } catch (err) {
             $markdownBody.innerHTML = `
                 <div class="content-error">
                     <h2>⚠️ Failed to load</h2>
-                    <p>${escapeHtml(err.message)}</p>
+                    <p>${esc(err.message)}</p>
+                    <p style="color:var(--text-muted);font-size:13px;margin-top:8px;">
+                        Make sure the file exists at: <code>${esc(path)}</code>
+                    </p>
                     <button onclick="location.reload()">Retry</button>
                 </div>`;
         }
@@ -446,85 +446,48 @@
     // ============================================
     function updateBreadcrumb(path) {
         const parts = path.split('/');
-        let html = `<span class="crumb" data-path="">🏠 Home</span>`;
-        let cumulative = '';
-
+        let html = `<span class="crumb" data-path="">🏠 Home</span>`, cum = '';
         for (let i = 0; i < parts.length; i++) {
-            cumulative = cumulative ? cumulative + '/' + parts[i] : parts[i];
+            cum = cum ? cum + '/' + parts[i] : parts[i];
             html += `<span class="crumb-sep">›</span>`;
-            if (i === parts.length - 1) {
-                html += `<span class="crumb-active">${escapeHtml(formatFileName(parts[i]))}</span>`;
-            } else {
-                html += `<span class="crumb" data-path="${escapeHtml(cumulative)}">${escapeHtml(parts[i])}</span>`;
-            }
+            html += i === parts.length - 1
+                ? `<span class="crumb-active">${esc(fmtName(parts[i]))}</span>`
+                : `<span class="crumb" data-path="${esc(cum)}">${esc(parts[i])}</span>`;
         }
-
         $breadcrumb.innerHTML = html;
-
-        $breadcrumb.querySelectorAll('.crumb').forEach(crumb => {
-            crumb.addEventListener('click', () => {
-                const p = crumb.dataset.path;
-                if (!p) {
-                    showWelcome();
-                }
-            });
-        });
+        $breadcrumb.querySelectorAll('.crumb').forEach(c => c.addEventListener('click', () => { if (!c.dataset.path) showWelcome(); }));
     }
 
     function showWelcome() {
-        currentFilePath = null;
-        location.hash = '';
-        $markdownBody.innerHTML = '';
-        $markdownBody.appendChild($welcome);
-        $welcome.style.display = 'block';
-        $breadcrumb.innerHTML = '';
-        $docMeta.style.display = 'none';
-        $tocToggle.style.display = 'none';
+        currentFilePath = null; location.hash = '';
+        $markdownBody.innerHTML = ''; $markdownBody.appendChild($welcome);
+        $welcome.style.display = 'block'; $breadcrumb.innerHTML = '';
+        $docMeta.style.display = 'none'; $tocToggle.style.display = 'none';
         $tocPanel.classList.add('toc-hidden');
-        document.querySelectorAll('.tree-file.active').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tree-file.active').forEach(e => e.classList.remove('active'));
     }
 
     // ============================================
-    //  CODE BLOCK ENHANCEMENTS
+    //  CODE BLOCKS — copy button
     // ============================================
-    function addCodeBlockHeaders() {
+    function addCopyButtons() {
         $markdownBody.querySelectorAll('pre').forEach(pre => {
-            // Skip if header already added
-            if (pre.previousElementSibling && pre.previousElementSibling.classList.contains('code-block-header')) return;
-
-            const code = pre.querySelector('code');
-            if (!code) return;
-
+            if (pre.previousElementSibling?.classList.contains('code-block-header')) return;
+            const code = pre.querySelector('code'); if (!code) return;
             let lang = '';
-            code.classList.forEach(cls => {
-                const match = cls.match(/^(language-|hljs-)(.+)/);
-                if (match) lang = match[2];
+            code.classList.forEach(c => { const m = c.match(/^(language-|hljs-)(.+)/); if (m) lang = m[2]; });
+
+            const hdr = document.createElement('div');
+            hdr.className = 'code-block-header';
+            hdr.innerHTML = `<span>${esc(lang || 'code')}</span><button class="copy-btn" title="Copy code">📋 Copy</button>`;
+            const btn = hdr.querySelector('.copy-btn');
+            btn.addEventListener('click', () => {
+                navigator.clipboard.writeText(code.textContent).then(() => {
+                    btn.textContent = '✅ Copied!'; btn.classList.add('copied');
+                    setTimeout(() => { btn.textContent = '📋 Copy'; btn.classList.remove('copied'); }, 2000);
+                }).catch(() => { btn.textContent = '❌ Failed'; setTimeout(() => { btn.textContent = '📋 Copy'; }, 2000); });
             });
-
-            const header = document.createElement('div');
-            header.className = 'code-block-header';
-            header.innerHTML = `
-                <span>${escapeHtml(lang || 'code')}</span>
-                <button class="copy-btn" title="Copy code">📋 Copy</button>
-            `;
-
-            const copyBtn = header.querySelector('.copy-btn');
-            copyBtn.addEventListener('click', () => {
-                const text = code.textContent;
-                navigator.clipboard.writeText(text).then(() => {
-                    copyBtn.textContent = '✅ Copied!';
-                    copyBtn.classList.add('copied');
-                    setTimeout(() => {
-                        copyBtn.textContent = '📋 Copy';
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                }).catch(() => {
-                    copyBtn.textContent = '❌ Failed';
-                    setTimeout(() => { copyBtn.textContent = '📋 Copy'; }, 2000);
-                });
-            });
-
-            pre.parentNode.insertBefore(header, pre);
+            pre.parentNode.insertBefore(hdr, pre);
         });
     }
 
@@ -532,259 +495,162 @@
     //  TABLE OF CONTENTS
     // ============================================
     function buildTOC() {
-        const headings = $markdownBody.querySelectorAll('h1, h2, h3');
-        if (headings.length === 0) {
-            $tocToggle.style.display = 'none';
-            return;
-        }
-
+        const hh = $markdownBody.querySelectorAll('h1,h2,h3');
+        if (!hh.length) { $tocToggle.style.display = 'none'; return; }
         $tocList.innerHTML = '';
-
-        headings.forEach((h, i) => {
-            const id = 'heading-' + i;
-            h.id = id;
-
-            const item = document.createElement('a');
-            item.className = `toc-item toc-${h.tagName.toLowerCase()}`;
-            item.textContent = h.textContent;
-            item.href = '#' + id;
-            item.addEventListener('click', (e) => {
-                e.preventDefault();
-                h.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                $tocPanel.classList.add('toc-hidden');
-            });
-
-            $tocList.appendChild(item);
+        hh.forEach((h, i) => {
+            h.id = 'heading-' + i;
+            const a = document.createElement('a');
+            a.className = `toc-item toc-${h.tagName.toLowerCase()}`;
+            a.textContent = h.textContent; a.href = '#' + h.id;
+            a.addEventListener('click', e => { e.preventDefault(); h.scrollIntoView({ behavior:'smooth', block:'start' }); $tocPanel.classList.add('toc-hidden'); });
+            $tocList.appendChild(a);
         });
     }
 
     // ============================================
-    //  WELCOME SCREEN
+    //  WELCOME
     // ============================================
     function buildWelcome(folders) {
         $subjectsOverview.innerHTML = '';
-
-        for (const folder of folders) {
-            const icon = FOLDER_ICONS[folder.name] || '📁';
+        for (const f of folders) {
+            const icon = FOLDER_ICONS[f.name] || '📁';
             const card = document.createElement('div');
-            card.className = 'subject-card';
-            card.dataset.path = folder.path;
-            card.innerHTML = `
-                <div class="card-icon">${icon}</div>
-                <div class="card-title">${escapeHtml(folder.name)}</div>
-                <div class="card-count" data-folder="${escapeHtml(folder.path)}">Click to explore</div>
-            `;
+            card.className = 'subject-card'; card.dataset.path = f.path;
+            card.innerHTML = `<div class="card-icon">${icon}</div><div class="card-title">${esc(f.name)}</div><div class="card-count" data-folder="${esc(f.path)}">Click to explore</div>`;
             card.addEventListener('click', async () => {
-                const folderEl = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(folder.path)}"]`);
-                if (folderEl) {
-                    const header = folderEl.querySelector('.tree-folder-header');
-                    if (!header.classList.contains('expanded')) {
-                        await toggleFolder(folderEl, folder.path);
-                    }
-                    folderEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }
+                const el = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(f.path)}"]`);
+                if (el) { const h = el.querySelector('.tree-folder-header'); if (!h.classList.contains('expanded')) await toggleFolder(el, f.path); el.scrollIntoView({ behavior:'smooth', block:'nearest' }); }
                 openSidebar();
             });
             $subjectsOverview.appendChild(card);
         }
-
-        // Pre-fetch folder counts
-        folders.forEach(folder => {
-            fetchDirectoryContents(folder.path).then(items => {
-                const mdCount = items.filter(i => i.type === 'file' && isMarkdown(i.name) && !isHidden(i.name)).length;
-                const subCount = items.filter(i => i.type === 'dir' && !isHidden(i.name)).length;
-                updateWelcomeBadge(folder.path, mdCount, subCount);
-            }).catch(() => {});
-        });
+        // pre-fetch counts
+        folders.forEach(f => fetchDir(f.path).then(items => {
+            const mc = items.filter(i => i.type === 'file' && isMd(i.name) && !isHidden(i.name)).length;
+            const sc = items.filter(i => i.type === 'dir' && !isHidden(i.name)).length;
+            updateBadge(f.path, mc, sc);
+        }).catch(() => {}));
     }
 
-    function updateWelcomeBadge(folderPath, fileCount, subfolderCount) {
-        const badge = $subjectsOverview.querySelector(`[data-folder="${CSS.escape(folderPath)}"]`);
-        if (badge) {
-            let text = `${fileCount} note${fileCount !== 1 ? 's' : ''}`;
-            if (subfolderCount) text += ` · ${subfolderCount} subfolder${subfolderCount !== 1 ? 's' : ''}`;
-            badge.textContent = text;
-        }
-        const sidebarBadge = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(folderPath)}"] .folder-badge`);
-        if (sidebarBadge && sidebarBadge.textContent === '…') {
-            sidebarBadge.textContent = fileCount;
-        }
+    function updateBadge(fp, fc, sc) {
+        const b = $subjectsOverview.querySelector(`[data-folder="${CSS.escape(fp)}"]`);
+        if (b) { let t = `${fc} note${fc!==1?'s':''}`; if (sc) t += ` · ${sc} subfolder${sc!==1?'s':''}`; b.textContent = t; }
+        const sb = $fileTree.querySelector(`.tree-folder[data-path="${CSS.escape(fp)}"] .folder-badge`);
+        if (sb && sb.textContent === '…') sb.textContent = fc;
     }
 
     // ============================================
     //  SEARCH
     // ============================================
-    function handleSearch(query) {
-        const q = query.toLowerCase().trim();
-
-        if (!q) {
-            $fileTree.querySelectorAll('.tree-folder, .tree-file').forEach(el => {
-                el.classList.remove('hidden');
-            });
-            return;
-        }
+    function doSearch(q) {
+        q = q.toLowerCase().trim();
+        if (!q) { $fileTree.querySelectorAll('.tree-folder,.tree-file').forEach(e => e.classList.remove('hidden')); return; }
 
         $fileTree.querySelectorAll('.tree-folder').forEach(folder => {
-            const folderName = folder.dataset.name || '';
-            const children = folder.querySelector('.tree-folder-children');
-            let hasMatch = folderName.includes(q);
-
-            if (children && children.dataset.loaded) {
-                folder.querySelectorAll('.tree-file').forEach(file => {
-                    const fileName = file.dataset.name || '';
-                    if (fileName.includes(q)) {
-                        file.classList.remove('hidden');
-                        hasMatch = true;
-                    } else {
-                        file.classList.add('hidden');
-                    }
+            const fn = folder.dataset.name || '';
+            const ch = folder.querySelector('.tree-folder-children');
+            let match = fn.includes(q);
+            if (ch?.dataset.loaded) {
+                folder.querySelectorAll('.tree-file').forEach(f => {
+                    if ((f.dataset.name||'').includes(q)) { f.classList.remove('hidden'); match = true; }
+                    else f.classList.add('hidden');
                 });
-
-                if (hasMatch) {
-                    const header = folder.querySelector('.tree-folder-header');
-                    if (!header.classList.contains('expanded')) {
-                        header.classList.add('expanded');
-                        children.classList.add('expanded');
-                    }
-                }
+                if (match) { const h = folder.querySelector('.tree-folder-header'); if (!h.classList.contains('expanded')) { h.classList.add('expanded'); ch.classList.add('expanded'); } }
             }
-
-            if (hasMatch || folderName.includes(q)) {
-                folder.classList.remove('hidden');
-            } else {
-                folder.classList.add('hidden');
-            }
+            folder.classList.toggle('hidden', !match && !fn.includes(q));
         });
-
-        $fileTree.querySelectorAll(':scope > .tree-file').forEach(file => {
-            const fileName = file.dataset.name || '';
-            if (fileName.includes(q)) {
-                file.classList.remove('hidden');
-            } else {
-                file.classList.add('hidden');
-            }
-        });
+        $fileTree.querySelectorAll(':scope>.tree-file').forEach(f => f.classList.toggle('hidden', !(f.dataset.name||'').includes(q)));
     }
 
     // ============================================
-    //  SCROLL HANDLING
+    //  SCROLL
     // ============================================
-    function updateScrollProgress() {
+    function onScroll() {
         requestAnimationFrame(() => {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            $scrollProgress.style.width = progress + '%';
-
-            if (scrollTop > 400) {
-                $scrollTop.style.display = 'flex';
-            } else {
-                $scrollTop.style.display = 'none';
-            }
+            const st = window.scrollY || document.documentElement.scrollTop;
+            const dh = document.documentElement.scrollHeight - window.innerHeight;
+            $scrollProgress.style.width = (dh > 0 ? (st/dh)*100 : 0) + '%';
+            $scrollTop.style.display = st > 400 ? 'flex' : 'none';
         });
     }
 
     // ============================================
-    //  SIDEBAR MOBILE
+    //  SIDEBAR
     // ============================================
-    function openSidebar() {
-        $sidebar.classList.add('open');
-    }
-
-    function closeSidebar() {
-        $sidebar.classList.remove('open');
-    }
+    function openSidebar()  { $sidebar.classList.add('open'); }
+    function closeSidebar() { $sidebar.classList.remove('open'); }
 
     // ============================================
-    //  FONT SIZE
+    //  FONT
     // ============================================
-    function setFontSize(size) {
-        currentFontSize = Math.max(MIN_FONT, Math.min(MAX_FONT, size));
+    function setFont(s) {
+        currentFontSize = Math.max(MIN_FONT, Math.min(MAX_FONT, s));
         document.documentElement.style.setProperty('--content-font-size', currentFontSize + 'px');
     }
 
     // ============================================
-    //  EVENT LISTENERS
+    //  EVENTS
     // ============================================
     function initEvents() {
-        $searchInput.addEventListener('input', () => {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
-                handleSearch($searchInput.value);
-            }, 200);
-        });
-
-        window.addEventListener('scroll', updateScrollProgress, { passive: true });
-
-        $scrollTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        $tocToggle.addEventListener('click', () => {
-            $tocPanel.classList.toggle('toc-hidden');
-        });
-
-        $tocClose.addEventListener('click', () => {
-            $tocPanel.classList.add('toc-hidden');
-        });
-
-        $sidebarToggle.addEventListener('click', () => {
-            if ($sidebar.classList.contains('open')) {
-                closeSidebar();
-            } else {
-                openSidebar();
-            }
-        });
-
+        $searchInput.addEventListener('input', () => { clearTimeout(debounceTimer); debounceTimer = setTimeout(() => doSearch($searchInput.value), 200); });
+        window.addEventListener('scroll', onScroll, { passive: true });
+        $scrollTop.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+        $tocToggle.addEventListener('click', () => $tocPanel.classList.toggle('toc-hidden'));
+        $tocClose.addEventListener('click', () => $tocPanel.classList.add('toc-hidden'));
+        $sidebarToggle.addEventListener('click', () => $sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
         $sidebarOverlay.addEventListener('click', closeSidebar);
+        $fontDecrease.addEventListener('click', () => setFont(currentFontSize - FONT_STEP));
+        $fontIncrease.addEventListener('click', () => setFont(currentFontSize + FONT_STEP));
+        $fontReset.addEventListener('click', () => setFont(DEFAULT_FONT_SIZE));
+        $fullscreenToggle.addEventListener('click', () => document.body.classList.toggle('fullscreen'));
 
-        $fontDecrease.addEventListener('click', () => setFontSize(currentFontSize - FONT_STEP));
-        $fontIncrease.addEventListener('click', () => setFontSize(currentFontSize + FONT_STEP));
-        $fontReset.addEventListener('click', () => setFontSize(DEFAULT_FONT_SIZE));
-
-        $fullscreenToggle.addEventListener('click', () => {
-            document.body.classList.toggle('fullscreen');
-        });
-
-        document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault();
-                $searchInput.focus();
-                $searchInput.select();
-            }
-
-            if (e.key === 'Escape') {
-                $tocPanel.classList.add('toc-hidden');
-                if (document.body.classList.contains('fullscreen')) {
-                    document.body.classList.remove('fullscreen');
-                }
-                closeSidebar();
-                $searchInput.blur();
-            }
+        document.addEventListener('keydown', e => {
+            if ((e.ctrlKey||e.metaKey) && e.key === 'k') { e.preventDefault(); $searchInput.focus(); $searchInput.select(); }
+            if (e.key === 'Escape') { $tocPanel.classList.add('toc-hidden'); document.body.classList.remove('fullscreen'); closeSidebar(); $searchInput.blur(); }
         });
 
         window.addEventListener('hashchange', () => {
-            const path = decodeURIComponent(location.hash.slice(1));
-            if (path && path !== currentFilePath) {
-                navigateToFile(path);
-            } else if (!path) {
-                showWelcome();
-            }
+            const p = decodeURIComponent(location.hash.slice(1));
+            if (p && p !== currentFilePath) navigateToFile(p);
+            else if (!p) showWelcome();
+        });
+
+        // Browser online/offline events
+        window.addEventListener('online', () => {
+            // Don't auto-switch; just silently try upgrade in background
+            tryUpgradeToOnline();
+        });
+        window.addEventListener('offline', () => {
+            connectionMode = 'offline';
+            showBanner('📡 Offline mode — reading from local files');
         });
     }
 
     // ============================================
-    //  INITIALIZATION
+    //  INIT
     // ============================================
-    function init() {
+    async function init() {
         initEvents();
-        buildFileTree();
+
+        // ★ ALWAYS start with local/manifest (instant, no waiting)
+        showBanner('📡 Offline mode — reading from local files');
+        await buildFileTree();
+
+        // ★ THEN silently probe in the background
+        //   If online, future fetches will use GitHub API
+        probeOnline().then(ok => {
+            if (ok) {
+                connectionMode = 'online';
+                hideBanner();
+                console.log('[ADS Notes] Background probe succeeded → ONLINE mode available for future fetches.');
+            } else {
+                console.log('[ADS Notes] Background probe failed → staying OFFLINE.');
+            }
+        });
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+    else init();
 
 })();

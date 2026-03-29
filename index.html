@@ -10,6 +10,132 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+    <!--
+        OFFLINE MANIFEST:
+        This embedded script defines the complete file tree so the viewer
+        works even without network (local clone / no internet).
+        When you ADD or REMOVE .md files, update this manifest.
+    -->
+    <script>
+    window.ADS_NOTES_MANIFEST = {
+        "CProgramming": {
+            "_files": [
+                "Syllabus-CSIT-1st-sem-Far-Western-University.md",
+                "unit1- Introduction To Algorithm and C.md",
+                "unit2-Basic of C.md",
+                "unit3-Arrays, Strings and Sorting Techniques.md",
+                "unit4-Function, Storage Classes & Recursion.md",
+                "unit5-Structure And Union.md",
+                "unit6-Pointers And File Handling.md",
+                "Unit7-LinkLists.md",
+                "Unit8-Stacks.md",
+                "Unit9-Queues.md"
+            ],
+            "OldQuestionsOtherImportantQuestions": {
+                "_files": [
+                    "cprogramming-2080-question_paper.md",
+                    "cprogramming-2081-question_paper.md",
+                    "cprogramming-2082-quesiton_paper.md",
+                    "important-questions#2.md",
+                    "Important-questions#3.md",
+                    "Other-Important-Questions-Chapterwise#1.md"
+                ]
+            }
+        },
+        "Golang": {
+            "_files": [
+                "Golang_20days_course_plan.md",
+                "day1.md",
+                "day2.md",
+                "day3.md",
+                "day4.md",
+                "day5.md",
+                "day6.md",
+                "day7.md",
+                "day8.md",
+                "day9.md",
+                "day10.md",
+                "day11.md",
+                "day12.md",
+                "day13.md",
+                "day14.md",
+                "day15.md",
+                "day16.md",
+                "day17.md",
+                "day18.md",
+                "day19.md",
+                "day20.md"
+            ]
+        },
+        "HtmlCssJS": {
+            "_files": [
+                "course-plan.md"
+            ],
+            "html": {
+                "_files": [
+                    "Day 1 — Introduction to Web & HTML Basics.md",
+                    "Day 2 — Text Formatting & Hyperlinks.md",
+                    "Day 3 — Images, Lists & Tables.md",
+                    "Day 4 — HTML Forms.md",
+                    "Day 5 — Advanced Form Elements.md",
+                    "Day 6 — Semantic HTML & Multimedia.md"
+                ]
+            },
+            "css": {
+                "_files": [
+                    "Day 7 — Introduction to CSS.md",
+                    "Day 8 — CSS Selectors.md",
+                    "Day 9 — Text & Font Styling.md",
+                    "Day 10 — CSS Box Model.md",
+                    "Day 11 — CSS Layout Basics.md",
+                    "Day 12 — Flexbox Layout.md",
+                    "Day 13 — CSS Grid.md",
+                    "Day 14 — Responsive Web Design.md",
+                    "Day 15 — CSS Effects & Best Practices.md"
+                ]
+            },
+            "js": {
+                "_files": [
+                    "Day 16 — JavaScript Introduction.md",
+                    "Day 17 — Operators & Control Flow.md",
+                    "Day 18 — Loops & Functions.md",
+                    "Day 19 — Arrays & Objects.md",
+                    "Day 20 — DOM Manipulation.md",
+                    "Day 21 — Events.md",
+                    "Day 22 — Modern JavaScript.md",
+                    "Day 23 — Asynchronous JavaScript.md",
+                    "Day 24 — Building Real Components.md",
+                    "Day 25 — Final Project & Deployment.md"
+                ]
+            }
+        },
+        "React.JS": {
+            "_files": [
+                "lesson-plan.md",
+                "day1-Core JavaScript Features.md",
+                "day2-Advanced JavaScript Concepts.md",
+                "day3-Functional Programming Basics.md",
+                "day4-React Specific Javascript.md",
+                "day5-React Basics.md",
+                "day6-State and Events.md",
+                "day7-React Lists and Keys.md",
+                "day8-Forms in React.md",
+                "day9-Hooks Introduction.md",
+                "day10-Component Hierarchy and Props.md",
+                "day11-Context Api.md",
+                "day12-Routing In React.md",
+                "day13-API Integration.md",
+                "jsx-syntax.md",
+                "jsx-checklist.md",
+                "unique-projects-for-students.md"
+            ]
+        },
+        "_rootFiles": [
+            "README.MD"
+        ]
+    };
+    </script>
 </head>
 <body>
     <!-- Scroll Progress -->
@@ -52,6 +178,11 @@
 
         <!-- Main Content -->
         <main id="content">
+            <!-- Connection status banner -->
+            <div id="offline-banner" style="display:none;">
+                <span>📡 Offline mode — reading from local files</span>
+            </div>
+
             <!-- Breadcrumb -->
             <div id="breadcrumb"></div>
 
@@ -62,13 +193,12 @@
 
             <!-- Markdown rendered content -->
             <article id="markdown-body">
-                <!-- Welcome screen shown by default -->
                 <div id="welcome">
                     <div class="welcome-glow"></div>
                     <h1 class="welcome-title">Programming Notes Repository</h1>
                     <p class="welcome-subtitle">Welcome to the ADS Notes collection — your centralized study portal for programming languages and technologies.</p>
                     <div id="subjects-overview" class="subjects-grid"></div>
-                    <p class="welcome-hint">��� Select a file from the sidebar to start reading, or use <kbd>Ctrl+K</kbd> to search.</p>
+                    <p class="welcome-hint">👈 Select a file from the sidebar to start reading, or use <kbd>Ctrl+K</kbd> to search.</p>
                 </div>
             </article>
 
@@ -91,9 +221,6 @@
     <footer id="footer">
         <p>Built with ❤️ by Dipak Shrestha | Powered by GitHub API</p>
     </footer>
-
-    <!-- Print-only area -->
-    <div id="print-content"></div>
 
     <script src="app.js"></script>
 </body>

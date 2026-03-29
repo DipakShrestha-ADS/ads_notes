@@ -1231,3 +1231,29 @@ body.fullscreen #footer {
     border-radius: 2px;
     padding: 0 2px;
 }
+
+/* ============================================
+   OFFLINE BANNER
+   ============================================ */
+#offline-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 16px;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, #1a1a0a, #2a2a10);
+    border: 1px solid #aaaa00;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #eeee44;
+    box-shadow: 0 0 10px #aaaa0033;
+    animation: fadeIn 0.4s ease;
+}
+
+#offline-banner.error-banner {
+    border-color: var(--neon-magenta);
+    background: linear-gradient(90deg, #1a0a0a, #2a1010);
+    color: var(--neon-magenta);
+    box-shadow: 0 0 10px #ff00ff33;
+}
