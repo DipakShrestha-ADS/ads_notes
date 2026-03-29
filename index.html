@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADS Notes — Programming Notes Viewer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <!-- Scroll Progress -->
+    <div id="scroll-progress"></div>
+
+    <!-- Header -->
+    <header id="header">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="logo">
+            <span class="logo-icon">📚</span>
+            <h1>ADS Notes</h1>
+        </div>
+        <div class="search-wrapper">
+            <input type="text" id="search-input" placeholder="Search files… (Ctrl+K)" autocomplete="off">
+            <span class="search-icon">🔍</span>
+        </div>
+        <div class="header-controls">
+            <button id="font-decrease" title="Decrease font size">A-</button>
+            <button id="font-reset" title="Reset font size">A</button>
+            <button id="font-increase" title="Increase font size">A+</button>
+            <button id="fullscreen-toggle" title="Toggle fullscreen reading">⛶</button>
+        </div>
+    </header>
+
+    <div id="app">
+        <!-- Sidebar -->
+        <aside id="sidebar">
+            <nav id="file-tree" aria-label="File tree">
+                <div class="sidebar-loading">
+                    <div class="neon-spinner"></div>
+                    <p>Loading notes…</p>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Overlay for mobile -->
+        <div id="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main id="content">
+            <!-- Breadcrumb -->
+            <div id="breadcrumb"></div>
+
+            <!-- Document Meta -->
+            <div id="doc-meta" style="display:none;">
+                <span id="reading-time"></span>
+            </div>
+
+            <!-- Markdown rendered content -->
+            <article id="markdown-body">
+                <!-- Welcome screen shown by default -->
+                <div id="welcome">
+                    <div class="welcome-glow"></div>
+                    <h1 class="welcome-title">Programming Notes Repository</h1>
+                    <p class="welcome-subtitle">Welcome to the ADS Notes collection — your centralized study portal for programming languages and technologies.</p>
+                    <div id="subjects-overview" class="subjects-grid"></div>
+                    <p class="welcome-hint">��� Select a file from the sidebar to start reading, or use <kbd>Ctrl+K</kbd> to search.</p>
+                </div>
+            </article>
+
+            <!-- Scroll to top -->
+            <button id="scroll-top" title="Scroll to top" style="display:none;">↑</button>
+        </main>
+
+        <!-- Table of Contents panel -->
+        <aside id="toc-panel" class="toc-hidden">
+            <div class="toc-header">
+                <h3>Table of Contents</h3>
+                <button id="toc-close" title="Close TOC">✕</button>
+            </div>
+            <nav id="toc-list"></nav>
+        </aside>
+        <button id="toc-toggle" title="Table of Contents" style="display:none;">☰ TOC</button>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <p>Built with ❤️ by Dipak Shrestha | Powered by GitHub API</p>
+    </footer>
+
+    <!-- Print-only area -->
+    <div id="print-content"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
