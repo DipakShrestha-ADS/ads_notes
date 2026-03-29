@@ -1,0 +1,2 @@
+![Far Western University | CSIT | Semester End Examination | Question Paper | 2081](../d-assets/2081.png)
+![Far Western University | CSIT | Semester End Examination | Question Paper | 2081](../d-assets/2081-b.png)
