@@ -34,13 +34,13 @@ With a database:
 
 There are two main types of databases.
 
-| Feature | SQL (Relational) | NoSQL (Non-Relational) |
-|---|---|---|
-| Data format | Tables with rows and columns | Documents, key-value, graphs |
-| Structure | Fixed schema (defined upfront) | Flexible schema |
-| Examples | PostgreSQL, MySQL, SQLite | MongoDB, Redis, DynamoDB |
-| Best for | Structured data with relationships | Flexible or unstructured data |
-| Query language | SQL | Varies by database |
+| Feature        | SQL (Relational)                   | NoSQL (Non-Relational)        |
+| -------------- | ---------------------------------- | ----------------------------- |
+| Data format    | Tables with rows and columns       | Documents, key-value, graphs  |
+| Structure      | Fixed schema (defined upfront)     | Flexible schema               |
+| Examples       | PostgreSQL, MySQL, SQLite          | MongoDB, Redis, DynamoDB      |
+| Best for       | Structured data with relationships | Flexible or unstructured data |
+| Query language | SQL                                | Varies by database            |
 
 This course uses PostgreSQL because:
 - It is free and open source
@@ -56,11 +56,11 @@ A database is made up of tables. Think of a table like a spreadsheet.
 
 A `users` table might look like this:
 
-| id | name | email | created_at |
-|---|---|---|---|
-| 1 | Alice | alice@example.com | 2025-01-01 |
-| 2 | Bob | bob@example.com | 2025-01-02 |
-| 3 | Carol | carol@example.com | 2025-01-03 |
+| id  | name  | email             | created_at |
+| --- | ----- | ----------------- | ---------- |
+| 1   | Alice | alice@example.com | 2025-01-01 |
+| 2   | Bob   | bob@example.com   | 2025-01-02 |
+| 3   | Carol | carol@example.com | 2025-01-03 |
 
 - A column is a field type: `id`, `name`, `email`, `created_at`
 - A row is one record: one specific user
@@ -86,11 +86,11 @@ A foreign key links one table to another.
 
 Imagine an `orders` table:
 
-| id | user_id | product | total |
-|---|---|---|---|
-| 1 | 2 | Laptop | 1200 |
-| 2 | 1 | Phone | 600 |
-| 3 | 2 | Headphones | 150 |
+| id  | user_id | product    | total |
+| --- | ------- | ---------- | ----- |
+| 1   | 2       | Laptop     | 1200  |
+| 2   | 1       | Phone      | 600   |
+| 3   | 2       | Headphones | 150   |
 
 `user_id` in the `orders` table is a foreign key that points to the `id` column in the `users` table. Order number 1 belongs to user 2, which is Bob.
 

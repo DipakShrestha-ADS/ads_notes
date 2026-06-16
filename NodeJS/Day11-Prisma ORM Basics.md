@@ -410,15 +410,15 @@ npx prisma studio
 
 ## 12. Prisma vs Raw SQL: Quick Reference
 
-| SQL Operation | Prisma Method |
-|---|---|
-| `SELECT * FROM users` | `prisma.user.findMany()` |
-| `SELECT * FROM users WHERE id = 1` | `prisma.user.findUnique({ where: { id: 1 } })` |
+| SQL Operation                             | Prisma Method                                        |
+| ----------------------------------------- | ---------------------------------------------------- |
+| `SELECT * FROM users`                     | `prisma.user.findMany()`                             |
+| `SELECT * FROM users WHERE id = 1`        | `prisma.user.findUnique({ where: { id: 1 } })`       |
 | `SELECT * FROM users WHERE email = '...'` | `prisma.user.findFirst({ where: { email: '...' } })` |
-| `INSERT INTO users...` | `prisma.user.create({ data: {...} })` |
-| `UPDATE users SET...` | `prisma.user.update({ where: {...}, data: {...} })` |
-| `DELETE FROM users WHERE id = 1` | `prisma.user.delete({ where: { id: 1 } })` |
-| `SELECT COUNT(*)` | `prisma.user.count()` |
+| `INSERT INTO users...`                    | `prisma.user.create({ data: {...} })`                |
+| `UPDATE users SET...`                     | `prisma.user.update({ where: {...}, data: {...} })`  |
+| `DELETE FROM users WHERE id = 1`          | `prisma.user.delete({ where: { id: 1 } })`           |
+| `SELECT COUNT(*)`                         | `prisma.user.count()`                                |
 
 ---
 

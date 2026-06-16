@@ -37,10 +37,10 @@ The full login flow you will build today:
 npm i bcrypt jsonwebtoken
 ```
 
-| Package | Purpose |
-|---|---|
-| bcrypt | Hash passwords before storing them, compare passwords during login |
-| jsonwebtoken | Create and verify JWT tokens |
+| Package      | Purpose                                                            |
+| ------------ | ------------------------------------------------------------------ |
+| bcrypt       | Hash passwords before storing them, compare passwords during login |
+| jsonwebtoken | Create and verify JWT tokens                                       |
 
 ---
 

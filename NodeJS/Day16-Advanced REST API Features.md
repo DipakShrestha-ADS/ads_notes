@@ -503,16 +503,16 @@ GET /products?search=desk&sortBy=price&order=desc
 
 ## 13. Prisma Filter Reference
 
-| Prisma Condition | Meaning | SQL Equivalent |
-|---|---|---|
-| `{ field: value }` | Exact match | `WHERE field = value` |
-| `{ field: { contains: '...' } }` | Text contains | `WHERE field LIKE '%...%'` |
-| `{ field: { gte: 50 } }` | Greater than or equal | `WHERE field >= 50` |
-| `{ field: { lte: 200 } }` | Less than or equal | `WHERE field <= 200` |
-| `{ field: { gt: 0 } }` | Greater than | `WHERE field > 0` |
-| `{ field: { lt: 100 } }` | Less than | `WHERE field < 100` |
-| `{ field: { not: value } }` | Not equal | `WHERE field != value` |
-| `{ field: { in: [...] } }` | Value is in array | `WHERE field IN (...)` |
+| Prisma Condition                 | Meaning               | SQL Equivalent             |
+| -------------------------------- | --------------------- | -------------------------- |
+| `{ field: value }`               | Exact match           | `WHERE field = value`      |
+| `{ field: { contains: '...' } }` | Text contains         | `WHERE field LIKE '%...%'` |
+| `{ field: { gte: 50 } }`         | Greater than or equal | `WHERE field >= 50`        |
+| `{ field: { lte: 200 } }`        | Less than or equal    | `WHERE field <= 200`       |
+| `{ field: { gt: 0 } }`           | Greater than          | `WHERE field > 0`          |
+| `{ field: { lt: 100 } }`         | Less than             | `WHERE field < 100`        |
+| `{ field: { not: value } }`      | Not equal             | `WHERE field != value`     |
+| `{ field: { in: [...] } }`       | Value is in array     | `WHERE field IN (...)`     |
 
 ---
 
