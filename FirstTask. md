@@ -1,0 +1,285 @@
+# Node.js API Task: Building a CRUD API with Separated Routes & Handlers
+
+## Objective
+Students will build a RESTful API using Express.js that demonstrates:
+- ✅ HTTP methods (GET, POST, PUT, DELETE)
+- ✅ Separating route logic into dedicated files
+- ✅ Separating handler/controller logic into separate files
+- ✅ Proper file organization and imports
+
+---
+
+## Project Structure
+
+Create this folder structure:
+
+```
+my-api/
+├── server.js
+├── routes/
+│   └── productRoutes.js
+├── handlers/
+│   └── productHandlers.js
+├── package.json
+└── node_modules/
+```
+
+---
+
+## Step 1: Initialize Project
+
+```bash
+mkdir my-api
+cd my-api
+npm init -y
+npm install express
+```
+
+---
+
+## Step 2: Create `server.js`
+
+This is your main entry point. It should:
+- Import Express
+- Import the routes
+- Set up the Express app
+- Start the server on port 3000
+
+**Requirements:**
+- Import routes from `./routes/productRoutes.js`
+- Use `app.use()` to register routes
+- Listen on port 3000
+- Log a message when server starts
+
+**Example structure:**
+```javascript
+const express = require('express');
+const productRoutes = require('./routes/productRoutes');
+
+const app = express();
+
+// Middleware
+app.use(express.json());
+
+// Routes
+app.use('/api/products', productRoutes);
+
+// Start server
+app.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
+});
+```
+
+---
+
+## Step 3: Create `handlers/productHandlers.js`
+
+This file contains all the handler functions. You need to create 4 handlers:
+
+### **1. getAllProducts (GET handler)**
+- Returns an array of products
+- Sample data:
+```javascript
+[
+  { id: 1, name: 'Laptop', price: 999 },
+  { id: 2, name: 'Phone', price: 599 },
+  { id: 3, name: 'Tablet', price: 399 }
+]
+```
+
+### **2. getProductById (GET handler)**
+- Gets a single product by ID from request params
+- Returns 404 if product not found
+
+### **3. createProduct (POST handler)**
+- Gets product data from request body
+- Assigns a new ID (max current ID + 1)
+- Returns the created product with status 201
+
+### **4. updateProduct (PUT handler)**
+- Updates a product by ID
+- Takes data from request body
+- Returns 404 if product not found
+- Returns updated product
+
+### **5. deleteProduct (DELETE handler)**
+- Deletes a product by ID
+- Returns 404 if product not found
+- Returns success message
+
+**Example handler structure:**
+```javascript
+let products = [
+  { id: 1, name: 'Laptop', price: 999 },
+  { id: 2, name: 'Phone', price: 599 },
+  { id: 3, name: 'Tablet', price: 399 }
+];
+
+const getAllProducts = (req, res) => {
+  res.json(products);
+};
+
+const getProductById = (req, res) => {
+  const { id } = req.params;
+  const product = products.find(p => p.id === parseInt(id));
+  
+  if (!product) {
+    return res.status(404).json({ message: 'Product not found' });
+  }
+  
+  res.json(product);
+};
+
+// ... continue with other handlers
+
+module.exports = {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+};
+```
+
+---
+
+## Step 4: Create `routes/productRoutes.js`
+
+This file defines the routes and connects them to handlers.
+
+**Requirements:**
+- Import Express Router
+- Import all handlers from `../handlers/productHandlers.js`
+- Define 5 routes using the handlers:
+
+| HTTP Method | Route Path | Handler |
+|---|---|---|
+| GET | `/` | getAllProducts |
+| GET | `/:id` | getProductById |
+| POST | `/` | createProduct |
+| PUT | `/:id` | updateProduct |
+| DELETE | `/:id` | deleteProduct |
+
+**Example structure:**
+```javascript
+const express = require('express');
+const router = express.Router();
+const {
+  getAllProducts,
+  getProductById,
+  createProduct,
+  updateProduct,
+  deleteProduct
+} = require('../handlers/productHandlers');
+
+// Routes
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
+
+module.exports = router;
+```
+
+---
+
+## Testing Your API
+
+### Using cURL or Postman:
+
+**GET all products:**
+```bash
+curl http://localhost:3000/api/products
+```
+
+**GET product by ID:**
+```bash
+curl http://localhost:3000/api/products/1
+```
+
+**CREATE new product:**
+```bash
+curl -X POST http://localhost:3000/api/products \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Monitor","price":299}'
+```
+
+**UPDATE product:**
+```bash
+curl -X PUT http://localhost:3000/api/products/1 \
+  -H "Content-Type: application/json" \
+  -d '{"name":"Gaming Laptop","price":1299}'
+```
+
+**DELETE product:**
+```bash
+curl -X DELETE http://localhost:3000/api/products/2
+```
+
+---
+
+## Deliverables Checklist
+
+- ✅ `server.js` - Main server file with routes imported
+- ✅ `routes/productRoutes.js` - All 5 routes defined
+- ✅ `handlers/productHandlers.js` - All 5 handlers implemented
+- ✅ Code runs without errors
+- ✅ All CRUD operations work correctly
+- ✅ Proper file organization and clean imports
+
+---
+
+## Key Concepts to Remember
+
+1. **Separation of Concerns** - Each file has one responsibility
+   - `server.js` - Entry point and app setup
+   - `routes/` - Defines URL paths
+   - `handlers/` - Contains business logic
+
+2. **Express Router** - Use `express.Router()` for modular routes
+
+3. **Module Exports** - Use `module.exports` to share functions between files
+
+4. **HTTP Methods:**
+   - `GET` - Retrieve data
+   - `POST` - Create new data
+   - `PUT` - Update existing data
+   - `DELETE` - Remove data
+
+5. **Request Objects:**
+   - `req.params` - URL parameters (`:id`)
+   - `req.body` - Request body (JSON data)
+   - `req.query` - Query strings
+
+6. **Response Methods:**
+   - `res.json()` - Send JSON response
+   - `res.status()` - Set HTTP status code
+   - `res.send()` - Send text response
+
+---
+
+## Challenge Extensions (Optional)
+
+Once students complete the basic task:
+
+1. **Add data validation** - Check if product has required fields before creating
+2. **Add error handling** - Try/catch blocks for safety
+3. **Add a second resource** - Create routes for users/orders with same structure
+4. **Use file storage** - Save products to a JSON file instead of memory
+5. **Add middleware** - Create authentication middleware for POST/PUT/DELETE
+
+---
+
+## Common Mistakes to Avoid
+
+❌ Forgetting to import handlers in routes file  
+❌ Forgetting to import routes in server.js  
+❌ Using `require()` with wrong file paths  
+❌ Not exporting functions from handlers file  
+❌ Mixing route definition with handler logic  
+❌ Not using `express.json()` middleware for POST/PUT requests  
+
+---
+
+**Good luck! Focus on understanding the file organization, not on making it perfect. Errors are learning opportunities!** 🚀
