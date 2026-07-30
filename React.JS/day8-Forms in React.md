@@ -80,21 +80,21 @@ function UncontrolledInput() {
 
 🔹 Key Differences: Controlled vs. Uncontrolled
 
-| Feature              | Controlled Component 🟢                  | Uncontrolled Component 🟡              |
-|----------------------|------------------------------------------|----------------------------------------|
-| State Management     | React manages state                      | DOM manages state                      |
-| Value Handling       | Stored in useState                       | Accessed via ref                       |
-| Update Mechanism     | onChange updates state                   | Value read when needed                 |
-| Best For             | Form validation, dynamic forms           | Simple forms, integrations             |
-| Predictability       | High (React fully controls)              | Lower (DOM manages state)              |
+| Feature          | Controlled Component 🟢         | Uncontrolled Component 🟡   |
+| ---------------- | ------------------------------ | -------------------------- |
+| State Management | React manages state            | DOM manages state          |
+| Value Handling   | Stored in useState             | Accessed via ref           |
+| Update Mechanism | onChange updates state         | Value read when needed     |
+| Best For         | Form validation, dynamic forms | Simple forms, integrations |
+| Predictability   | High (React fully controls)    | Lower (DOM manages state)  |
 
 🔹 When to Use Which?
 
-| Use Controlled Components When:                  | Use Uncontrolled Components When:              |
-|--------------------------------------------------|------------------------------------------------|
-| You need instant form validation                 | You're working with non-React libraries        |
-| You want React to control the form state         | The form is simple and state isn’t needed      |
-| You need to manipulate user input dynamically    | You just need to read values at submission     |
+| Use Controlled Components When:               | Use Uncontrolled Components When:          |
+| --------------------------------------------- | ------------------------------------------ |
+| You need instant form validation              | You're working with non-React libraries    |
+| You want React to control the form state      | The form is simple and state isn’t needed  |
+| You need to manipulate user input dynamically | You just need to read values at submission |
 
 🔹 Hybrid Approach: Combining Both
 
@@ -361,12 +361,12 @@ function FormValidation() {
 
 🔹 Summary
 
-| Feature                  | Controlled Components 🟢 | Uncontrolled Components 🟡 |
-|--------------------------|---------------------------|----------------------------|
-| State Management         | useState stores values    | Uses useRef to access input|
-| Value Handling           | value prop with onChange  | DOM manages the value      |
-| Best For                 | Forms with validation, real-time updates | Simple forms, non-React code |
-| Predictability           | High (React-controlled)   | Lower (DOM-controlled)     |
+| Feature          | Controlled Components 🟢                  | Uncontrolled Components 🟡    |
+| ---------------- | ---------------------------------------- | ---------------------------- |
+| State Management | useState stores values                   | Uses useRef to access input  |
+| Value Handling   | value prop with onChange                 | DOM manages the value        |
+| Best For         | Forms with validation, real-time updates | Simple forms, non-React code |
+| Predictability   | High (React-controlled)                  | Lower (DOM-controlled)       |
 
 🔹 Conclusion
 
@@ -572,13 +572,13 @@ export default LiveValidationForm;
 
 🔹 Summary
 
-| Validation Type     | Method Used                                      |
-|---------------------|--------------------------------------------------|
-| Required Field      | Check if input is empty (name.trim() === "")     |
-| Email Format        | Check for "@" and "." in email                   |
-| Password Strength   | Ensure password.length >= 6                      |
-| Multiple Fields     | Store errors in an errors object                 |
-| Live Feedback       | Validate in onChange event                       |
+| Validation Type   | Method Used                                  |
+| ----------------- | -------------------------------------------- |
+| Required Field    | Check if input is empty (name.trim() === "") |
+| Email Format      | Check for "@" and "." in email               |
+| Password Strength | Ensure password.length >= 6                  |
+| Multiple Fields   | Store errors in an errors object             |
+| Live Feedback     | Validate in onChange event                   |
 
 🔹 Conclusion
 
