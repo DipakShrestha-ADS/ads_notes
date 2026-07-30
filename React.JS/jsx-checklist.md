@@ -48,7 +48,7 @@
 
 7. Self-Closing Tags
 
-- [x] Use <img />, <input />, etc.
+- [x] Use `<img />`, `<input />`, etc.
 
 8. Fragments
 

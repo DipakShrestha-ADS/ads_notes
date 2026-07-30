@@ -4,7 +4,7 @@ In React, form inputs can be controlled or uncontrolled based on how their state
 
 🔹 What Are Controlled Components?
 
-A controlled component is a form element (like <input> or <textarea>) where React controls the state using the useState hook.
+A controlled component is a form element (like `<input>` or `<textarea>`) where React controls the state using the useState hook.
 
 * The value of the input is stored in React state.
 
@@ -31,7 +31,7 @@ function ControlledInput() {
 
 ✅ How It Works:
 
-* The value of <input> is controlled by text in the component's state.
+* The value of `<input>` is controlled by text in the component's state.
 
 * The onChange event updates text whenever the user types.
 
