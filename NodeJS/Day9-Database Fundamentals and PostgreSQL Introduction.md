@@ -130,12 +130,12 @@ email              avatar_url
 
 ### Many-to-Many
 
-A student can be enrolled in many courses, and a course can have many students.
+A learner can be enrolled in many courses, and a course can have many learners.
 
 This requires a join table in the middle:
 
 ```
-students      enrollments       courses
+learners      enrollments       courses
 --------      -----------       -------
 id (PK) <---  student_id        id (PK)
 name          course_id  --->   title
@@ -269,7 +269,7 @@ After `podman compose up -d` runs successfully, PostgreSQL is ready to accept co
 
 ## 8. Viewing the Database
 
-After Day 11 when you set up Prisma, you can use `npx prisma studio` to view your tables visually in a browser. If you want to connect manually right now, you can use a tool like TablePlus, pgAdmin, or DBeaver with these settings:
+After Day 11 when you set up Prisma, you can use `npx prisma studio --config prisma/prisma.config.js` to view your tables visually in a browser. If you want to connect manually right now, you can use a tool like TablePlus, pgAdmin, or DBeaver with these settings:
 
 - Host: `localhost`
 - Port: `5555`
@@ -304,3 +304,180 @@ After Day 11 when you set up Prisma, you can use `npx prisma studio` to view you
 ## Homework
 
 Design a database schema for a course management system. Include a `users` table, a `courses` table, and an `enrollments` table that connects users and courses. Write out the column names, data types, and which columns are primary keys and foreign keys.
+
+---
+
+## Campus Store Storyline Project - Level 9
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 9 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 8 is your starting checkpoint. You can review it in [Day 8](<Day8-Node.js Core Modules for Backend.md>).
+
+You model users and products and start PostgreSQL in a Podman container.
+
+### Today’s Project Level
+
+Run `podman compose up -d` to start PostgreSQL.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `docker-compose.yaml` | Define the PostgreSQL service and persistent volume. |
+| Create | `docs/data-model.md` | Document User and Product tables and their relationship. |
+| Edit | `.env.example` | Add PostgreSQL variables and `DATABASE_URL`. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 8 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 9 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Create `docker-compose.yaml`
+
+Define the PostgreSQL service and persistent volume.
+
+**File: `docker-compose.yaml`**
+
+~~~yaml
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+~~~
+
+This is the complete Level 9 version of `docker-compose.yaml`. Define the PostgreSQL service and persistent volume. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Create `docs/data-model.md`
+
+Document User and Product tables and their relationship.
+
+**File: `docs/data-model.md`**
+
+~~~markdown
+# Campus Store Data Model
+
+## User
+
+Each user has an ID, name, unique email, and timestamps.
+
+## Product
+
+Each product has an ID, title, price, optional description, optional owner, and timestamps.
+
+## Relationship
+
+One User can own many Products. A Product can have one owner. The Product table stores `userId` as its foreign key.
+~~~
+
+This is the complete Level 9 version of `docs/data-model.md`. Document User and Product tables and their relationship. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Edit `.env.example`
+
+Add PostgreSQL variables and `DATABASE_URL`.
+
+**File: `.env.example`**
+
+~~~properties
+# Copy this file to .env, then replace every example value.
+PORT=8888
+STORE_NAME="Campus Store"
+STORE_KEY=campus-secret
+POSTGRES_USER=campus_user
+POSTGRES_PASSWORD=campus_password
+POSTGRES_DB=campus_store
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5555
+DATABASE_URL="postgresql://campus_user:campus_password@localhost:5555/campus_store?schema=public"
+~~~
+
+This is the complete Level 9 version of `.env.example`. Add PostgreSQL variables and `DATABASE_URL`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `podman compose ps`. The `postgres` service should be running.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 9, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── src/
+│   ├── controllers/
+│   │   └── productController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── middlewares/
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   └── productRoutes.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Runs PostgreSQL on host port `5555`.
+- Preserves database data in a named volume.
+- Documents how a user can own many products.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `podman compose ps`. The `postgres` service should be running.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Convert real project objects into tables, columns, keys, and relationships.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The database is available, but the API still reads its array. Level 10 connects Node.js with raw SQL. Continue with [Day 10](<Day10-Connecting Node.js with PostgreSQL.md>).

@@ -49,61 +49,19 @@ npm i swagger-jsdoc swagger-ui-express
 
 ---
 
-## 4. Project Setup
+## 4. Continue the Campus Store Project
 
-```bash
-mkdir day18-swagger-docs
-cd day18-swagger-docs
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod bcrypt jsonwebtoken swagger-jsdoc swagger-ui-express
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares src/schemas src/config
-```
+Start with the completed Level 17 checkpoint from [Day 17](<Day17-File Uploads and Static File Serving.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run `npm install` to install Swagger packages.
 
-```json
-{
-  "name": "day18-swagger-docs",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Create `src/config/swagger.js`**: Define the OpenAPI document and bearer authentication scheme.
+- **Edit `src/routes/productRoutes.js`**: Add OpenAPI route descriptions and schemas.
+- **Edit `src/server.js`**: Mount Swagger UI at `/api-docs`.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day18_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day18_db?schema=public"
-JWT_SECRET=your_very_long_and_random_secret_key_change_this_in_production
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
-Prisma setup follows the same steps from Day 11 with the `User` model from Day 14.
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 5. Setting Up the Swagger Configuration
 
@@ -395,3 +353,309 @@ app.listen(PORT, () => {
 ## Homework
 
 Document at least five routes from your mini project using Swagger. Include one authentication route, one protected route with the `bearerAuth` security requirement, and at least one route with query parameters documented, like pagination or filtering.
+
+---
+
+## Campus Store Storyline Project - Level 18
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 18 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 17 is your starting checkpoint. You can review it in [Day 17](<Day17-File Uploads and Static File Serving.md>).
+
+You describe the store API with OpenAPI and expose Swagger UI.
+
+### Today’s Project Level
+
+Run `npm install` to install Swagger packages.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add the Swagger document generator and interactive UI packages. |
+| Regenerate | `package-lock.json` | Record the installed documentation dependencies. |
+| Create | `src/config/swagger.js` | Define the OpenAPI document and bearer authentication scheme. |
+| Edit | `src/routes/productRoutes.js` | Add OpenAPI route descriptions and schemas. |
+| Edit | `src/server.js` | Mount Swagger UI at `/api-docs`. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 17 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 18 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add the Swagger document generator and interactive UI packages.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0"
+  }
+}
+~~~
+
+This is the complete Level 18 version of `package.json`. Add the Swagger document generator and interactive UI packages. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Regenerate `package-lock.json`
+
+Do not type or edit `package-lock.json` by hand. Record the installed documentation dependencies. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
+
+#### Step 3 — Create `src/config/swagger.js`
+
+Define the OpenAPI document and bearer authentication scheme.
+
+**File: `src/config/swagger.js`**
+
+~~~javascript
+import swaggerJsdoc from 'swagger-jsdoc';
+
+export const swaggerDocument = swaggerJsdoc({
+  definition: {
+    openapi: '3.0.3',
+    info: {
+      title: 'Campus Store API',
+      version: '1.0.0',
+      description: 'The cumulative reference project for the Node.js course.',
+    },
+    servers: [{ url: 'http://localhost:8888' }],
+    components: {
+      securitySchemes: {
+        bearerAuth: { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      },
+    },
+  },
+  apis: ['./src/routes/*.js'],
+});
+~~~
+
+This is the complete Level 18 version of `src/config/swagger.js`. Define the OpenAPI document and bearer authentication scheme. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Edit `src/routes/productRoutes.js`
+
+Add OpenAPI route descriptions and schemas.
+
+**File: `src/routes/productRoutes.js`**
+
+~~~javascript
+import { Router } from 'express';
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProductById,
+  uploadProductImage,
+  updateProduct,
+} from '../controllers/productController.js';
+import { uploadProductImage as imageUpload } from '../middlewares/uploadProductImage.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { authorize } from '../middlewares/authorize.js';
+
+const router = Router();
+
+/**
+ * @openapi
+ * /products:
+ *   get:
+ *     summary: Browse products
+ *     parameters:
+ *       - in: query
+ *         name: search
+ *         schema: { type: string }
+ *     responses:
+ *       200:
+ *         description: Product list
+ */
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', authenticate, authorize('ADMIN'), createProduct);
+router.put('/:id', authenticate, authorize('ADMIN'), updateProduct);
+router.delete('/:id', authenticate, authorize('ADMIN'), deleteProduct);
+router.post('/:id/image', authenticate, authorize('ADMIN'), imageUpload.single('image'), uploadProductImage);
+
+export default router;
+~~~
+
+This is the complete Level 18 version of `src/routes/productRoutes.js`. Add OpenAPI route descriptions and schemas. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Edit `src/server.js`
+
+Mount Swagger UI at `/api-docs`.
+
+**File: `src/server.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerDocument } from './config/swagger.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+
+const app = express();
+app.use(express.json());
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+app.use('/uploads', express.static(path.resolve(currentDir, '../uploads')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use(errorHandler);
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 18 version of `src/server.js`. Mount Swagger UI at `/api-docs`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Open `http://localhost:8888/api-docs`, authorize with an admin token, and call a documented route.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 18, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   └── 20260731000600_add_product_image/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   └── server.js
+├── uploads/
+│   └── .gitkeep
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Shows interactive documentation at `/api-docs`.
+- Explains bearer tokens and product query parameters.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Open `http://localhost:8888/api-docs`, authorize with an admin token, and call a documented route.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Document routes, parameters, bodies, security, and examples for any assigned project.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Documented routes are easier to use, but public APIs also need defensive limits. Level 19 adds security middleware. Continue with [Day 19](<Day19-Security Essentials for Node.js APIs.md>).

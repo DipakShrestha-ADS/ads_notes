@@ -350,3 +350,104 @@ Here is what you covered today:
 - In your own words, write a paragraph about what happens when you log into any website or app. Describe the client, server, request, and response involved.
 - Create a second Node.js file that prints 5 interesting facts about yourself using `console.log`.
 - Starting from Day 2, every project will use a specific folder structure and package setup. Read ahead so you know what is coming.
+
+---
+
+## Campus Store Storyline Project - Level 1
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 1 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+The Campus Store is only an idea. You are about to give that idea its first runnable program.
+
+You turn the Campus Store idea into its first runnable Node.js program.
+
+### Today’s Project Level
+
+No package installation is needed on this level.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `app.js` | Print the project name, purpose, first resource, and today’s date. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Create a new folder named `campus-store-api`, open it in your code editor, and use it as the project root.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 1 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Create `app.js`
+
+Print the project name, purpose, first resource, and today’s date.
+
+**File: `app.js`**
+
+~~~javascript
+const projectName = 'Campus Store';
+const purpose = 'Help people browse and manage useful campus products';
+const firstResource = 'Product';
+
+console.log(`Project: ${projectName}`);
+console.log(`Purpose: ${purpose}`);
+console.log(`First resource: ${firstResource}`);
+console.log(`Started on: ${new Date().toLocaleDateString()}`);
+~~~
+
+This is the complete Level 1 version of `app.js`. Print the project name, purpose, first resource, and today’s date. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `node app.js`. The terminal should print the store name, purpose, and current date.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 1, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+└── app.js
+```
+
+Your completed checkpoint now:
+
+- Runs outside the browser with Node.js.
+- Prints a clear Campus Store project introduction.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `node app.js`. The terminal should print the store name, purpose, and current date.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Turn an assigned project idea into a small program that clearly states what the system will manage.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The script works, but it is not yet a real npm project. Level 2 gives it a standard project structure. Continue with [Day 2](<Day2-Node.js Runtime, npm, package.json, and Environment Variables.md>).

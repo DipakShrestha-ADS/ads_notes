@@ -40,80 +40,22 @@ DELETE /products/:id
 
 ---
 
-## 2. Project Setup
+## 2. Continue the Campus Store Project
 
-```bash
-mkdir mini-project-1
-cd mini-project-1
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares src/schemas
-```
+Start with the completed Level 12 checkpoint from [Day 12](<Day12-Validation and Error Handling.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run `npx prisma migrate dev --config prisma/prisma.config.js --name add_users_and_product_owner` and `npx prisma generate --config prisma/prisma.config.js`.
 
-```json
-{
-  "name": "mini-project-1",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Replace `prisma/schema.prisma`**: Add User and the optional Product owner relationship.
+- **Create `src/schemas/userSchemas.js`**: Validate user creation and updates.
+- **Create `src/controllers/userController.js`**: Implement user CRUD with Prisma.
+- **Create `src/routes/userRoutes.js`**: Expose the user endpoints.
+- **Edit `src/controllers/productController.js`**: Accept and return the owning user.
+- **Edit `src/server.js`**: Mount `/users`.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=mini_project_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/mini_project_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml`:
-
-```yaml
-services:
-  postgres:
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
-```
-
-Start the database:
-
-```bash
-podman compose up -d
-```
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 3. Prisma Setup
 
@@ -133,6 +75,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -159,7 +102,7 @@ The `Product[]` in User and `user User?` in Product define the relationship. Pri
 Run migration:
 
 ```bash
-npx prisma migrate dev --name create_users_and_products
+npx prisma migrate dev --config prisma/prisma.config.js --name create_users_and_products
 ```
 
 ---
@@ -552,10 +495,412 @@ app.use(errorHandler);
 2. Test every route for both users and products with both valid and invalid data.
 3. Create a product with a `userId` pointing to an existing user. Check Prisma Studio.
 4. Try deleting a user that has products linked and observe the error. Think about how to handle it cleanly.
-5. Run `npx prisma studio` and browse both tables to confirm data is stored correctly.
+5. Run `npx prisma studio --config prisma/prisma.config.js` and browse both tables to confirm data is stored correctly.
 
 ---
 
 ## Homework
 
 Complete any unfinished parts of the mini project and prepare to demo it next class. Make sure all 10 routes work, invalid data returns proper 400 errors with field-level messages, and the database persists data across server restarts.
+
+---
+
+## Campus Store Storyline Project - Level 13
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 13 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 12 is your starting checkpoint. You can review it in [Day 12](<Day12-Validation and Error Handling.md>).
+
+You add users, connect products to their owners, and complete a structured two-module API.
+
+### Today’s Project Level
+
+Run `npx prisma migrate dev --config prisma/prisma.config.js --name add_users_and_product_owner` and `npx prisma generate --config prisma/prisma.config.js`.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Replace | `prisma/schema.prisma` | Add User and the optional Product owner relationship. |
+| Create | `src/schemas/userSchemas.js` | Validate user creation and updates. |
+| Create | `src/controllers/userController.js` | Implement user CRUD with Prisma. |
+| Create | `src/routes/userRoutes.js` | Expose the user endpoints. |
+| Edit | `src/controllers/productController.js` | Accept and return the owning user. |
+| Edit | `src/server.js` | Mount `/users`. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 12 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 13 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Replace `prisma/schema.prisma`
+
+Add User and the optional Product owner relationship.
+
+**File: `prisma/schema.prisma`**
+
+~~~prisma
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  title       String
+  price       Float
+  description String?
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+~~~
+
+This is the complete Level 13 version of `prisma/schema.prisma`. Add User and the optional Product owner relationship. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Create `src/schemas/userSchemas.js`
+
+Validate user creation and updates.
+
+**File: `src/schemas/userSchemas.js`**
+
+~~~javascript
+import { z } from 'zod';
+
+export const createUserSchema = z.object({
+  name: z.string().trim().min(2),
+  email: z.email(),
+});
+
+export const updateUserSchema = createUserSchema.partial();
+~~~
+
+This is the complete Level 13 version of `src/schemas/userSchemas.js`. Validate user creation and updates. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Create `src/controllers/userController.js`
+
+Implement user CRUD with Prisma.
+
+**File: `src/controllers/userController.js`**
+
+~~~javascript
+import prisma from '../db/prisma.js';
+import { createUserSchema, updateUserSchema } from '../schemas/userSchemas.js';
+
+function invalid(res, result) {
+  return res.status(400).json({
+    message: 'Validation failed',
+    errors: result.error.flatten().fieldErrors,
+  });
+}
+
+export async function getAllUsers(req, res, next) {
+  try {
+    const users = await prisma.user.findMany({
+      select: { id: true, name: true, email: true, createdAt: true },
+    });
+    res.json({ data: users });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getUserById(req, res, next) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: Number(req.params.id) },
+      include: { products: true },
+    });
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json({ data: user });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createUser(req, res, next) {
+  const result = createUserSchema.safeParse(req.body);
+  if (!result.success) return invalid(res, result);
+  try {
+    const user = await prisma.user.create({ data: result.data });
+    res.status(201).json({ data: user });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateUser(req, res, next) {
+  const result = updateUserSchema.safeParse(req.body);
+  if (!result.success) return invalid(res, result);
+  try {
+    const user = await prisma.user.update({
+      where: { id: Number(req.params.id) },
+      data: result.data,
+    });
+    res.json({ data: user });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteUser(req, res, next) {
+  try {
+    await prisma.user.delete({ where: { id: Number(req.params.id) } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 13 version of `src/controllers/userController.js`. Implement user CRUD with Prisma. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/routes/userRoutes.js`
+
+Expose the user endpoints.
+
+**File: `src/routes/userRoutes.js`**
+
+~~~javascript
+import { Router } from 'express';
+import {
+  createUser,
+  deleteUser,
+  getAllUsers,
+  getUserById,
+  updateUser,
+} from '../controllers/userController.js';
+
+const router = Router();
+router.get('/', getAllUsers);
+router.get('/:id', getUserById);
+router.post('/', createUser);
+router.put('/:id', updateUser);
+router.delete('/:id', deleteUser);
+
+export default router;
+~~~
+
+This is the complete Level 13 version of `src/routes/userRoutes.js`. Expose the user endpoints. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Edit `src/controllers/productController.js`
+
+Accept and return the owning user.
+
+**File: `src/controllers/productController.js`**
+
+~~~javascript
+import prisma from '../db/prisma.js';
+import { createProductSchema, updateProductSchema } from '../schemas/productSchemas.js';
+
+function validationFailure(res, result) {
+  return res.status(400).json({
+    message: 'Validation failed',
+    errors: result.error.flatten().fieldErrors,
+  });
+}
+
+export async function getAllProducts(req, res, next) {
+  try {
+    const products = await prisma.product.findMany({
+      include: { user: { select: { id: true, name: true, email: true } } },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json({ data: products });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getProductById(req, res, next) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(req.params.id) },
+      include: { user: { select: { id: true, name: true, email: true } } },
+    });
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createProduct(req, res, next) {
+  const result = createProductSchema.safeParse(req.body);
+  if (!result.success) return validationFailure(res, result);
+  try {
+    const product = await prisma.product.create({ data: result.data });
+    res.status(201).json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateProduct(req, res, next) {
+  const result = updateProductSchema.safeParse(req.body);
+  if (!result.success) return validationFailure(res, result);
+  try {
+    const product = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: result.data,
+    });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteProduct(req, res, next) {
+  try {
+    await prisma.product.delete({ where: { id: Number(req.params.id) } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 13 version of `src/controllers/productController.js`. Accept and return the owning user. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 6 — Edit `src/server.js`
+
+Mount `/users`.
+
+**File: `src/server.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { requestLogger } from './middlewares/requestLogger.js';
+
+const app = express();
+app.use(express.json());
+app.use(requestLogger);
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use(errorHandler);
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 13 version of `src/server.js`. Mount `/users`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Create a user, create a product with that `userId`, then read the product and confirm the owner is included.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 13, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   └── 20260731000200_add_users/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   └── schema.prisma
+├── src/
+│   ├── controllers/
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Provides User and Product CRUD.
+- Can assign a product to a user.
+- Returns product owner information.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Create a user, create a product with that `userId`, then read the product and confirm the owner is included.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Add a second related resource and keep both modules consistent.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Users exist, but anyone can pretend to be any user. Level 14 adds real authentication. Continue with [Day 14](<Day14-Authentication with JWT and Password Hashing.md>).

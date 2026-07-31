@@ -102,7 +102,7 @@ This replaces your local `docker-compose.yaml` PostgreSQL container. In producti
 
 | Setting       | Value                                |
 | ------------- | ------------------------------------ |
-| Build Command | `npm install && npx prisma generate` |
+| Build Command | `npm install && npx prisma generate --config prisma/prisma.config.js` |
 | Start Command | `npm start`                          |
 | Environment   | Node                                 |
 
@@ -128,7 +128,7 @@ Locally, temporarily point your `DATABASE_URL` at the production database to run
 
 ```bash
 # Run this from your local terminal, using the production DATABASE_URL
-DATABASE_URL="postgresql://username:password@dpg-xxxxx-a.oregon-postgres.render.com/dbname" npx prisma migrate deploy
+DATABASE_URL="postgresql://username:password@dpg-xxxxx-a.oregon-postgres.render.com/dbname" npx prisma migrate deploy --config prisma/prisma.config.js
 ```
 
 `prisma migrate deploy` applies existing migrations without generating new ones, which is the correct command to use in production. `prisma migrate dev` is only for local development.
@@ -185,7 +185,7 @@ Your `ALLOWED_ORIGIN` environment variable from Day 19 needs to be updated to th
 
 ### Prisma Client not generated
 
-If you see an error mentioning the Prisma client cannot be found, confirm your build command includes `npx prisma generate`, since the generated client is not committed to Git and must be created fresh on every deploy.
+If you see an error mentioning the Prisma client cannot be found, confirm your build command includes `npx prisma generate --config prisma/prisma.config.js`, since the generated client is not committed to Git and must be created fresh on every deploy.
 
 ### 502 Bad Gateway right after deploy
 
@@ -197,8 +197,8 @@ The app may still be starting up. Wait a few seconds and try again. If it persis
 
 - Production means your code reads `process.env.PORT` instead of a hardcoded port
 - Secrets are configured on the hosting platform's dashboard, never committed to Git
-- Render needs a build command (`npm install && npx prisma generate`) and a start command (`npm start`)
-- Use `npx prisma migrate deploy` to apply migrations to a production database, not `migrate dev`
+- Render needs a build command (`npm install && npx prisma generate --config prisma/prisma.config.js`) and a start command (`npm start`)
+- Use `npx prisma migrate deploy --config prisma/prisma.config.js` to apply migrations to a production database, not `migrate dev`
 - Always use a different `JWT_SECRET` in production than the one used locally
 - Most deployment failures come down to a missing environment variable or unmigrated database
 
@@ -210,7 +210,7 @@ The app may still be starting up. Wait a few seconds and try again. If it persis
 2. Create a PostgreSQL database on Render and copy its connection string.
 3. Create a web service on Render connected to your repository, with the correct build and start commands.
 4. Add all required environment variables in the Render dashboard.
-5. Run `npx prisma migrate deploy` against the production database.
+5. Run `npx prisma migrate deploy --config prisma/prisma.config.js` against the production database.
 6. Test at least three routes against your live URL.
 
 ---
@@ -218,3 +218,257 @@ The app may still be starting up. Wait a few seconds and try again. If it persis
 ## Homework
 
 Deploy your mini project to Render or Railway. Test every major route against the live URL and confirm they behave the same as they did locally. Write down the live API URL and note any deployment issues you ran into and how you fixed them.
+
+---
+
+## Campus Store Storyline Project - Level 23
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 23 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 22 is your starting checkpoint. You can review it in [Day 22](<Day22-Docker Basics for Node.js Projects.md>).
+
+You add a production health check, build command, and Render service definition.
+
+### Today’s Project Level
+
+No new package is required.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `render.yaml` | Describe the web service, build command, start command, health path, and environment variables. |
+| Edit | `package.json` | Add a production build command that generates Prisma Client. |
+| Edit | `.env.example` | Document production-safe placeholders. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 22 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 23 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Create `render.yaml`
+
+Describe the web service, build command, start command, health path, and environment variables.
+
+**File: `render.yaml`**
+
+~~~yaml
+services:
+  - type: web
+    name: campus-store-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: ALLOWED_ORIGIN
+        sync: false
+~~~
+
+This is the complete Level 23 version of `render.yaml`. Describe the web service, build command, start command, health path, and environment variables. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Edit `package.json`
+
+Add a production build command that generates Prisma Client.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js",
+    "test": "npm run db:generate && NODE_OPTIONS=--experimental-vm-modules jest --runInBand",
+    "build": "prisma generate --config prisma/prisma.config.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
+~~~
+
+This is the complete Level 23 version of `package.json`. Add a production build command that generates Prisma Client. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Edit `.env.example`
+
+Document production-safe placeholders.
+
+**File: `.env.example`**
+
+~~~properties
+# Copy this file to .env, then replace every example value.
+PORT=8888
+STORE_NAME="Campus Store"
+STORE_KEY=campus-secret
+POSTGRES_USER=campus_user
+POSTGRES_PASSWORD=campus_password
+POSTGRES_DB=campus_store
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5555
+DATABASE_URL="postgresql://campus_user:campus_password@localhost:5555/campus_store?schema=public"
+JWT_SECRET=replace_this_with_a_long_random_secret
+ALLOWED_ORIGIN=http://localhost:5173
+NODE_ENV=development
+~~~
+
+This is the complete Level 23 version of `.env.example`. Document production-safe placeholders. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `npm run build && npm start` locally with production-style environment values.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 23, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   └── 20260731000600_add_product_image/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   ├── logger.js
+│   │   ├── security.js
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   ├── app.js
+│   └── server.js
+├── tests/
+│   └── health.test.js
+├── uploads/
+│   └── .gitkeep
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── Dockerfile
+├── package-lock.json
+├── package.json
+└── render.yaml
+```
+
+Your completed checkpoint now:
+
+- Uses the host-provided `PORT` and `DATABASE_URL`.
+- Generates Prisma Client during the build.
+- Exposes `/` as a deployment health check.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `npm run build && npm start` locally with production-style environment values.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Separate local and production configuration without changing application code.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The first milestone can be deployed, but the final story still needs a transaction connecting users and products. Level 24 adds orders. Continue with [Day 24](<Day24-Final Project Development Day.md>).

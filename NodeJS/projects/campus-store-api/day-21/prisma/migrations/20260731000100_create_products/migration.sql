@@ -1,0 +1,8 @@
+CREATE TABLE "Product" (
+  "id" SERIAL PRIMARY KEY,
+  "title" TEXT NOT NULL,
+  "price" DOUBLE PRECISION NOT NULL,
+  "description" TEXT,
+  "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" TIMESTAMP(3) NOT NULL
+);

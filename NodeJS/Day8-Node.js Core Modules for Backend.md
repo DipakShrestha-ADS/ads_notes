@@ -376,469 +376,199 @@ Here is what you covered today:
 
 ---
 
-## 1. What Are Core Modules
+## Campus Store Storyline Project - Level 8
 
-When you install Node.js, it comes with a set of built-in modules called core modules. You do not need to install them with npm. They are already there, ready to use.
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 8 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-You import them by name, just like any other module:
+### Story So Far
 
-```javascript
-// Import the file system module
-import fs from 'fs';
+Level 7 is your starting checkpoint. You can review it in [Day 7](<Day7-Project Structure for Real Backend Applications.md>).
 
-// Import the path module
-import path from 'path';
+You use Node core modules to save request logs and report system information.
 
-// Import the os module
-import os from 'os';
-```
+### Today’s Project Level
 
-These modules give you tools to work with the file system, the operating system, and the Node.js runtime itself.
+No new package is required because these modules are built into Node.js.
 
----
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `src/middlewares/fileLogger.js` | Append request details to `logs/requests.log`. |
+| Edit | `src/server.js` | Register the file logger and add `GET /system`. |
+| Create | `logs/.gitkeep` | Keep the empty log directory in Git without committing log content. |
+| Edit | `.gitignore` | Ignore generated `.log` files. |
 
-## 2. The fs Module - Working With Files
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-`fs` stands for file system. This module lets you create, read, update, and delete files on your computer or server.
+### Guided Upgrade
 
-There are two ways to use most `fs` functions: synchronous (blocking) and asynchronous (non-blocking). In Node.js, the asynchronous version is almost always preferred because it does not block other code from running.
+1. Copy the complete Level 7 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 8 Project** to compare every saved file with the completed checkpoint.
 
-### Reading a file
+#### Step 1 — Create `src/middlewares/fileLogger.js`
 
-First, let us say you have a file called `notes.txt` with some text in it. Here is how to read it:
+Append request details to `logs/requests.log`.
 
-```javascript
-import fs from 'fs';
+**File: `src/middlewares/fileLogger.js`**
 
-// Read the file asynchronously
-// 'utf8' tells Node.js to decode the file as text, not raw bytes
-fs.readFile('notes.txt', 'utf8', (err, data) => {
-  // If something went wrong (file not found, no permission, etc.)
-  if (err) {
-    console.error('Error reading file:', err.message);
-    return;
-  }
+~~~javascript
+import { appendFile, mkdir } from 'node:fs/promises';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-  // If successful, data contains the file content as a string
-  console.log('File content:', data);
-});
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+const logDirectory = path.resolve(currentDir, '../../logs');
+const logFile = path.join(logDirectory, 'requests.log');
 
-console.log('This line runs BEFORE the file is read because readFile is async');
-```
-
-Line by line:
-
-- `fs.readFile('notes.txt', 'utf8', callback)` reads the file. The first argument is the file path. `'utf8'` tells Node to return the content as a human-readable string instead of a raw Buffer.
-- The callback function runs when reading is done. Node.js always passes errors as the first argument of callbacks. If `err` is not null, something went wrong.
-- `data` contains the full text content of the file.
-- The `console.log` at the bottom runs immediately, before the file is even opened. This shows that `readFile` is non-blocking.
-
-### Writing a file
-
-```javascript
-import fs from 'fs';
-
-// The content to write
-const content = 'Hello from Node.js!\nThis was written by the fs module.';
-
-// Write to a file (creates it if it does not exist, overwrites if it does)
-fs.writeFile('output.txt', content, 'utf8', (err) => {
-  if (err) {
-    console.error('Error writing file:', err.message);
-    return;
-  }
-
-  console.log('File written successfully!');
-});
-```
-
-Line by line:
-
-- `fs.writeFile('output.txt', content, 'utf8', callback)` writes the string `content` into `output.txt`.
-- If the file does not exist, it is created. If it already exists, it is completely overwritten.
-- `'utf8'` specifies the encoding so the text is written correctly.
-- The callback only receives `err`. There is no data because you are writing, not reading.
-
-### Appending to a file
-
-If you want to add text to an existing file without deleting what is already there:
-
-```javascript
-import fs from 'fs';
-
-// Add a new line to the file without erasing the existing content
-fs.appendFile('output.txt', '\nThis line was appended.', 'utf8', (err) => {
-  if (err) {
-    console.error('Error appending:', err.message);
-    return;
-  }
-
-  console.log('Line appended successfully!');
-});
-```
-
-- `fs.appendFile` works exactly like `writeFile` but adds to the end instead of replacing.
-- The `\n` at the beginning adds a newline before the appended text.
-
-### Checking if a file exists
-
-```javascript
-import fs from 'fs';
-
-// Check if a file exists before trying to read it
-fs.access('output.txt', fs.constants.F_OK, (err) => {
-  if (err) {
-    // err means the file does NOT exist
-    console.log('File does not exist');
-  } else {
-    // No error means the file exists
-    console.log('File exists');
-  }
-});
-```
-
-- `fs.access` checks if the file exists and whether you have permission to access it.
-- `fs.constants.F_OK` is a flag that checks for existence only.
-
-### Using the Promise-based version of fs
-
-Node.js also provides `fs/promises` which returns Promises instead of using callbacks. This is cleaner with async/await:
-
-```javascript
-// Import the Promise-based version
-import { readFile, writeFile } from 'fs/promises';
-
-async function handleFile() {
+export async function fileLogger(req, res, next) {
   try {
-    // Write a file
-    await writeFile('example.txt', 'This is async/await file writing!', 'utf8');
-    console.log('File written');
-
-    // Read the file back
-    const content = await readFile('example.txt', 'utf8');
-    console.log('File content:', content);
-  } catch (err) {
-    // If any error occurs, it is caught here
-    console.error('File error:', err.message);
+    await mkdir(logDirectory, { recursive: true });
+    await appendFile(logFile, `${new Date().toISOString()} ${req.method} ${req.originalUrl}\n`);
+  } catch (error) {
+    console.error('Could not write request log:', error.message);
   }
+  next();
 }
+~~~
 
-handleFile();
-```
+This is the complete Level 8 version of `src/middlewares/fileLogger.js`. Append request details to `logs/requests.log`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-Line by line:
+#### Step 2 — Edit `src/server.js`
 
-- `import { readFile, writeFile } from 'fs/promises'` imports the async versions.
-- `await writeFile(...)` writes the file and waits for it to finish before moving on.
-- `await readFile(...)` reads it back. The result is stored in `content`.
-- `try/catch` handles errors cleanly. If either operation fails, the catch block runs.
+Register the file logger and add `GET /system`.
 
-This style is recommended in modern Node.js code because it is more readable.
+**File: `src/server.js`**
 
----
-
-## 3. The path Module - Working With File Paths
-
-The `path` module helps you create and manipulate file paths in a way that works across all operating systems.
-
-On macOS and Linux, paths use forward slashes: `/users/ali/notes.txt`
-
-On Windows, paths use backslashes: `C:\Users\ali\notes.txt`
-
-If you manually write slashes in your code, it might break on a different operating system. The `path` module handles this automatically.
-
-### path.join
-
-`path.join` combines parts of a path together using the correct separator for your OS:
-
-```javascript
-import path from 'path';
-
-// Combine path parts safely
-const filePath = path.join('data', 'users', 'profile.json');
-
-console.log(filePath);
-// On macOS/Linux: data/users/profile.json
-// On Windows: data\users\profile.json
-```
-
-- `path.join('data', 'users', 'profile.json')` joins three segments into one path.
-- You never need to manually add slashes.
-
-### path.resolve
-
-`path.resolve` creates an absolute path by starting from the current directory:
-
-```javascript
-import path from 'path';
-
-// Get absolute path of a file relative to the current directory
-const absolutePath = path.resolve('data', 'users.json');
-
-console.log(absolutePath);
-// Something like: /Users/ali/projects/day8/data/users.json
-```
-
-- `path.resolve` is like `path.join` but always returns an absolute path starting from the current working directory.
-
-### path.dirname and path.basename
-
-```javascript
-import path from 'path';
-
-const filePath = '/Users/ali/projects/day8/app.js';
-
-// Get the directory containing the file
-console.log(path.dirname(filePath));
-// Output: /Users/ali/projects/day8
-
-// Get just the filename
-console.log(path.basename(filePath));
-// Output: app.js
-
-// Get the filename without the extension
-console.log(path.basename(filePath, '.js'));
-// Output: app
-
-// Get just the extension
-console.log(path.extname(filePath));
-// Output: .js
-```
-
-Line by line:
-
-- `path.dirname(filePath)` returns everything up to the last `/`. It gives you the folder the file lives in.
-- `path.basename(filePath)` returns just the filename including the extension.
-- `path.basename(filePath, '.js')` removes the given extension from the returned filename.
-- `path.extname(filePath)` returns only the file extension including the dot.
-
-### Using __dirname equivalent in ES Modules
-
-In older CommonJS files, `__dirname` gave you the current directory path. In ES Modules (with `"type": "module"` in package.json), `__dirname` is not available. Here is the modern replacement:
-
-```javascript
-import { fileURLToPath } from 'url';
-import path from 'path';
-
-// __filename is the full path to this file
-const __filename = fileURLToPath(import.meta.url);
-
-// __dirname is the folder this file is in
-const __dirname = path.dirname(__filename);
-
-console.log('Current file:', __filename);
-console.log('Current folder:', __dirname);
-
-// Now you can use __dirname to build paths
-const dataFolder = path.join(__dirname, 'data');
-console.log('Data folder:', dataFolder);
-```
-
-Line by line:
-
-- `import.meta.url` gives you the URL of the current file (e.g., `file:///Users/ali/app.js`).
-- `fileURLToPath(import.meta.url)` converts that URL to a plain file system path.
-- `path.dirname(__filename)` extracts the folder from the full file path.
-- Now `__dirname` works just like in CommonJS projects.
-
----
-
-## 4. The os Module - System Information
-
-The `os` module gives you information about the operating system and machine that Node.js is running on.
-
-```javascript
-import os from 'os';
-
-// Get the platform (win32, darwin, linux)
-console.log('Platform:', os.platform());
-
-// Get the OS version details
-console.log('OS Type:', os.type());
-
-// Get the computer's hostname (the name of the machine)
-console.log('Hostname:', os.hostname());
-
-// Get total RAM in bytes, converted to GB
-const totalRAM = (os.totalmem() / 1024 / 1024 / 1024).toFixed(2);
-console.log('Total RAM:', totalRAM, 'GB');
-
-// Get currently available (free) RAM
-const freeRAM = (os.freemem() / 1024 / 1024 / 1024).toFixed(2);
-console.log('Free RAM:', freeRAM, 'GB');
-
-// Get number of CPU cores
-console.log('CPU Cores:', os.cpus().length);
-
-// Get the home directory of the current user
-console.log('Home Directory:', os.homedir());
-```
-
-Line by line:
-
-- `os.platform()` returns a string like `'darwin'` for macOS, `'win32'` for Windows, `'linux'` for Linux.
-- `os.type()` returns a fuller OS name like `'Darwin'` or `'Linux'`.
-- `os.hostname()` returns the machine's network name.
-- `os.totalmem()` returns total RAM in bytes. Dividing by `1024` three times converts bytes to gigabytes.
-- `.toFixed(2)` rounds the number to 2 decimal places.
-- `os.cpus()` returns an array where each item represents one CPU core. `.length` counts them.
-- `os.homedir()` returns the current user's home folder path.
-
----
-
-## 5. The process Object - Runtime Information
-
-`process` is a global object in Node.js. It does not need to be imported. It gives you information about the currently running Node.js process.
-
-```javascript
-// Print the Node.js version
-console.log('Node.js version:', process.version);
-
-// Print the current working directory
-console.log('Working directory:', process.cwd());
-
-// Print all environment variables
-// (not recommended to print in production, shows passwords etc.)
-console.log('PORT env variable:', process.env.PORT);
-
-// Print how long the process has been running (in seconds)
-console.log('Uptime:', process.uptime().toFixed(2), 'seconds');
-
-// Print memory usage
-const mem = process.memoryUsage();
-const usedMB = (mem.heapUsed / 1024 / 1024).toFixed(2);
-console.log('Memory used:', usedMB, 'MB');
-```
-
-Line by line:
-
-- `process.version` shows the Node.js version string.
-- `process.cwd()` returns the current working directory from which the script was run. `cwd` stands for "current working directory."
-- `process.env.PORT` reads the `PORT` environment variable. All env vars are accessible through `process.env`.
-- `process.uptime()` returns how many seconds the Node.js process has been running.
-- `process.memoryUsage()` returns an object with memory statistics. `heapUsed` is how much heap memory is being used. Dividing by `1024` twice converts bytes to megabytes.
-
-### Handling process exit
-
-```javascript
-// Listen for when the process is about to exit
-process.on('exit', (code) => {
-  // This runs right before Node.js shuts down
-  console.log(`Process exiting with code: ${code}`);
-});
-
-// Listen for Ctrl+C in the terminal
-process.on('SIGINT', () => {
-  console.log('Server stopped by user (Ctrl+C)');
-  // Exit cleanly with code 0
-  process.exit(0);
-});
-```
-
-Line by line:
-
-- `process.on('exit', callback)` registers a listener. When the Node.js process is about to shut down, this runs.
-- `process.on('SIGINT', callback)` listens for the Ctrl+C signal from the terminal. This is useful for running cleanup code when you stop the server.
-- `process.exit(0)` manually stops the process. Code `0` means success.
-
----
-
-## 6. Practical Use in a Backend App
-
-Let us combine these modules in a small practical example: a simple request logger that writes logs to a file.
-
-```javascript
+~~~javascript
 import 'dotenv/config';
 import express from 'express';
-import { appendFile } from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import os from 'node:os';
+import productRoutes from './routes/productRoutes.js';
+import { fileLogger } from './middlewares/fileLogger.js';
+import { requestLogger } from './middlewares/requestLogger.js';
 
 const app = express();
 app.use(express.json());
-
-// Build the path to the log file, relative to the current folder
-const logFilePath = path.join(__dirname, 'requests.log');
-
-// Middleware that writes every request to a log file
-async function fileLogger(req, res, next) {
-  const timestamp = new Date().toISOString();
-  const logEntry = `[${timestamp}] ${req.method} ${req.url}\n`;
-
-  try {
-    // Append the log entry to the log file
-    await appendFile(logFilePath, logEntry, 'utf8');
-  } catch (err) {
-    // If logging fails, just print to console instead of crashing the app
-    console.error('Could not write to log file:', err.message);
-  }
-
-  // Always continue to the next middleware regardless of logging success
-  next();
-}
-
-// Apply file logging globally
+app.use(requestLogger);
 app.use(fileLogger);
-
 app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/products', productRoutes);
+app.get('/system', (req, res) => {
   res.json({
-    message: 'Server is running',
     nodeVersion: process.version,
-    platform: process.platform,
-    uptime: process.uptime().toFixed(2) + ' seconds'
+    platform: os.platform(),
+    uptimeSeconds: Math.round(process.uptime()),
+    freeMemoryBytes: os.freemem(),
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-  console.log(`Logs will be saved to: ${logFilePath}`);
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
 });
+~~~
+
+This is the complete Level 8 version of `src/server.js`. Register the file logger and add `GET /system`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Create `logs/.gitkeep`
+
+Keep the empty log directory in Git without committing log content.
+
+**File: `logs/.gitkeep`**
+
+~~~text
+
+~~~
+
+This is the complete Level 8 version of `logs/.gitkeep`. Keep the empty log directory in Git without committing log content. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Edit `.gitignore`
+
+Ignore generated `.log` files.
+
+**File: `.gitignore`**
+
+~~~text
+node_modules/
+.env
+logs/*.log
+!logs/.gitkeep
+~~~
+
+This is the complete Level 8 version of `.gitignore`. Ignore generated `.log` files. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Call two routes, open `logs/requests.log`, then call `GET /system`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 8, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── logs/
+│   └── .gitkeep
+├── src/
+│   ├── controllers/
+│   │   └── productController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── middlewares/
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   └── productRoutes.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
-Line by line for the middleware:
+Your completed checkpoint now:
 
-- `const logEntry = \`...\`` creates the log string with timestamp, method, and URL.
-- `await appendFile(logFilePath, logEntry, 'utf8')` appends the log entry to the file. If the file does not exist yet, it creates it.
-- The `try/catch` ensures that even if file logging fails, the request still continues. Never let logging break your actual API.
-- `next()` is called outside the try/catch so it always runs.
+- Writes one log line for every request.
+- Returns platform, Node version, uptime, and free memory.
 
-The GET `/` route shows how `process` gives useful runtime information that you can include in API responses.
+Completion checklist:
 
----
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Call two routes, open `logs/requests.log`, then call `GET /system`.
+- You can explain what today’s new files do without reading the code word for word.
 
-## Summary
+### Use This in Your Assigned Project
 
-Here is what you covered today:
+Use `fs`, `path`, `os`, and `process` whenever an assigned project needs local files or runtime information.
 
-- Core modules come built into Node.js and do not need to be installed.
-- The `fs` module reads, writes, and appends to files. Use `fs/promises` with async/await for modern code.
-- The `path` module joins and manipulates file paths in a way that works on all operating systems.
-- In ES Module projects, use `fileURLToPath(import.meta.url)` and `path.dirname()` to recreate `__dirname`.
-- The `os` module gives system information like RAM, CPU cores, platform, and hostname.
-- The `process` object is always available without importing. It provides the Node.js version, environment variables, uptime, and memory usage.
-- These modules are especially useful for logging, reading config files, serving static files, and running system checks.
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
----
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-## Practice Tasks
+For your own project:
 
-1. Create a file called `student-info.txt` using the `fs` module. Write your name, age, and course name into it.
-2. Read the file back and print the contents to the console.
-3. Append a new line to the file with today's date.
-4. Use the `path` module to construct the path to the file using `path.join`.
-5. Print system information to the console: OS platform, total RAM, number of CPU cores, and the current Node.js version.
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
----
+### Next Level
 
-## Homework
-
-- Create a Node.js file that does the following:
-  - Uses `path.join` and `__dirname` to build a file path.
-  - Writes student information (name, course, date) to that file.
-  - Reads the file back and prints it.
-  - Prints system info using the `os` and `process` modules.
-- Write a short note: in what situation in a real backend app would you use the `fs` module? Give two examples.
+The API still forgets products after a restart. Level 9 prepares a PostgreSQL database. Continue with [Day 9](<Day9-Database Fundamentals and PostgreSQL Introduction.md>).

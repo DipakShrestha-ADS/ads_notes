@@ -1,0 +1,41 @@
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js",
+    "test": "npm run db:generate && NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}

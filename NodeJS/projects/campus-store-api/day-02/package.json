@@ -1,0 +1,18 @@
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

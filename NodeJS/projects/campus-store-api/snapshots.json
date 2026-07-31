@@ -1,0 +1,4383 @@
+{
+  "schemaVersion": 1,
+  "projectId": "campus-store-api",
+  "title": "Campus Store API",
+  "description": "Cumulative runnable checkpoints for the 25-day Node.js course.",
+  "days": [
+    {
+      "day": 1,
+      "title": "The Store Status Script",
+      "notePath": "NodeJS/Day1-Introduction to Backend, API, and Node.js.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-01",
+      "entryFile": "app.js",
+      "folders": [],
+      "files": [
+        {
+          "path": "app.js",
+          "language": "javascript",
+          "size": 330,
+          "description": "Express application configuration without network startup"
+        }
+      ]
+    },
+    {
+      "day": 2,
+      "title": "A Real npm Project",
+      "notePath": "NodeJS/Day2-Node.js Runtime, npm, package.json, and Environment Variables.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-02",
+      "entryFile": "src/server.js",
+      "folders": [
+        "src"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 96,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 13368,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 376,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 246,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 3,
+      "title": "The API Blueprint",
+      "notePath": "NodeJS/Day3-HTTP Fundamentals and REST API Concepts.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-03",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "src"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 96,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 13368,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 376,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 246,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 4,
+      "title": "The First Express Counter",
+      "notePath": "NodeJS/Day4-Express.js Introduction and First Server.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-04",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "src"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 96,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 654,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 5,
+      "title": "In-Memory Product CRUD",
+      "notePath": "NodeJS/Day5-CRUD API Basics with Express.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-05",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "src"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 96,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 1787,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 6,
+      "title": "The Request Checkpoint",
+      "notePath": "NodeJS/Day6-Middleware in Express.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-06",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "src",
+        "src/middlewares"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 120,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 2087,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 7,
+      "title": "A Professional Folder Structure",
+      "notePath": "NodeJS/Day7-Project Structure for Real Backend Applications.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-07",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/middlewares",
+        "src/routes"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 120,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 19,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1520,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 702,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 8,
+      "title": "Persistent Request Logs",
+      "notePath": "NodeJS/Day8-Node.js Core Modules for Backend.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-08",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/middlewares",
+        "src/routes"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 120,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1520,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 832,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 9,
+      "title": "The Database Foundation",
+      "notePath": "NodeJS/Day9-Database Fundamentals and PostgreSQL Introduction.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-09",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/middlewares",
+        "src/routes"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 346,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 42616,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 401,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1520,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 832,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 10,
+      "title": "Products in PostgreSQL",
+      "notePath": "NodeJS/Day10-Connecting Node.js with PostgreSQL.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-10",
+      "entryFile": "src/server.js",
+      "folders": [
+        "database",
+        "docs",
+        "logs",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 346,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "database/init.sql",
+          "language": "sql",
+          "size": 336,
+          "description": "Campus Store project file: database/init.sql"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 384,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 48054,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 422,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1748,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/pool.js",
+          "language": "javascript",
+          "size": 160,
+          "description": "Campus Store project file: src/db/pool.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 646,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 11,
+      "title": "Prisma Replaces Raw SQL",
+      "notePath": "NodeJS/Day11-Prisma ORM Basics.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-11",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 346,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 64269,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 728,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 412,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1373,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 646,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 12,
+      "title": "Validation and Safe Errors",
+      "notePath": "NodeJS/Day12-Validation and Error Handling.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-12",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 346,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 64647,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 750,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 412,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1873,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 606,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 13,
+      "title": "Milestone One: Users and Products",
+      "notePath": "NodeJS/Day13-Mini Project 1 User and Product API.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-13",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 346,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 64647,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 750,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 730,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1949,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 686,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 14,
+      "title": "Registration and Login",
+      "notePath": "NodeJS/Day14-Authentication with JWT and Password Hashing.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-14",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 396,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 70993,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 804,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 749,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1949,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 402,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 678,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 15,
+      "title": "Customer and Admin Permissions",
+      "notePath": "NodeJS/Day15-Authorization and Role-Based Access Control.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-15",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 396,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 70993,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 839,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 824,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 1949,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 624,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 678,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 16,
+      "title": "A Searchable Product Catalogue",
+      "notePath": "NodeJS/Day16-Advanced REST API Features.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-16",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 396,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 60,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 70993,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 839,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 868,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 624,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 678,
+          "description": "Application entry point that starts the HTTP server"
+        }
+      ]
+    },
+    {
+      "day": 17,
+      "title": "Product Image Uploads",
+      "notePath": "NodeJS/Day17-File Uploads and Static File Serving.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-17",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 396,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 88,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 76470,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 863,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 846,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 891,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 18,
+      "title": "Interactive API Documentation",
+      "notePath": "NodeJS/Day18-API Documentation with Swagger.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-18",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 396,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 88,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 93148,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 930,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 1063,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 19,
+      "title": "Security at the Front Door",
+      "notePath": "NodeJS/Day19-Security Essentials for Node.js APIs.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-19",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 88,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 95491,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1012,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 241,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 1258,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 20,
+      "title": "Evidence-Based Debugging",
+      "notePath": "NodeJS/Day20-Logging and Debugging.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-20",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 88,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 106255,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1063,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 1420,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 21,
+      "title": "Automated API Tests",
+      "notePath": "NodeJS/Day21-Testing APIs with Jest and Supertest.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-21",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "tests",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 98,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 316,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 270266,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1207,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/app.js",
+          "language": "javascript",
+          "size": 1378,
+          "description": "Express application configuration without network startup"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 200,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "tests/health.test.js",
+          "language": "javascript",
+          "size": 754,
+          "description": "Campus Store project file: tests/health.test.js"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 22,
+      "title": "A Reproducible Container Stack",
+      "notePath": "NodeJS/Day22-Docker Basics for Node.js Projects.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-22",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "tests",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".dockerignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .dockerignore"
+        },
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 98,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 670,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "Dockerfile",
+          "language": "dockerfile",
+          "size": 143,
+          "description": "Production container image instructions"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 270266,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1207,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "src/app.js",
+          "language": "javascript",
+          "size": 1378,
+          "description": "Express application configuration without network startup"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 200,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "tests/health.test.js",
+          "language": "javascript",
+          "size": 754,
+          "description": "Campus Store project file: tests/health.test.js"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 23,
+      "title": "Production Preparation",
+      "notePath": "NodeJS/Day23-Deployment Basics.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-23",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "tests",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".dockerignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .dockerignore"
+        },
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 98,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 670,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "Dockerfile",
+          "language": "dockerfile",
+          "size": 143,
+          "description": "Production container image instructions"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 270266,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1272,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 890,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "render.yaml",
+          "language": "yaml",
+          "size": 376,
+          "description": "Campus Store project file: render.yaml"
+        },
+        {
+          "path": "src/app.js",
+          "language": "javascript",
+          "size": 1378,
+          "description": "Express application configuration without network startup"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 200,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "tests/health.test.js",
+          "language": "javascript",
+          "size": 754,
+          "description": "Campus Store project file: tests/health.test.js"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 24,
+      "title": "The Orders Module",
+      "notePath": "NodeJS/Day24-Final Project Development Day.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-24",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "prisma/migrations/20260731000700_add_orders",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "tests",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".dockerignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .dockerignore"
+        },
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 98,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 670,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "Dockerfile",
+          "language": "dockerfile",
+          "size": 143,
+          "description": "Production container image instructions"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 270266,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1272,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000700_add_orders/migration.sql",
+          "language": "sql",
+          "size": 550,
+          "description": "Campus Store project file: prisma/migrations/20260731000700_add_orders/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 1279,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "render.yaml",
+          "language": "yaml",
+          "size": 376,
+          "description": "Campus Store project file: render.yaml"
+        },
+        {
+          "path": "src/app.js",
+          "language": "javascript",
+          "size": 1462,
+          "description": "Express application configuration without network startup"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/orderController.js",
+          "language": "javascript",
+          "size": 1169,
+          "description": "Campus Store project file: src/controllers/orderController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/orderRoutes.js",
+          "language": "javascript",
+          "size": 312,
+          "description": "Campus Store project file: src/routes/orderRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/orderSchemas.js",
+          "language": "javascript",
+          "size": 161,
+          "description": "Campus Store project file: src/schemas/orderSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 200,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "tests/health.test.js",
+          "language": "javascript",
+          "size": 754,
+          "description": "Campus Store project file: tests/health.test.js"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    },
+    {
+      "day": 25,
+      "title": "The Complete Campus Store API",
+      "notePath": "NodeJS/Day25-Final Project Completion, Presentation, and Course Review.md",
+      "rootPath": "NodeJS/projects/campus-store-api/day-25",
+      "entryFile": "src/server.js",
+      "folders": [
+        "docs",
+        "logs",
+        "prisma",
+        "prisma/migrations",
+        "prisma/migrations/20260731000100_create_products",
+        "prisma/migrations/20260731000200_add_users",
+        "prisma/migrations/20260731000300_add_authentication",
+        "prisma/migrations/20260731000400_add_roles",
+        "prisma/migrations/20260731000500_add_category",
+        "prisma/migrations/20260731000600_add_product_image",
+        "prisma/migrations/20260731000700_add_orders",
+        "src",
+        "src/config",
+        "src/controllers",
+        "src/data",
+        "src/db",
+        "src/middlewares",
+        "src/routes",
+        "src/schemas",
+        "tests",
+        "uploads"
+      ],
+      "files": [
+        {
+          "path": ".dockerignore",
+          "language": "text",
+          "size": 45,
+          "description": "Campus Store project file: .dockerignore"
+        },
+        {
+          "path": ".env.example",
+          "language": "properties",
+          "size": 454,
+          "description": "Campus Store project file: .env.example"
+        },
+        {
+          "path": ".gitignore",
+          "language": "text",
+          "size": 98,
+          "description": "Campus Store project file: .gitignore"
+        },
+        {
+          "path": "docker-compose.yaml",
+          "language": "yaml",
+          "size": 670,
+          "description": "Podman Compose services and volumes"
+        },
+        {
+          "path": "Dockerfile",
+          "language": "dockerfile",
+          "size": 143,
+          "description": "Production container image instructions"
+        },
+        {
+          "path": "docs/api-plan.md",
+          "language": "markdown",
+          "size": 810,
+          "description": "Campus Store project file: docs/api-plan.md"
+        },
+        {
+          "path": "docs/data-model.md",
+          "language": "markdown",
+          "size": 332,
+          "description": "Campus Store project file: docs/data-model.md"
+        },
+        {
+          "path": "logs/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: logs/.gitkeep"
+        },
+        {
+          "path": "package-lock.json",
+          "language": "json",
+          "size": 270266,
+          "description": "Campus Store project file: package-lock.json"
+        },
+        {
+          "path": "package.json",
+          "language": "json",
+          "size": 1272,
+          "description": "Project scripts and dependency declarations"
+        },
+        {
+          "path": "prisma/migrations/20260731000100_create_products/migration.sql",
+          "language": "sql",
+          "size": 238,
+          "description": "Campus Store project file: prisma/migrations/20260731000100_create_products/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000200_add_users/migration.sql",
+          "language": "sql",
+          "size": 459,
+          "description": "Campus Store project file: prisma/migrations/20260731000200_add_users/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000300_add_authentication/migration.sql",
+          "language": "sql",
+          "size": 56,
+          "description": "Campus Store project file: prisma/migrations/20260731000300_add_authentication/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000400_add_roles/migration.sql",
+          "language": "sql",
+          "size": 123,
+          "description": "Campus Store project file: prisma/migrations/20260731000400_add_roles/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000500_add_category/migration.sql",
+          "language": "sql",
+          "size": 77,
+          "description": "Campus Store project file: prisma/migrations/20260731000500_add_category/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000600_add_product_image/migration.sql",
+          "language": "sql",
+          "size": 50,
+          "description": "Campus Store project file: prisma/migrations/20260731000600_add_product_image/migration.sql"
+        },
+        {
+          "path": "prisma/migrations/20260731000700_add_orders/migration.sql",
+          "language": "sql",
+          "size": 550,
+          "description": "Campus Store project file: prisma/migrations/20260731000700_add_orders/migration.sql"
+        },
+        {
+          "path": "prisma/prisma.config.js",
+          "language": "javascript",
+          "size": 233,
+          "description": "Campus Store project file: prisma/prisma.config.js"
+        },
+        {
+          "path": "prisma/schema.prisma",
+          "language": "prisma",
+          "size": 1279,
+          "description": "Prisma database models and relationships"
+        },
+        {
+          "path": "prisma/seed.js",
+          "language": "javascript",
+          "size": 423,
+          "description": "Campus Store project file: prisma/seed.js"
+        },
+        {
+          "path": "README.md",
+          "language": "markdown",
+          "size": 902,
+          "description": "Project setup, routes, verification, and adaptation guide"
+        },
+        {
+          "path": "render.yaml",
+          "language": "yaml",
+          "size": 376,
+          "description": "Campus Store project file: render.yaml"
+        },
+        {
+          "path": "src/app.js",
+          "language": "javascript",
+          "size": 1462,
+          "description": "Express application configuration without network startup"
+        },
+        {
+          "path": "src/config/logger.js",
+          "language": "javascript",
+          "size": 636,
+          "description": "Campus Store project file: src/config/logger.js"
+        },
+        {
+          "path": "src/config/security.js",
+          "language": "javascript",
+          "size": 448,
+          "description": "Campus Store project file: src/config/security.js"
+        },
+        {
+          "path": "src/config/swagger.js",
+          "language": "javascript",
+          "size": 507,
+          "description": "Campus Store project file: src/config/swagger.js"
+        },
+        {
+          "path": "src/controllers/authController.js",
+          "language": "javascript",
+          "size": 1945,
+          "description": "Campus Store project file: src/controllers/authController.js"
+        },
+        {
+          "path": "src/controllers/orderController.js",
+          "language": "javascript",
+          "size": 1169,
+          "description": "Campus Store project file: src/controllers/orderController.js"
+        },
+        {
+          "path": "src/controllers/productController.js",
+          "language": "javascript",
+          "size": 3185,
+          "description": "Campus Store project file: src/controllers/productController.js"
+        },
+        {
+          "path": "src/controllers/userController.js",
+          "language": "javascript",
+          "size": 1759,
+          "description": "Campus Store project file: src/controllers/userController.js"
+        },
+        {
+          "path": "src/data/products.js",
+          "language": "javascript",
+          "size": 296,
+          "description": "Campus Store project file: src/data/products.js"
+        },
+        {
+          "path": "src/db/prisma.js",
+          "language": "javascript",
+          "size": 286,
+          "description": "Campus Store project file: src/db/prisma.js"
+        },
+        {
+          "path": "src/middlewares/authenticate.js",
+          "language": "javascript",
+          "size": 432,
+          "description": "Campus Store project file: src/middlewares/authenticate.js"
+        },
+        {
+          "path": "src/middlewares/authorize.js",
+          "language": "javascript",
+          "size": 281,
+          "description": "Campus Store project file: src/middlewares/authorize.js"
+        },
+        {
+          "path": "src/middlewares/errorHandler.js",
+          "language": "javascript",
+          "size": 401,
+          "description": "Campus Store project file: src/middlewares/errorHandler.js"
+        },
+        {
+          "path": "src/middlewares/fileLogger.js",
+          "language": "javascript",
+          "size": 621,
+          "description": "Campus Store project file: src/middlewares/fileLogger.js"
+        },
+        {
+          "path": "src/middlewares/requestLogger.js",
+          "language": "javascript",
+          "size": 172,
+          "description": "Campus Store project file: src/middlewares/requestLogger.js"
+        },
+        {
+          "path": "src/middlewares/requireStoreKey.js",
+          "language": "javascript",
+          "size": 294,
+          "description": "Campus Store project file: src/middlewares/requireStoreKey.js"
+        },
+        {
+          "path": "src/middlewares/uploadProductImage.js",
+          "language": "javascript",
+          "size": 724,
+          "description": "Campus Store project file: src/middlewares/uploadProductImage.js"
+        },
+        {
+          "path": "src/routes/authRoutes.js",
+          "language": "javascript",
+          "size": 337,
+          "description": "Campus Store project file: src/routes/authRoutes.js"
+        },
+        {
+          "path": "src/routes/orderRoutes.js",
+          "language": "javascript",
+          "size": 312,
+          "description": "Campus Store project file: src/routes/orderRoutes.js"
+        },
+        {
+          "path": "src/routes/productRoutes.js",
+          "language": "javascript",
+          "size": 1091,
+          "description": "Campus Store project file: src/routes/productRoutes.js"
+        },
+        {
+          "path": "src/routes/userRoutes.js",
+          "language": "javascript",
+          "size": 368,
+          "description": "Campus Store project file: src/routes/userRoutes.js"
+        },
+        {
+          "path": "src/schemas/authSchemas.js",
+          "language": "javascript",
+          "size": 250,
+          "description": "Campus Store project file: src/schemas/authSchemas.js"
+        },
+        {
+          "path": "src/schemas/orderSchemas.js",
+          "language": "javascript",
+          "size": 161,
+          "description": "Campus Store project file: src/schemas/orderSchemas.js"
+        },
+        {
+          "path": "src/schemas/productSchemas.js",
+          "language": "javascript",
+          "size": 442,
+          "description": "Campus Store project file: src/schemas/productSchemas.js"
+        },
+        {
+          "path": "src/schemas/userSchemas.js",
+          "language": "javascript",
+          "size": 188,
+          "description": "Campus Store project file: src/schemas/userSchemas.js"
+        },
+        {
+          "path": "src/server.js",
+          "language": "javascript",
+          "size": 200,
+          "description": "Application entry point that starts the HTTP server"
+        },
+        {
+          "path": "tests/health.test.js",
+          "language": "javascript",
+          "size": 754,
+          "description": "Campus Store project file: tests/health.test.js"
+        },
+        {
+          "path": "uploads/.gitkeep",
+          "language": "text",
+          "size": 0,
+          "description": "Campus Store project file: uploads/.gitkeep"
+        }
+      ]
+    }
+  ]
+}

@@ -24,80 +24,20 @@ The `pg` package gives you a `Pool` class. A pool manages a group of database co
 
 ---
 
-## 2. Project Setup
+## 2. Continue the Campus Store Project
 
-```bash
-mkdir day10-postgres-connect
-cd day10-postgres-connect
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares
-```
+Start with the completed Level 9 checkpoint from [Day 9](<Day9-Database Fundamentals and PostgreSQL Introduction.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Start with `podman compose up -d`, then run `npm run dev`.
 
-```json
-{
-  "name": "day10-postgres-connect",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Create `database/init.sql`**: Create and seed the products table.
+- **Create `src/db/pool.js`**: Create the shared PostgreSQL connection pool.
+- **Replace `src/controllers/productController.js`**: Use parameterized CRUD queries.
+- **Edit `docker-compose.yaml`**: Mount the initialization SQL file.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day10_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day10_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml`:
-
-```yaml
-services:
-  postgres:
-    image: postgres:16
-    restart: always
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${POSTGRES_PORT}:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-
-volumes:
-  pgdata:
-```
-
-Start the database:
-
-```bash
-podman compose up -d
-```
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 3. Creating the Database Connection File
 
@@ -414,3 +354,275 @@ Every query in this course uses parameterized placeholders. This is not optional
 ## Homework
 
 Build a complete CRUD API connected to PostgreSQL for a `products` table. Products should have `title`, `price`, and `description` fields. Test all routes and verify data persists in the database across server restarts.
+
+---
+
+## Campus Store Storyline Project - Level 10
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 10 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 9 is your starting checkpoint. You can review it in [Day 9](<Day9-Database Fundamentals and PostgreSQL Introduction.md>).
+
+You replace the temporary product array with parameterized PostgreSQL queries.
+
+### Today’s Project Level
+
+Start with `podman compose up -d`, then run `npm run dev`.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add the PostgreSQL driver used by the raw SQL connection pool. |
+| Regenerate | `package-lock.json` | Record the installed PostgreSQL driver dependency tree. |
+| Create | `database/init.sql` | Create and seed the products table. |
+| Create | `src/db/pool.js` | Create the shared PostgreSQL connection pool. |
+| Replace | `src/controllers/productController.js` | Use parameterized CRUD queries. |
+| Edit | `docker-compose.yaml` | Mount the initialization SQL file. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 9 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 10 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add the PostgreSQL driver used by the raw SQL connection pool.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
+~~~
+
+This is the complete Level 10 version of `package.json`. Add the PostgreSQL driver used by the raw SQL connection pool. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Regenerate `package-lock.json`
+
+Do not type or edit `package-lock.json` by hand. Record the installed PostgreSQL driver dependency tree. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
+
+#### Step 3 — Create `database/init.sql`
+
+Create and seed the products table.
+
+**File: `database/init.sql`**
+
+~~~sql
+CREATE TABLE IF NOT EXISTS products (
+  id SERIAL PRIMARY KEY,
+  title VARCHAR(150) NOT NULL,
+  price NUMERIC(10, 2) NOT NULL CHECK (price > 0),
+  description TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO products (title, price, description)
+VALUES ('Notebook', 4.50, 'A ruled notebook')
+ON CONFLICT DO NOTHING;
+~~~
+
+This is the complete Level 10 version of `database/init.sql`. Create and seed the products table. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/db/pool.js`
+
+Create the shared PostgreSQL connection pool.
+
+**File: `src/db/pool.js`**
+
+~~~javascript
+import 'dotenv/config';
+import pg from 'pg';
+
+const { Pool } = pg;
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+
+export default pool;
+~~~
+
+This is the complete Level 10 version of `src/db/pool.js`. Create the shared PostgreSQL connection pool. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Replace `src/controllers/productController.js`
+
+Use parameterized CRUD queries.
+
+**File: `src/controllers/productController.js`**
+
+~~~javascript
+import pool from '../db/pool.js';
+
+export async function getAllProducts(req, res, next) {
+  try {
+    const result = await pool.query('SELECT * FROM products ORDER BY id');
+    res.json({ data: result.rows });
+  } catch (error) { next(error); }
+}
+
+export async function getProductById(req, res, next) {
+  try {
+    const result = await pool.query('SELECT * FROM products WHERE id = $1', [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ message: 'Product not found' });
+    res.json({ data: result.rows[0] });
+  } catch (error) { next(error); }
+}
+
+export async function createProduct(req, res, next) {
+  try {
+    const { title, price, description = null } = req.body;
+    const result = await pool.query(
+      'INSERT INTO products (title, price, description) VALUES ($1, $2, $3) RETURNING *',
+      [title, price, description],
+    );
+    res.status(201).json({ data: result.rows[0] });
+  } catch (error) { next(error); }
+}
+
+export async function updateProduct(req, res, next) {
+  try {
+    const { title, price, description = null } = req.body;
+    const result = await pool.query(
+      'UPDATE products SET title = $1, price = $2, description = $3 WHERE id = $4 RETURNING *',
+      [title, price, description, req.params.id],
+    );
+    if (!result.rows[0]) return res.status(404).json({ message: 'Product not found' });
+    res.json({ data: result.rows[0] });
+  } catch (error) { next(error); }
+}
+
+export async function deleteProduct(req, res, next) {
+  try {
+    const result = await pool.query('DELETE FROM products WHERE id = $1 RETURNING id', [req.params.id]);
+    if (!result.rows[0]) return res.status(404).json({ message: 'Product not found' });
+    res.status(204).send();
+  } catch (error) { next(error); }
+}
+~~~
+
+This is the complete Level 10 version of `src/controllers/productController.js`. Use parameterized CRUD queries. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 6 — Edit `docker-compose.yaml`
+
+Mount the initialization SQL file.
+
+**File: `docker-compose.yaml`**
+
+~~~yaml
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+volumes:
+  pgdata:
+~~~
+
+This is the complete Level 10 version of `docker-compose.yaml`. Mount the initialization SQL file. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Create a product, restart Node.js, then confirm the product still appears in `GET /products`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 10, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── database/
+│   └── init.sql
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── src/
+│   ├── controllers/
+│   │   └── productController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── pool.js
+│   ├── middlewares/
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   └── productRoutes.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Persists products across API restarts.
+- Uses `$1`, `$2`, and `$3` placeholders instead of unsafe string construction.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Create a product, restart Node.js, then confirm the product still appears in `GET /products`.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Move any main resource from memory into persistent SQL storage.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Raw SQL works, but every query is handwritten. Level 11 replaces it with Prisma. Continue with [Day 11](<Day11-Prisma ORM Basics.md>).

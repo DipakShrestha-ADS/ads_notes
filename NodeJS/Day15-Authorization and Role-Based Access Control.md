@@ -31,59 +31,21 @@ Status codes for each:
 
 ---
 
-## 2. Project Setup
+## 2. Continue the Campus Store Project
 
-```bash
-mkdir day15-authorization
-cd day15-authorization
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod bcrypt jsonwebtoken
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares src/schemas
-```
+Start with the completed Level 14 checkpoint from [Day 14](<Day14-Authentication with JWT and Password Hashing.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run the role migration, generate Prisma Client, then run `npm run seed`.
 
-```json
-{
-  "name": "day15-authorization",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Replace `prisma/schema.prisma`**: Add the Role enum and User role field.
+- **Edit `src/controllers/authController.js`**: Include the role in JWTs and profile responses.
+- **Create `src/middlewares/authorize.js`**: Allow only listed roles to continue.
+- **Edit `src/routes/productRoutes.js`**: Require ADMIN for create, update, and delete.
+- **Create `prisma/seed.js`**: Create a repeatable development administrator account.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day15_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day15_db?schema=public"
-JWT_SECRET=your_very_long_and_random_secret_key_change_this_in_production
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 3. Prisma Setup with Role Enum
 
@@ -103,6 +65,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 enum Role {
@@ -125,7 +88,7 @@ Two additions from Day 14:
 - `role Role @default(USER)` adds the role field with a default of `USER`
 
 ```bash
-npx prisma migrate dev --name add_role_to_user
+npx prisma migrate dev --config prisma/prisma.config.js --name add_role_to_user
 ```
 
 Create `src/db/prisma.js` (same as Day 11).
@@ -301,7 +264,7 @@ New users always get the `USER` role. To create an admin, you can use Prisma Stu
 ### Using Prisma Studio
 
 ```bash
-npx prisma studio
+npx prisma studio --config prisma/prisma.config.js
 ```
 
 Find the user, click the `role` field, change it from `USER` to `ADMIN`, and save.
@@ -537,3 +500,372 @@ Expected: 403 - You can only update your own account
 ## Homework
 
 Add role-based authorization to the mini project from Day 13. Regular users can create and read. Only admins can delete. Test both scenarios with different JWT tokens and verify the correct 401 and 403 responses appear.
+
+---
+
+## Campus Store Storyline Project - Level 15
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 15 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 14 is your starting checkpoint. You can review it in [Day 14](<Day14-Authentication with JWT and Password Hashing.md>).
+
+You add CUSTOMER and ADMIN roles and protect product-changing routes.
+
+### Today’s Project Level
+
+Run the role migration, generate Prisma Client, then run `npm run seed`.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add the repeatable database seed command. |
+| Replace | `prisma/schema.prisma` | Add the Role enum and User role field. |
+| Edit | `src/controllers/authController.js` | Include the role in JWTs and profile responses. |
+| Create | `src/middlewares/authorize.js` | Allow only listed roles to continue. |
+| Edit | `src/routes/productRoutes.js` | Require ADMIN for create, update, and delete. |
+| Create | `prisma/seed.js` | Create a repeatable development administrator account. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 14 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 15 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add the repeatable database seed command.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0"
+  }
+}
+~~~
+
+This is the complete Level 15 version of `package.json`. Add the repeatable database seed command. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Replace `prisma/schema.prisma`
+
+Add the Role enum and User role field.
+
+**File: `prisma/schema.prisma`**
+
+~~~prisma
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(CUSTOMER)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  title       String
+  price       Float
+  description String?
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+~~~
+
+This is the complete Level 15 version of `prisma/schema.prisma`. Add the Role enum and User role field. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Edit `src/controllers/authController.js`
+
+Include the role in JWTs and profile responses.
+
+**File: `src/controllers/authController.js`**
+
+~~~javascript
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import prisma from '../db/prisma.js';
+import { loginSchema, registerSchema } from '../schemas/authSchemas.js';
+
+function tokenFor(user) {
+  return jwt.sign(
+    { id: user.id, email: user.email, role: user.role },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' },
+  );
+}
+
+export async function register(req, res, next) {
+  const result = registerSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({ message: 'Validation failed', errors: result.error.flatten().fieldErrors });
+  }
+  try {
+    const existing = await prisma.user.findUnique({ where: { email: result.data.email } });
+    if (existing) return res.status(409).json({ message: 'Email is already registered' });
+    const password = await bcrypt.hash(result.data.password, 12);
+    const user = await prisma.user.create({
+      data: { ...result.data, password },
+      select: { id: true, name: true, email: true, role: true },
+    });
+    res.status(201).json({ data: user, token: tokenFor(user) });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function login(req, res, next) {
+  const result = loginSchema.safeParse(req.body);
+  if (!result.success) return res.status(400).json({ message: 'Invalid login body' });
+  try {
+    const user = await prisma.user.findUnique({ where: { email: result.data.email } });
+    const valid = user && await bcrypt.compare(result.data.password, user.password);
+    if (!valid) return res.status(401).json({ message: 'Email or password is incorrect' });
+    res.json({ token: tokenFor(user) });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function profile(req, res, next) {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+      select: { id: true, name: true, email: true, role: true, createdAt: true },
+    });
+    res.json({ data: user });
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 15 version of `src/controllers/authController.js`. Include the role in JWTs and profile responses. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/middlewares/authorize.js`
+
+Allow only listed roles to continue.
+
+**File: `src/middlewares/authorize.js`**
+
+~~~javascript
+export function authorize(...allowedRoles) {
+  return function requireAllowedRole(req, res, next) {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'You do not have permission for this action' });
+    }
+    next();
+  };
+}
+~~~
+
+This is the complete Level 15 version of `src/middlewares/authorize.js`. Allow only listed roles to continue. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Edit `src/routes/productRoutes.js`
+
+Require ADMIN for create, update, and delete.
+
+**File: `src/routes/productRoutes.js`**
+
+~~~javascript
+import { Router } from 'express';
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+} from '../controllers/productController.js';
+import { authenticate } from '../middlewares/authenticate.js';
+import { authorize } from '../middlewares/authorize.js';
+
+const router = Router();
+
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', authenticate, authorize('ADMIN'), createProduct);
+router.put('/:id', authenticate, authorize('ADMIN'), updateProduct);
+router.delete('/:id', authenticate, authorize('ADMIN'), deleteProduct);
+
+export default router;
+~~~
+
+This is the complete Level 15 version of `src/routes/productRoutes.js`. Require ADMIN for create, update, and delete. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 6 — Create `prisma/seed.js`
+
+Create a repeatable development administrator account.
+
+**File: `prisma/seed.js`**
+
+~~~javascript
+import bcrypt from 'bcrypt';
+import prisma from '../src/db/prisma.js';
+
+const password = await bcrypt.hash('Admin123!', 12);
+await prisma.user.upsert({
+  where: { email: 'admin@campus.test' },
+  update: { role: 'ADMIN' },
+  create: {
+    name: 'Campus Administrator',
+    email: 'admin@campus.test',
+    password,
+    role: 'ADMIN',
+  },
+});
+
+await prisma.$disconnect();
+console.log('Development administrator is ready.');
+~~~
+
+This is the complete Level 15 version of `prisma/seed.js`. Create a repeatable development administrator account. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Try to create a product with a CUSTOMER token, then repeat with an ADMIN token.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 15, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   └── 20260731000400_add_roles/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Allows everyone to browse products.
+- Allows only administrators to change products.
+- Returns `403` for authenticated users without permission.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Try to create a product with a CUSTOMER token, then repeat with an ADMIN token.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Create permission rules that match the responsibilities in an assigned system.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The catalogue is protected, but a large list is difficult to browse. Level 16 adds professional query features. Continue with [Day 16](<Day16-Advanced REST API Features.md>).

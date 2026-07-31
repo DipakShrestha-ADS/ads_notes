@@ -57,61 +57,20 @@ npm i -D jest supertest
 
 ---
 
-## 4. Project Setup
+## 4. Continue the Campus Store Project
 
-```bash
-mkdir day21-testing
-cd day21-testing
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod
-npm i prisma --save-dev
-npm i -D nodemon jest supertest
-mkdir -p src/routes src/controllers src/db src/middlewares src/schemas tests
-```
+Start with the completed Level 20 checkpoint from [Day 20](<Day20-Logging and Debugging.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run `npm install`, then run `npm test`.
 
-```json
-{
-  "name": "day21-testing",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js",
-    "test": "node --experimental-vm-modules node_modules/.bin/jest --runInBand"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-The `test` script uses `--experimental-vm-modules` because Jest needs this flag to work with ES modules (`"type": "module"`). `--runInBand` runs tests one at a time instead of in parallel, which avoids conflicts when multiple tests touch the same database table.
+- **Create `src/app.js`**: Configure and export Express without calling `listen`.
+- **Replace `src/server.js`**: Import the configured app and start the network listener.
+- **Create `tests/health.test.js`**: Test the health route, unknown routes, and security headers.
+- **Edit `package.json`**: Add the Jest test command.
 
-`.env`:
-
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day21_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day21_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 5. Splitting server.js and app.js
 
@@ -347,3 +306,377 @@ This tells you the test expected status 201 but actually got 500, meaning someth
 ## Homework
 
 Write at least three tests for your mini project. Cover one success case, one validation failure case, and one not-found case. Run `npm test` and paste the output showing all tests passing.
+
+---
+
+## Campus Store Storyline Project - Level 21
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 21 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 20 is your starting checkpoint. You can review it in [Day 20](<Day20-Logging and Debugging.md>).
+
+You separate Express configuration from network startup and test the app with Jest and Supertest.
+
+### Today’s Project Level
+
+Run `npm install`, then run `npm test`.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add Jest, Supertest, and the test command. |
+| Regenerate | `package-lock.json` | Record the installed test dependency tree. |
+| Edit | `.gitignore` | Ignore generated test coverage. |
+| Create | `src/app.js` | Configure and export Express without calling `listen`. |
+| Replace | `src/server.js` | Import the configured app and start the network listener. |
+| Create | `tests/health.test.js` | Test the health route, unknown routes, and security headers. |
+| Edit | `package.json` | Add the Jest test command. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 20 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 21 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add Jest, Supertest, and the test command.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js",
+    "test": "npm run db:generate && NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
+~~~
+
+This is the complete Level 21 version of `package.json`. Add Jest, Supertest, and the test command. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Regenerate `package-lock.json`
+
+Do not type or edit `package-lock.json` by hand. Record the installed test dependency tree. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
+
+#### Step 3 — Edit `.gitignore`
+
+Ignore generated test coverage.
+
+**File: `.gitignore`**
+
+~~~text
+node_modules/
+.env
+logs/*.log
+!logs/.gitkeep
+src/generated/
+uploads/*
+!uploads/.gitkeep
+coverage/
+~~~
+
+This is the complete Level 21 version of `.gitignore`. Ignore generated test coverage. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/app.js`
+
+Configure and export Express without calling `listen`.
+
+**File: `src/app.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import logger from './config/logger.js';
+import { swaggerDocument } from './config/swagger.js';
+import { authLimiter, corsMiddleware, generalLimiter } from './config/security.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+
+const app = express();
+app.use(express.json());
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+app.use(helmet());
+app.use(corsMiddleware);
+app.use(generalLimiter);
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use('/uploads', express.static(path.resolve(currentDir, '../uploads')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/auth', authLimiter, authRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+app.use(errorHandler);
+export default app;
+~~~
+
+This is the complete Level 21 version of `src/app.js`. Configure and export Express without calling `listen`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Replace `src/server.js`
+
+Import the configured app and start the network listener.
+
+**File: `src/server.js`**
+
+~~~javascript
+import 'dotenv/config';
+import app from './app.js';
+
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 21 version of `src/server.js`. Import the configured app and start the network listener. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 6 — Create `tests/health.test.js`
+
+Test the health route, unknown routes, and security headers.
+
+**File: `tests/health.test.js`**
+
+~~~javascript
+import request from 'supertest';
+import app from '../src/app.js';
+
+describe('Campus Store public API', () => {
+  test('GET / returns the health message', async () => {
+    const response = await request(app).get('/');
+    expect(response.status).toBe(200);
+    expect(response.body.message).toMatch(/Campus Store API/);
+  });
+
+  test('an unknown route returns 404 JSON', async () => {
+    const response = await request(app).get('/does-not-exist');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('Route not found');
+  });
+
+  test('Helmet adds a content security policy header', async () => {
+    const response = await request(app).get('/');
+    expect(response.headers['content-security-policy']).toBeDefined();
+  });
+});
+~~~
+
+This is the complete Level 21 version of `tests/health.test.js`. Test the health route, unknown routes, and security headers. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 7 — Edit `package.json`
+
+Add the Jest test command.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js",
+    "test": "npm run db:generate && NODE_OPTIONS=--experimental-vm-modules jest --runInBand"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0",
+    "jest": "^30.2.0",
+    "supertest": "^7.1.4"
+  }
+}
+~~~
+
+This is the complete Level 21 version of `package.json`. Add the Jest test command. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `npm test`. Every health, 404, and security test should pass.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 21, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   └── 20260731000600_add_product_image/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   ├── logger.js
+│   │   ├── security.js
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   ├── app.js
+│   └── server.js
+├── tests/
+│   └── health.test.js
+├── uploads/
+│   └── .gitkeep
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Keeps `src/server.js` as the entry point.
+- Runs API integration tests without opening port `8888`.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `npm test`. Every health, 404, and security test should pass.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Test behavior through HTTP without manually opening Postman for every change.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Tests prove behavior on your machine, but setup can still differ elsewhere. Level 22 containerizes the full stack. Continue with [Day 22](<Day22-Docker Basics for Node.js Projects.md>).

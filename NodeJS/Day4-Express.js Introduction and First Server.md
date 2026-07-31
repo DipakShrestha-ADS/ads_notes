@@ -373,460 +373,159 @@ Here is what you covered today:
 
 ---
 
-## 1. What Is Express.js
+## Campus Store Storyline Project - Level 4
 
-Before Express.js, if you wanted to build a web server in Node.js, you had to write a lot of boilerplate code yourself. You had to manually parse the URL, figure out which route was called, read the request body by collecting data chunks, set response headers, and so on.
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 4 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-Express.js removes all that complexity. It is a minimal and flexible framework built on top of Node.js that gives you the tools to create routes and handle requests with just a few lines of code.
+### Story So Far
 
-Think of Node.js as the raw engine of a car. It is powerful but you need a lot of other parts to make it drivable. Express.js is like the steering wheel, pedals, and dashboard. It makes the engine usable and comfortable.
+Level 3 is your starting checkpoint. You can review it in [Day 3](<Day3-HTTP Fundamentals and REST API Concepts.md>).
 
-Express is the most popular Node.js framework in the world. Most Node.js backend tutorials and courses use Express because it is simple, well-documented, and trusted by millions of developers.
+You open the Campus Store API counter and accept the first HTTP requests.
 
----
+### Today’s Project Level
 
-## 2. Setting Up an Express Project
+Run `npm install` if you did not complete Level 2.
 
-### Step 1 - Create the project folder
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add Express as today’s only new runtime dependency. |
+| Regenerate | `package-lock.json` | Record the installed Express dependency tree. |
+| Replace | `src/server.js` | Create the Express application, JSON parser, routes, and listener. |
 
-```bash
-mkdir day4-express-server
-cd day4-express-server
-```
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-### Step 2 - Initialize Node.js project
+### Guided Upgrade
 
-```bash
-npm init -y
-```
+1. Copy the complete Level 3 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 4 Project** to compare every saved file with the completed checkpoint.
 
-### Step 3 - Enable ES Modules and add start script
+#### Step 1 — Edit `package.json`
 
-Open `package.json` and update it:
+Add Express as today’s only new runtime dependency.
 
-```json
+**File: `package.json`**
+
+~~~json
 {
-  "name": "day4-express-server",
+  "name": "campus-store-api",
   "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
   "type": "module",
-  "main": "app.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
-```
+~~~
 
-The `"dev"` script uses `--watch` which is built into Node.js from version 18. It automatically restarts the server whenever you save a file. This is like nodemon but without installing an extra package.
+This is the complete Level 4 version of `package.json`. Add Express as today’s only new runtime dependency. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-### Step 4 - Install Express
+#### Step 2 — Regenerate `package-lock.json`
 
-```bash
-npm install express
-```
+Do not type or edit `package-lock.json` by hand. Record the installed Express dependency tree. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
 
-### Step 5 - Create your .env file
+#### Step 3 — Replace `src/server.js`
 
-```
-PORT=3000
-```
+Create the Express application, JSON parser, routes, and listener.
 
-### Step 6 - Install dotenv
+**File: `src/server.js`**
 
-```bash
-npm install dotenv
-```
-
----
-
-## 3. Creating Your First Express Server
-
-Create a file called `app.js` in your project folder:
-
-```javascript
-// Load environment variables from .env file
-import 'dotenv/config';
-
-// Import the Express library
-import express from 'express';
-
-// Create an Express application
-const app = express();
-
-// Tell Express to parse incoming JSON bodies
-app.use(express.json());
-
-// Get the port from environment variables
-const PORT = process.env.PORT || 3000;
-
-// Define a route for the root URL
-app.get('/', (req, res) => {
-  res.send('Welcome to my Express server!');
-});
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-```
-
-Line by line:
-
-- `import 'dotenv/config'` loads the `.env` file immediately. This must be the first import.
-- `import express from 'express'` brings in the Express library.
-- `const app = express()` creates the Express application. Think of `app` as your server object. Every route and configuration goes through this.
-- `app.use(express.json())` tells Express to automatically parse the body of incoming requests as JSON. Without this, `req.body` would be `undefined` when someone sends JSON data.
-- `const PORT = process.env.PORT || 3000` reads the port from `.env`. If not set, it defaults to 3000.
-- `app.get('/', (req, res) => {...})` creates a route. When someone makes a GET request to `/`, this callback function runs.
-- `res.send('...')` sends a plain text response back to the client.
-- `app.listen(PORT, callback)` starts the server. The callback runs once the server is listening and ready.
-
-Run the server:
-
-```bash
-npm run dev
-```
-
-Open your browser and go to `http://localhost:3000`. You will see the welcome message.
-
----
-
-## 4. Understanding req and res
-
-Every route in Express receives two objects: `req` and `res`.
-
-### The req object (Request)
-
-`req` represents the incoming HTTP request. It contains all the information the client sent.
-
-| Property      | What It Contains                                  |
-| ------------- | ------------------------------------------------- |
-| `req.params`  | Route parameters from the URL (e.g., `:id`)       |
-| `req.query`   | Query parameters from the URL (e.g., `?name=ali`) |
-| `req.body`    | The request body (for POST, PUT, PATCH requests)  |
-| `req.headers` | All HTTP headers from the request                 |
-| `req.method`  | The HTTP method (GET, POST, etc.)                 |
-| `req.url`     | The URL path that was requested                   |
-
-### The res object (Response)
-
-`res` represents what you send back to the client.
-
-| Method             | What It Does                             |
-| ------------------ | ---------------------------------------- |
-| `res.send()`       | Sends a response (text, HTML, or object) |
-| `res.json()`       | Sends a JSON response                    |
-| `res.status()`     | Sets the HTTP status code                |
-| `res.sendStatus()` | Sends only a status code with no body    |
-
----
-
-## 5. Sending Different Types of Responses
-
-Here are the most common ways to respond to a request:
-
-### Sending plain text
-
-```javascript
-app.get('/hello', (req, res) => {
-  // Sends a plain text response
-  res.send('Hello World');
-});
-```
-
-### Sending JSON
-
-```javascript
-app.get('/info', (req, res) => {
-  // Sends a JSON object as the response
-  res.json({
-    app: 'My Backend API',
-    version: '1.0',
-    status: 'running'
-  });
-});
-```
-
-### Sending JSON with a status code
-
-```javascript
-app.get('/users', (req, res) => {
-  const users = [
-    { id: 1, name: 'Ali' },
-    { id: 2, name: 'Sita' }
-  ];
-
-  // Sends status 200 with JSON data
-  // .status() sets the code, .json() sends the body
-  res.status(200).json({ users: users });
-});
-```
-
-Line by line:
-
-- `res.status(200)` sets the status code to 200. You can chain this with other methods.
-- `.json({ users: users })` sends the users array wrapped in an object. The key is `users` and the value is the array.
-
-### Sending a 201 Created response
-
-```javascript
-app.post('/users', (req, res) => {
-  // req.body contains the data the client sent
-  const newUser = req.body;
-
-  // In a real app, you would save to database here
-  // For now, just send back what was received
-  res.status(201).json({
-    message: 'User created successfully',
-    user: newUser
-  });
-});
-```
-
-Line by line:
-
-- `req.body` holds the JSON data the client sent in the request body. This only works because we added `app.use(express.json())` earlier.
-- `res.status(201)` sets the status to 201, meaning "Created."
-- `.json({...})` sends back a confirmation message and the created user.
-
----
-
-## 6. Building Three Core Routes
-
-Let us build three routes for a complete mini server:
-
-```javascript
+~~~javascript
 import 'dotenv/config';
 import express from 'express';
 
 const app = express();
-
-// Parse incoming JSON request bodies
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-
-// Route 1: GET / - Home page
 app.get('/', (req, res) => {
-  // Simply let the client know the server is running
-  res.json({ message: 'Server is running' });
+  res.json({ message: 'Campus Store API is running' });
 });
 
-// Route 2: GET /about - About info
 app.get('/about', (req, res) => {
-  // Send back information about this API
-  res.json({
-    name: 'My First Express API',
-    version: '1.0.0',
-    author: 'Your Name'
-  });
+  res.json({ name: 'Campus Store API', purpose: 'Manage campus products' });
 });
 
-// Route 3: POST /message - Accept and echo a message
-app.post('/message', (req, res) => {
-  // Read the message from the request body
-  const message = req.body.message;
-
-  // Check if message was provided
-  if (!message) {
-    // If not, send a 400 Bad Request error
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
-  // If message exists, echo it back with a 200 response
-  res.status(200).json({
-    received: message,
-    timestamp: new Date().toISOString()
-  });
+app.post('/messages', (req, res) => {
+  const { message } = req.body;
+  if (!message) return res.status(400).json({ message: 'message is required' });
+  res.status(201).json({ received: message });
 });
 
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => console.log(`Campus Store API running at http://localhost:${port}`));
+~~~
+
+This is the complete Level 4 version of `src/server.js`. Create the Express application, JSON parser, routes, and listener. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `npm run dev`, open `http://localhost:8888`, and test `POST /messages` in Postman or Thunder Client.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 4, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── src/
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
-Line by line for the POST route:
+Your completed checkpoint now:
 
-- `const message = req.body.message` reads the `message` field from the JSON body sent by the client.
-- `if (!message)` checks whether the message field is missing or empty. `!message` is true when the value is `undefined`, `null`, or an empty string.
-- `return res.status(400).json({...})` sends a 400 error response and stops the function from continuing. The `return` is important here because without it, Express would try to send a second response and crash.
-- `new Date().toISOString()` gives the current date and time as a standard ISO string like `"2026-06-12T10:30:00.000Z"`.
+- `GET /` confirms the API is running.
+- `GET /about` explains the Campus Store.
+- `POST /messages` accepts a JSON message.
 
----
+Completion checklist:
 
-## 7. Testing All Routes with Postman
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `npm run dev`, open `http://localhost:8888`, and test `POST /messages` in Postman or Thunder Client.
+- You can explain what today’s new files do without reading the code word for word.
 
-### Testing GET /
+### Use This in Your Assigned Project
 
-```
-Method: GET
-URL: http://localhost:3000/
+Create a health route and simple JSON routes for any assigned backend.
 
-Expected Response:
-{ "message": "Server is running" }
-Status: 200
-```
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
-### Testing GET /about
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-```
-Method: GET
-URL: http://localhost:3000/about
+For your own project:
 
-Expected Response:
-{ "name": "My First Express API", "version": "1.0.0", "author": "Your Name" }
-Status: 200
-```
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
-### Testing POST /message with valid data
+### Next Level
 
-```
-Method: POST
-URL: http://localhost:3000/message
-
-Headers:
-  Content-Type: application/json
-
-Body (raw, JSON):
-{
-  "message": "Hello from the client"
-}
-
-Expected Response:
-{
-  "received": "Hello from the client",
-  "timestamp": "2026-06-12T10:30:00.000Z"
-}
-Status: 200
-```
-
-### Testing POST /message with missing data
-
-```
-Method: POST
-URL: http://localhost:3000/message
-
-Body: {}
-
-Expected Response:
-{ "error": "Message is required" }
-Status: 400
-```
-
----
-
-## 8. Handling Unknown Routes (404)
-
-Right now, if someone visits a URL you have not defined, Express sends a default error. Let us add a proper 404 handler.
-
-Add this at the end of your file, after all other routes:
-
-```javascript
-// This runs when no other route matched the request
-// It must come after all other route definitions
-app.use((req, res) => {
-  res.status(404).json({
-    error: 'Route not found',
-    path: req.url
-  });
-});
-```
-
-Line by line:
-
-- `app.use(callback)` adds middleware that runs for every request. When placed at the end, it only runs if no route above matched the request.
-- `res.status(404)` sets the 404 Not Found status code.
-- `req.url` contains the path that was requested, so you can tell the client exactly which route they tried to reach.
-
----
-
-## 9. The Complete app.js for Day 4
-
-```javascript
-import 'dotenv/config';
-import express from 'express';
-
-const app = express();
-
-// Allow Express to read JSON in the request body
-app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
-
-// GET / - Home
-app.get('/', (req, res) => {
-  res.json({ message: 'Welcome to Day 4 Express Server' });
-});
-
-// GET /about - Info
-app.get('/about', (req, res) => {
-  res.json({
-    name: 'Day 4 API',
-    version: '1.0.0',
-    author: 'Student Name'
-  });
-});
-
-// POST /message - Accept a message from the client
-app.post('/message', (req, res) => {
-  const { message } = req.body;  // Destructure message from the body
-
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
-  res.status(200).json({
-    received: message,
-    timestamp: new Date().toISOString()
-  });
-});
-
-// 404 handler - runs if no route matched
-app.use((req, res) => {
-  res.status(404).json({
-    error: 'Route not found',
-    path: req.url
-  });
-});
-
-// Start listening
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-```
-
-The `const { message } = req.body` line uses JavaScript destructuring. It is the same as writing `const message = req.body.message`, just shorter.
-
----
-
-## Summary
-
-Here is what you covered today:
-
-- Express.js is a framework built on top of Node.js that makes creating servers and routes simple.
-- `const app = express()` creates the Express application.
-- `app.use(express.json())` enables parsing JSON from request bodies.
-- `req` contains everything the client sent: params, query, body, headers.
-- `res` is what you use to send back a response: `res.json()`, `res.send()`, `res.status()`.
-- Always chain `res.status()` with `res.json()` to set both the status code and the response body.
-- A 404 handler using `app.use()` at the end catches all unmatched routes.
-
----
-
-## Practice Tasks
-
-1. Create a new Express project from scratch.
-2. Build three routes of your choice. Be creative - use your name, favorite book, or hobby as the data.
-3. Add a POST route that accepts any JSON object and sends it back with a `received: true` field added.
-4. Add a 404 handler at the end.
-5. Test every route in Postman and verify the correct status codes are returned.
-
----
-
-## Homework
-
-- Build a simple Express app with at least three routes.
-- Add one POST route that accepts JSON and returns the same data plus a `processedAt` timestamp.
-- Add proper status codes to every response.
-- Test all routes using Postman or Thunder Client.
+The server responds, but it cannot manage store data. Level 5 adds complete product CRUD. Continue with [Day 5](<Day5-CRUD API Basics with Express.md>).

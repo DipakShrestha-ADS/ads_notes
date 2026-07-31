@@ -429,439 +429,210 @@ Here is what you covered today:
 
 ---
 
-## 1. What Is Middleware
+## Campus Store Storyline Project - Level 6
 
-Middleware is code that runs between receiving a request and sending a response.
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 6 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-Think of it as a security checkpoint at an airport. When you arrive at the airport (the request comes in), you do not go straight to the gate (the route handler). You pass through check-in, then security, then passport control. Each of those steps is a middleware. Each one does its job and then lets you continue forward. If something is wrong, they stop you right there.
+### Story So Far
 
-In Express, a middleware is simply a function with three parameters: `req`, `res`, and `next`.
+Level 5 is your starting checkpoint. You can review it in [Day 5](<Day5-CRUD API Basics with Express.md>).
 
-```javascript
-function myMiddleware(req, res, next) {
-  // do something here
-  next(); // pass control to the next middleware or route
-}
-```
+You add middleware that logs every request and protects a temporary manager report.
 
-- `req` is the request object
-- `res` is the response object
-- `next` is a function you call to move to the next step in the chain
+### Today’s Project Level
 
-If you do not call `next()`, the request will hang forever. The server will receive the request but never respond.
+No new package is required.
 
----
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `.env.example` | Document the temporary store key used by the protected middleware. |
+| Create | `src/middlewares/requestLogger.js` | Log the time, method, and URL for every request. |
+| Create | `src/middlewares/requireStoreKey.js` | Check the `x-store-key` header on the protected report route. |
+| Replace | `src/server.js` | Register middleware in the correct order and add `GET /admin/report`. |
 
-## 2. The Middleware Flow
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-This is how the request-response cycle works with middleware:
+### Guided Upgrade
 
-```
-Client sends Request
-       |
-       v
-   Middleware 1  (e.g., logger)
-       |
-       v
-   Middleware 2  (e.g., JSON parser)
-       |
-       v
-   Middleware 3  (e.g., auth checker)
-       |
-       v
-   Route Handler  (e.g., GET /users)
-       |
-       v
-Client receives Response
-```
+1. Copy the complete Level 5 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 6 Project** to compare every saved file with the completed checkpoint.
 
-Every middleware runs in order. The first one registered runs first. If every middleware calls `next()`, the request eventually reaches the route handler. The route handler sends the response.
+#### Step 1 — Edit `.env.example`
 
----
+Document the temporary store key used by the protected middleware.
 
-## 3. Types of Middleware in Express
+**File: `.env.example`**
 
-| Type                      | Description                                            |
-| ------------------------- | ------------------------------------------------------ |
-| Built-in middleware       | Comes with Express. Example: `express.json()`          |
-| Third-party middleware    | Installed via npm. Example: `morgan`, `cors`, `helmet` |
-| Custom middleware         | You write it yourself                                  |
-| Route-level middleware    | Applied only to specific routes                        |
-| Error-handling middleware | Handles errors, has 4 parameters                       |
+~~~properties
+# Copy this file to .env, then replace every example value.
+PORT=8888
+STORE_NAME="Campus Store"
+STORE_KEY=campus-secret
+~~~
 
----
+This is the complete Level 6 version of `.env.example`. Document the temporary store key used by the protected middleware. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-## 4. Built-in Middleware
+#### Step 2 — Create `src/middlewares/requestLogger.js`
 
-You have already used one built-in middleware:
+Log the time, method, and URL for every request.
 
-```javascript
-app.use(express.json());
-```
+**File: `src/middlewares/requestLogger.js`**
 
-This middleware reads the incoming request body and parses it as JSON, making it available at `req.body`.
-
-Another built-in middleware is `express.urlencoded()`, which parses form data:
-
-```javascript
-// Parses URL-encoded form submissions (from HTML forms)
-app.use(express.urlencoded({ extended: true }));
-```
-
-And `express.static()` serves static files like HTML, CSS, and images:
-
-```javascript
-// Serve all files from the "public" folder
-app.use(express.static('public'));
-```
-
----
-
-## 5. Writing Your First Custom Middleware
-
-Let us write a logger middleware. A logger records information about every incoming request.
-
-```javascript
-// Custom logger middleware
-// This runs for every incoming request
-function logger(req, res, next) {
-  // Get current date and time
-  const time = new Date().toISOString();
-
-  // Log the method and URL of the request
-  console.log(`[${time}] ${req.method} ${req.url}`);
-
-  // Call next() to pass control to the next middleware or route
+~~~javascript
+export function requestLogger(req, res, next) {
+  const timestamp = new Date().toISOString();
+  console.log(`[${timestamp}] ${req.method} ${req.originalUrl}`);
   next();
 }
+~~~
 
-// Apply the logger globally using app.use()
-// This means it runs for EVERY request
-app.use(logger);
-```
+This is the complete Level 6 version of `src/middlewares/requestLogger.js`. Log the time, method, and URL for every request. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-Line by line:
+#### Step 3 — Create `src/middlewares/requireStoreKey.js`
 
-- `function logger(req, res, next)` defines the middleware function with the three required parameters.
-- `const time = new Date().toISOString()` gets the current timestamp in ISO format.
-- `console.log(...)` prints a line like `[2026-06-12T10:30:00Z] GET /users` to your terminal for every request.
-- `next()` tells Express to move to the next middleware or the route handler. Without this, the request would stop here.
-- `app.use(logger)` registers the middleware globally. Every request that hits your server will pass through this logger first.
+Check the `x-store-key` header on the protected report route.
 
----
+**File: `src/middlewares/requireStoreKey.js`**
 
-## 6. Middleware Order Matters
+~~~javascript
+export function requireStoreKey(req, res, next) {
+  const providedKey = req.get('x-store-key');
+  const expectedKey = process.env.STORE_KEY || 'campus-secret';
 
-Middleware runs in the order it is registered. This is critical to understand.
-
-```javascript
-import express from 'express';
-const app = express();
-
-// This runs first for every request
-app.use((req, res, next) => {
-  console.log('Step 1: Request arrived');
-  next();
-});
-
-// This runs second
-app.use((req, res, next) => {
-  console.log('Step 2: Processing');
-  next();
-});
-
-// This runs for GET /hello
-app.get('/hello', (req, res) => {
-  console.log('Step 3: Route handler running');
-  res.json({ message: 'Hello!' });
-});
-```
-
-When a client sends `GET /hello`, the terminal output will be:
-
-```
-Step 1: Request arrived
-Step 2: Processing
-Step 3: Route handler running
-```
-
-If you reverse the order of the first two `app.use()` calls, the output changes accordingly.
-
----
-
-## 7. A Header Checker Middleware
-
-Sometimes you want to check if a specific header is present before allowing access to a route. This is a common pattern used in API keys or simple access control.
-
-```javascript
-// This middleware checks if a custom header is present
-function requireApiKey(req, res, next) {
-  // Look for the 'x-api-key' header in the request
-  const apiKey = req.headers['x-api-key'];
-
-  // If the header is missing, reject the request
-  if (!apiKey) {
-    return res.status(401).json({ error: 'API key is required. Send it in the x-api-key header.' });
+  if (providedKey !== expectedKey) {
+    return res.status(401).json({ message: 'A valid store key is required' });
   }
 
-  // Optional: check if it matches a specific value
-  if (apiKey !== 'my-secret-key-123') {
-    return res.status(403).json({ error: 'Invalid API key.' });
-  }
-
-  // If the key is correct, allow the request to continue
   next();
 }
-```
+~~~
 
-Line by line:
+This is the complete Level 6 version of `src/middlewares/requireStoreKey.js`. Check the `x-store-key` header on the protected report route. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-- `req.headers['x-api-key']` reads the value of the `x-api-key` header from the request. Header names are always lowercase.
-- `if (!apiKey)` checks if the header was missing entirely.
-- `return res.status(401).json({...})` sends a 401 Unauthorized response and stops the middleware chain. The `return` is important here.
-- The second `if` checks the actual value. 403 Forbidden means you know who they are but they do not have permission.
-- If both checks pass, `next()` lets the request continue to the route.
+#### Step 4 — Replace `src/server.js`
 
----
+Register middleware in the correct order and add `GET /admin/report`.
 
-## 8. Route-Level Middleware
+**File: `src/server.js`**
 
-You can apply middleware to specific routes instead of all routes. Pass the middleware function as a second argument to the route.
-
-```javascript
-// GET /public - No middleware, anyone can access
-app.get('/public', (req, res) => {
-  res.json({ message: 'This is a public route' });
-});
-
-// GET /protected - Only works if the API key is correct
-app.get('/protected', requireApiKey, (req, res) => {
-  res.json({ message: 'You have access to the protected route' });
-});
-
-// GET /admin - Also requires API key
-app.get('/admin', requireApiKey, (req, res) => {
-  res.json({ message: 'Welcome, admin!' });
-});
-```
-
-Line by line:
-
-- `app.get('/public', (req, res) => {...})` has only one handler. No middleware.
-- `app.get('/protected', requireApiKey, (req, res) => {...})` runs the `requireApiKey` middleware first. If it calls `next()`, the route handler runs. If it sends a response, the route handler never runs.
-- You can pass multiple middleware functions this way. Express runs them in the order you list them.
-
----
-
-## 9. Middleware That Modifies the Request
-
-Middleware can add data to the `req` object and that data will be available in all following middleware and route handlers.
-
-```javascript
-// This middleware adds a timestamp to every request object
-function addTimestamp(req, res, next) {
-  // Add a new property to the req object
-  req.requestTime = new Date().toISOString();
-  next();
-}
-
-app.use(addTimestamp);
-
-app.get('/time', (req, res) => {
-  // Access the timestamp added by the middleware
-  res.json({
-    message: 'Request received',
-    time: req.requestTime
-  });
-});
-```
-
-Line by line:
-
-- `req.requestTime = new Date().toISOString()` adds a custom property to the request object.
-- Since `app.use(addTimestamp)` is global, every request object will have `requestTime` added to it.
-- In the route handler, `req.requestTime` gives you the value that was set by the middleware.
-
-This pattern is very common. Authentication middleware, for example, decodes the user token and attaches the user object to `req.user` so every route handler can access the logged-in user.
-
----
-
-## 10. Error-Handling Middleware
-
-A special type of middleware handles errors. It has four parameters instead of three. The extra first parameter is `err`.
-
-```javascript
-// Normal route that might throw an error
-app.get('/risky', (req, res, next) => {
-  try {
-    // Simulate an error
-    throw new Error('Something went wrong!');
-  } catch (err) {
-    // Pass the error to the error handler using next(err)
-    next(err);
-  }
-});
-
-// Error-handling middleware
-// It MUST have exactly 4 parameters: err, req, res, next
-// Express recognizes it as an error handler because of the 4th parameter
-app.use((err, req, res, next) => {
-  // Log the error for debugging
-  console.error('Error:', err.message);
-
-  // Send a 500 response with the error message
-  res.status(500).json({
-    error: 'Internal Server Error',
-    message: err.message
-  });
-});
-```
-
-Line by line:
-
-- `next(err)` passes the error object to Express. Express will skip all regular middleware and route handlers and go directly to the error-handling middleware.
-- `(err, req, res, next)` - the presence of four parameters tells Express this is an error handler, not a regular middleware.
-- `err.message` contains the error description.
-- `console.error(...)` prints it in red in the terminal (Node.js uses red for errors automatically).
-
----
-
-## 11. Putting It All Together
-
-Here is a complete example with multiple middleware types:
-
-```javascript
+~~~javascript
 import 'dotenv/config';
 import express from 'express';
+import { requestLogger } from './middlewares/requestLogger.js';
+import { requireStoreKey } from './middlewares/requireStoreKey.js';
 
 const app = express();
 app.use(express.json());
+app.use(requestLogger);
 
-const PORT = process.env.PORT || 3000;
+const products = [
+  { id: 1, title: 'Notebook', price: 4.5 },
+  { id: 2, title: 'Campus Hoodie', price: 28 },
+];
+let nextId = 3;
 
-// 1. Logger middleware (global)
-app.use((req, res, next) => {
-  const time = new Date().toISOString();
-  console.log(`[${time}] ${req.method} ${req.url}`);
-  next();
+app.get('/admin/report', requireStoreKey, (req, res) => {
+  res.json({ productCount: products.length, status: 'private manager report' });
 });
 
-// 2. Request time middleware (global)
-app.use((req, res, next) => {
-  req.requestTime = new Date().toISOString();  // Add timestamp to request
-  next();
+app.get('/', (req, res) => res.json({ message: 'Campus Store API is running' }));
+app.get('/products', (req, res) => res.json({ data: products }));
+app.get('/products/:id', (req, res) => {
+  const product = products.find(item => item.id === Number(req.params.id));
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  res.json({ data: product });
+});
+app.post('/products', (req, res) => {
+  const { title, price } = req.body;
+  if (!title || typeof price !== 'number') return res.status(400).json({ message: 'title and numeric price are required' });
+  const product = { id: nextId++, title, price };
+  products.push(product);
+  res.status(201).json({ data: product });
+});
+app.put('/products/:id', (req, res) => {
+  const product = products.find(item => item.id === Number(req.params.id));
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  const { title, price } = req.body;
+  if (!title || typeof price !== 'number') return res.status(400).json({ message: 'title and numeric price are required' });
+  product.title = title;
+  product.price = price;
+  res.json({ data: product });
+});
+app.delete('/products/:id', (req, res) => {
+  const index = products.findIndex(item => item.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ message: 'Product not found' });
+  products.splice(index, 1);
+  res.status(204).send();
 });
 
-// 3. API Key middleware (used on specific routes)
-function requireApiKey(req, res, next) {
-  const key = req.headers['x-api-key'];
-  if (!key) {
-    return res.status(401).json({ error: 'API key required' });
-  }
-  if (key !== 'secret-123') {
-    return res.status(403).json({ error: 'Invalid API key' });
-  }
-  next();
-}
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => console.log(`Campus Store API running at http://localhost:${port}`));
+~~~
 
-// Public route - no key needed
-app.get('/', (req, res) => {
-  res.json({
-    message: 'Welcome to the API',
-    requestedAt: req.requestTime  // Comes from middleware 2
-  });
-});
+This is the complete Level 6 version of `src/server.js`. Register middleware in the correct order and add `GET /admin/report`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-// Protected route - requires API key header
-app.get('/secure-data', requireApiKey, (req, res) => {
-  res.json({
-    secret: 'This is protected data',
-    requestedAt: req.requestTime
-  });
-});
+#### Expected result
 
-// Error handler (must be last)
-app.use((err, req, res, next) => {
-  console.error(err.message);
-  res.status(500).json({ error: err.message });
-});
+Call `GET /admin/report` without a header, then repeat with `x-store-key: campus-secret`.
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-});
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 6, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── src/
+│   ├── middlewares/
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
----
+Your completed checkpoint now:
 
-## 12. Testing Middleware with Postman
+- Logs all requests.
+- Rejects a missing or incorrect store key with `401`.
+- Allows the correct key to reach the report route.
 
-### Testing the public route
+Completion checklist:
 
-```
-Method: GET
-URL: http://localhost:3000/
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Call `GET /admin/report` without a header, then repeat with `x-store-key: campus-secret`.
+- You can explain what today’s new files do without reading the code word for word.
 
-Expected: Welcome message with requestedAt timestamp, status 200
-```
+### Use This in Your Assigned Project
 
-### Testing the protected route without API key
+Use middleware for work that must happen before many routes, such as logging, authentication, validation, or permissions.
 
-```
-Method: GET
-URL: http://localhost:3000/secure-data
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
-Expected: 401 error - API key required
-```
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-### Testing the protected route with wrong API key
+For your own project:
 
-```
-Method: GET
-URL: http://localhost:3000/secure-data
-Headers: x-api-key: wrong-key
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
-Expected: 403 error - Invalid API key
-```
+### Next Level
 
-### Testing the protected route with correct API key
-
-```
-Method: GET
-URL: http://localhost:3000/secure-data
-Headers: x-api-key: secret-123
-
-Expected: 200 with the secret data
-```
-
----
-
-## Summary
-
-Here is what you covered today:
-
-- Middleware is a function that runs between receiving a request and sending a response.
-- Every middleware function receives `req`, `res`, and `next`. You must call `next()` to continue or send a response to stop.
-- `app.use(middleware)` applies middleware globally. Passing it as an argument to a route applies it only to that route.
-- Middleware runs in the exact order you register it.
-- You can attach custom properties to `req` inside middleware and read them in later handlers.
-- Error-handling middleware has four parameters: `err, req, res, next`. It must come last in your file.
-
----
-
-## Practice Tasks
-
-1. Build a new Express project with at least two custom middlewares.
-2. Write a logger middleware that logs: method, URL, and time for every request.
-3. Write a middleware that checks if a query parameter called `token` exists. If it does not, return a 400 error.
-4. Apply the token-checking middleware only to one specific route.
-5. Test the token-checking route both with and without the query parameter.
-
----
-
-## Homework
-
-- Create two custom middlewares:
-  - One for logging the request method and URL with a timestamp.
-  - One for checking if a custom query parameter exists. If it is missing, return a 400 error with a helpful message.
-- Apply the logging middleware globally and the query-checking middleware only to two specific routes.
-- Test all routes and take note of what gets logged in the terminal.
+Features work, but `src/server.js` is becoming crowded. Level 7 separates responsibilities into folders. Continue with [Day 7](<Day7-Project Structure for Real Backend Applications.md>).

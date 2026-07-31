@@ -39,94 +39,20 @@ No changes to your other packages are needed.
 
 ---
 
-## 3. Project Setup
+## 3. Continue the Campus Store Project
 
-```bash
-mkdir day12-validation
-cd day12-validation
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares src/schemas
-```
+Start with the completed Level 11 checkpoint from [Day 11](<Day11-Prisma ORM Basics.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run `npm install` to install Zod from this checkpoint.
 
-```json
-{
-  "name": "day12-validation",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Create `src/schemas/productSchemas.js`**: Define create and update validation rules.
+- **Create `src/middlewares/errorHandler.js`**: Convert unexpected failures into safe JSON responses.
+- **Replace `src/controllers/productController.js`**: Validate input before calling Prisma and forward unexpected errors.
+- **Edit `src/server.js`**: Register the error handler after every route.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day12_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day12_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
-Prisma setup:
-
-```bash
-npx prisma init
-mv prisma/prisma.config.ts prisma/prisma.config.js
-```
-
-`prisma/schema.prisma`:
-
-```prisma
-generator client {
-  provider     = "prisma-client-js"
-  output       = "../src/generated/prisma"
-  moduleFormat = "esm"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
-}
-```
-
-Run migration:
-
-```bash
-npx prisma migrate dev --name create_users_table
-```
-
-Create `src/db/prisma.js` (same as Day 11).
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 4. Writing Zod Schemas
 
@@ -436,3 +362,313 @@ Expected: 201 with the created user
 ## Homework
 
 Add Zod validation to your products CRUD API from Day 11. Test each rule: missing title, negative price, and wrong data type. Add the global error handler to your server and confirm that Prisma errors also return a clean JSON response instead of crashing.
+
+---
+
+## Campus Store Storyline Project - Level 12
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 12 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 11 is your starting checkpoint. You can review it in [Day 11](<Day11-Prisma ORM Basics.md>).
+
+You validate product input with Zod and send errors through one global handler.
+
+### Today’s Project Level
+
+Run `npm install` to install Zod from this checkpoint.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add Zod as today’s input-validation dependency. |
+| Regenerate | `package-lock.json` | Record the installed Zod dependency. |
+| Create | `src/schemas/productSchemas.js` | Define create and update validation rules. |
+| Create | `src/middlewares/errorHandler.js` | Convert unexpected failures into safe JSON responses. |
+| Replace | `src/controllers/productController.js` | Validate input before calling Prisma and forward unexpected errors. |
+| Edit | `src/server.js` | Register the error handler after every route. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 11 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 12 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add Zod as today’s input-validation dependency.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0"
+  }
+}
+~~~
+
+This is the complete Level 12 version of `package.json`. Add Zod as today’s input-validation dependency. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Regenerate `package-lock.json`
+
+Do not type or edit `package-lock.json` by hand. Record the installed Zod dependency. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
+
+#### Step 3 — Create `src/schemas/productSchemas.js`
+
+Define create and update validation rules.
+
+**File: `src/schemas/productSchemas.js`**
+
+~~~javascript
+import { z } from 'zod';
+
+export const createProductSchema = z.object({
+  title: z.string().trim().min(2, 'Title must contain at least 2 characters'),
+  price: z.number().positive('Price must be greater than zero'),
+  description: z.string().trim().optional(),
+  category: z.string().trim().min(2).optional(),
+  userId: z.number().int().positive().nullable().optional(),
+});
+
+export const updateProductSchema = createProductSchema.partial();
+~~~
+
+This is the complete Level 12 version of `src/schemas/productSchemas.js`. Define create and update validation rules. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/middlewares/errorHandler.js`
+
+Convert unexpected failures into safe JSON responses.
+
+**File: `src/middlewares/errorHandler.js`**
+
+~~~javascript
+export function errorHandler(err, req, res, next) {
+  console.error(err);
+  if (res.headersSent) return next(err);
+  res.status(err.status || 500).json({
+    message: err.status ? err.message : 'An unexpected server error occurred',
+  });
+}
+~~~
+
+This is the complete Level 12 version of `src/middlewares/errorHandler.js`. Convert unexpected failures into safe JSON responses. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Replace `src/controllers/productController.js`
+
+Validate input before calling Prisma and forward unexpected errors.
+
+**File: `src/controllers/productController.js`**
+
+~~~javascript
+import prisma from '../db/prisma.js';
+import { createProductSchema, updateProductSchema } from '../schemas/productSchemas.js';
+
+function validationFailure(res, result) {
+  return res.status(400).json({
+    message: 'Validation failed',
+    errors: result.error.flatten().fieldErrors,
+  });
+}
+
+export async function getAllProducts(req, res, next) {
+  try {
+    const products = await prisma.product.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json({ data: products });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getProductById(req, res, next) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(req.params.id) },
+      include: { user: { select: { id: true, name: true, email: true } } },
+    });
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createProduct(req, res, next) {
+  const result = createProductSchema.safeParse(req.body);
+  if (!result.success) return validationFailure(res, result);
+  try {
+    const product = await prisma.product.create({ data: result.data });
+    res.status(201).json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateProduct(req, res, next) {
+  const result = updateProductSchema.safeParse(req.body);
+  if (!result.success) return validationFailure(res, result);
+  try {
+    const product = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: result.data,
+    });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteProduct(req, res, next) {
+  try {
+    await prisma.product.delete({ where: { id: Number(req.params.id) } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 12 version of `src/controllers/productController.js`. Validate input before calling Prisma and forward unexpected errors. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 6 — Edit `src/server.js`
+
+Register the error handler after every route.
+
+**File: `src/server.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import productRoutes from './routes/productRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+import { requestLogger } from './middlewares/requestLogger.js';
+
+const app = express();
+app.use(express.json());
+app.use(requestLogger);
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/products', productRoutes);
+app.use(errorHandler);
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 12 version of `src/server.js`. Register the error handler after every route. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Send a product with an empty title and negative price. Expect `400` with field errors.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 12, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   └── 20260731000100_create_products/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   └── schema.prisma
+├── src/
+│   ├── controllers/
+│   │   └── productController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   └── productRoutes.js
+│   ├── schemas/
+│   │   └── productSchemas.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Rejects missing titles and non-positive prices.
+- Returns field-level validation details.
+- Prevents internal error details from leaking to clients.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Send a product with an empty title and negative price. Expect `400` with field errors.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Define clear input rules for every create and update operation in an assigned project.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Products are safe, but the store has no persistent users. Level 13 completes the first two-module milestone. Continue with [Day 13](<Day13-Mini Project 1 User and Product API.md>).

@@ -421,483 +421,175 @@ Here is what you covered today:
 
 ---
 
-## 1. What Is the Node.js Runtime
+## Campus Store Storyline Project - Level 2
 
-Think of a runtime as the environment where your code runs. When you write JavaScript in a browser, the browser is the runtime. It understands JavaScript and executes it.
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 2 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-Node.js is a runtime that lets JavaScript execute on your computer or on a server, outside the browser.
+### Story So Far
 
-The Node.js runtime is built on two key things:
+Level 1 is your starting checkpoint. You can review it in [Day 1](<Day1-Introduction to Backend, API, and Node.js.md>).
 
-| Component | What It Does                                                          |
-| --------- | --------------------------------------------------------------------- |
-| V8 Engine | Google's JavaScript engine that compiles and runs JS code             |
-| libuv     | A library that handles file systems, networking, and async operations |
+You move the practice script into the official backend structure and add configuration through npm and environment variables.
 
-When you run `node app.js`, Node.js uses the V8 engine to read your JavaScript file and execute it line by line. libuv handles things like reading files from disk or making network calls without blocking the rest of your program.
+### Today’s Project Level
 
----
+Run `npm install`, then copy `.env.example` to `.env`.
 
-## 2. What Is npm
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Delete | `app.js` | The Day 1 practice entry point is replaced by the course-standard entry point. |
+| Create | `package.json` | Define ES modules and the start and development commands. |
+| Generate | `package-lock.json` | Lock the exact dependency versions after running `npm install`. |
+| Create | `.env.example` | Document the environment values without committing real secrets. |
+| Create | `.gitignore` | Keep installed dependencies and real environment secrets out of Git. |
+| Create | `src/server.js` | Load and print the Campus Store configuration. |
 
-npm stands for Node Package Manager.
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-When you install Node.js, npm is automatically installed along with it. npm does two things:
+### Guided Upgrade
 
-First, it is a tool you use on the command line to install packages into your project.
+1. Copy the complete Level 1 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 2 Project** to compare every saved file with the completed checkpoint.
 
-Second, it is a huge online registry at `https://npmjs.com` where developers publish packages. There are currently over two million packages available.
+#### Step 1 — Delete `app.js`
 
-A package is a folder of code someone else wrote that you can use in your project. Instead of writing everything yourself, you install packages for common tasks.
+Delete `app.js` from the project root. The Day 1 practice entry point is replaced by the course-standard entry point. After deletion, confirm the path no longer appears in **View Day 2 Project**.
 
-Examples of popular packages:
+#### Step 2 — Create `package.json`
 
-| Package      | What It Does                                   |
-| ------------ | ---------------------------------------------- |
-| express      | Creates a web server and handles routes        |
-| bcrypt       | Hashes passwords securely                      |
-| dotenv       | Loads environment variables from a file        |
-| jsonwebtoken | Creates and verifies JWT tokens                |
-| prisma       | Connects and queries a database using a schema |
+Define ES modules and the start and development commands.
 
-You install a package like this:
+**File: `package.json`**
 
-```bash
-npm install express
-```
-
-This downloads the package and adds it to your project automatically.
-
----
-
-## 3. Creating a Node.js Project
-
-Before writing any code for a real backend project, you always create a proper project structure with npm.
-
-### Step 1 - Create a new folder
-
-```bash
-mkdir day2-npm-basics
-```
-
-This creates a folder called `day2-npm-basics`.
-
-### Step 2 - Move into the folder
-
-```bash
-cd day2-npm-basics
-```
-
-Now your terminal is inside this folder and every command you run will apply here.
-
-### Step 3 - Initialize the project
-
-```bash
-npm init -y
-```
-
-`npm init` sets up a new Node.js project. The `-y` flag means "yes to all defaults." Without it, npm would ask you a series of questions about your project name, version, description, and more. With `-y`, it fills in default values for everything automatically.
-
-After running this, you will see a new file called `package.json` created in your folder.
-
----
-
-## 4. Understanding package.json
-
-`package.json` is the heart of every Node.js project. It is a file written in JSON format that stores all the information about your project.
-
-Here is what a basic `package.json` looks like after running `npm init -y`:
-
-```json
+~~~json
 {
-  "name": "day2-npm-basics",
+  "name": "campus-store-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
-}
-```
-
-Let us go through each field:
-
-- `"name"` is the name of your project. It comes from the folder name by default.
-- `"version"` is the current version of your project. It starts at `1.0.0`.
-- `"description"` is an optional short explanation of what your project does.
-- `"main"` tells Node.js which file is the entry point of your project. This is the file that runs first.
-- `"scripts"` is where you define terminal commands you can run using `npm run <name>`. The default has a `"test"` script.
-- `"author"` is your name.
-- `"license"` specifies how others can use your code.
-
-### Adding a start script
-
-You should add a `"start"` script so you can run your app with a single command:
-
-```json
-{
-  "name": "day2-npm-basics",
-  "version": "1.0.0",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  }
-}
-```
-
-After adding this, you can start your app with:
-
-```bash
-npm start
-```
-
-Instead of typing `node app.js` every time. This is a common convention in Node.js projects.
-
----
-
-## 5. Installing Packages
-
-Once you have `package.json`, you can install packages.
-
-### Installing Express
-
-```bash
-npm install express
-```
-
-After this command runs, two things happen:
-
-First, a folder called `node_modules` is created. This folder contains the downloaded code for express and all of its dependencies.
-
-Second, your `package.json` is updated automatically:
-
-```json
-{
-  "name": "day2-npm-basics",
-  "version": "1.0.0",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
-  }
-}
-```
-
-The `"dependencies"` section now lists express and its version. This tells anyone who clones your project exactly which packages they need to install.
-
-### Installing a development-only package
-
-Some packages are only needed during development, not in production. You install them with `--save-dev`:
-
-```bash
-npm install nodemon --save-dev
-```
-
-nodemon is a tool that automatically restarts your Node.js server every time you save a file. You only need it while developing, not in production.
-
-This adds a `"devDependencies"` section to your `package.json`:
-
-```json
-{
+    "dotenv": "^16.6.1"
+  },
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.1.10"
   }
 }
-```
+~~~
 
-### The package-lock.json file
+This is the complete Level 2 version of `package.json`. Define ES modules and the start and development commands. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-When you install packages, npm also creates or updates a file called `package-lock.json`. This file records the exact version of every package installed, including all nested dependencies. It ensures that every developer on the team installs exactly the same versions.
+#### Step 3 — Generate `package-lock.json`
 
----
+Do not type or edit `package-lock.json` by hand. Lock the exact dependency versions after running `npm install`. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
 
-## 6. The node_modules Folder
+#### Step 4 — Create `.env.example`
 
-The `node_modules` folder contains all the installed packages. You should never edit anything inside this folder.
+Document the environment values without committing real secrets.
 
-You should also never commit `node_modules` to Git. Add it to your `.gitignore` file:
+**File: `.env.example`**
 
-```
-node_modules/
-```
+~~~properties
+# Copy this file to .env, then replace every example value.
+PORT=8888
+STORE_NAME="Campus Store"
+~~~
 
-When someone clones your project, they run `npm install` and npm reads `package.json` to install all the needed packages automatically.
+This is the complete Level 2 version of `.env.example`. Document the environment values without committing real secrets. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
----
+#### Step 5 — Create `.gitignore`
 
-## 7. What Are Environment Variables
+Keep installed dependencies and real environment secrets out of Git.
 
-Environment variables are values that live outside your code. They are stored in the operating system or in a special file, not inside your JavaScript files.
+**File: `.gitignore`**
 
-Why do we need them?
-
-Imagine you have a database password in your code:
-
-```javascript
-// This is dangerous - never do this
-const password = "mySecretPassword123";
-```
-
-If you push this code to GitHub, everyone can see your password. That is a serious security problem.
-
-Instead, you store the password in an environment variable:
-
-```javascript
-const password = process.env.DB_PASSWORD;
-```
-
-The actual value of `DB_PASSWORD` lives in a `.env` file or the server's environment, not in your code. This keeps sensitive data secure.
-
-Common things stored as environment variables:
-
-- database credentials
-- API keys
-- JWT secret keys
-- application port number
-- third-party service credentials
-
----
-
-## 8. Using the dotenv Package
-
-dotenv is a package that reads a `.env` file and makes those values available to your program through `process.env`.
-
-### Step 1 - Install dotenv
-
-```bash
-npm install dotenv
-```
-
-### Step 2 - Create a .env file
-
-Create a file called `.env` in the root of your project. Notice there is no filename before the dot.
-
-```
-PORT=3000
-APP_NAME=MyBackendApp
-DB_HOST=localhost
-DB_PASSWORD=supersecretpassword
-```
-
-Each line is a key-value pair. The key is the variable name and the value is what you want to store. No quotes needed.
-
-### Step 3 - Add .env to .gitignore
-
-```
+~~~text
 node_modules/
 .env
-```
+~~~
 
-This prevents your `.env` file from being pushed to GitHub.
+This is the complete Level 2 version of `.gitignore`. Keep installed dependencies and real environment secrets out of Git. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-### Step 4 - Load dotenv in your code
+#### Step 6 — Create `src/server.js`
 
-Create `app.js` and write:
+Load and print the Campus Store configuration.
 
-```javascript
-// Load the dotenv package and read the .env file
+**File: `src/server.js`**
+
+~~~javascript
 import 'dotenv/config';
 
-// Now access the values using process.env
-const port = process.env.PORT;
-const appName = process.env.APP_NAME;
-const dbHost = process.env.DB_HOST;
+const port = Number(process.env.PORT) || 8888;
+const storeName = process.env.STORE_NAME || 'Campus Store';
 
-// Print to verify they loaded correctly
-console.log("Port:", port);
-console.log("App Name:", appName);
-console.log("Database Host:", dbHost);
+console.log(`${storeName} project configuration loaded.`);
+console.log(`The future API will use port ${port}.`);
+~~~
+
+This is the complete Level 2 version of `src/server.js`. Load and print the Campus Store configuration. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Run `npm start`. You should see the store name and port `8888` in the terminal.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 2, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── src/
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
-Line by line:
+Your completed checkpoint now:
 
-- `import 'dotenv/config'` loads the dotenv package and automatically reads your `.env` file. After this line runs, all the variables from `.env` are available on `process.env`.
-- `process.env.PORT` reads the value of `PORT` from the environment. If `.env` has `PORT=3000`, this will be the string `"3000"`.
-- The `console.log` lines print the values so you can confirm they loaded.
+- Uses ES module syntax.
+- Reads `PORT` and `STORE_NAME` from `.env`.
+- Runs through `npm start` or `npm run dev`.
 
-Run the file:
+Completion checklist:
 
-```bash
-node app.js
-```
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Run `npm start`. You should see the store name and port `8888` in the terminal.
+- You can explain what today’s new files do without reading the code word for word.
 
-Output:
+### Use This in Your Assigned Project
 
-```
-Port: 3000
-App Name: MyBackendApp
-Database Host: localhost
-```
+Create a repeatable foundation that any assigned backend project can use.
 
----
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
-## 9. Using ES Modules in Node.js
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-Modern JavaScript uses `import` and `export` syntax. To enable this in Node.js, you need to tell it to use ES modules.
+For your own project:
 
-Open `package.json` and add `"type": "module"`:
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
-```json
-{
-  "name": "day2-npm-basics",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^16.0.3"
-  }
-}
-```
+### Next Level
 
-With `"type": "module"`, you can use `import` statements:
-
-```javascript
-// ES Module syntax (works with "type": "module" in package.json)
-import express from 'express';
-import 'dotenv/config';
-```
-
-Without `"type": "module"`, you would use the older CommonJS syntax:
-
-```javascript
-// CommonJS syntax (older style)
-const express = require('express');
-require('dotenv').config();
-```
-
-Both work, but this course uses ES modules because it is the modern standard.
-
----
-
-## 10. A Complete Day 2 Project
-
-Put everything together in one project:
-
-Create the folder and files:
-
-```bash
-mkdir day2-complete
-cd day2-complete
-npm init -y
-npm install express dotenv
-```
-
-Create `.env`:
-
-```
-PORT=3000
-APP_NAME=Day2App
-GREETING=Hello from environment
-```
-
-Open `package.json` and add `"type": "module"` and a start script:
-
-```json
-{
-  "name": "day2-complete",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "dotenv": "^16.0.3"
-  }
-}
-```
-
-Create `app.js`:
-
-```javascript
-// Load environment variables from .env file
-import 'dotenv/config';
-
-// Import express
-import express from 'express';
-
-// Create an express application
-const app = express();
-
-// Read the port from environment variable, or use 3000 as default
-const PORT = process.env.PORT || 3000;
-
-// Read the greeting message from environment variable
-const greeting = process.env.GREETING;
-
-// Define a simple route
-app.get('/', (req, res) => {
-  // Send a JSON response with the greeting and app name
-  res.json({
-    message: greeting,
-    app: process.env.APP_NAME
-  });
-});
-
-// Start the server and listen on the PORT
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-```
-
-Line by line:
-
-- `import 'dotenv/config'` must be the very first import so environment variables are available before anything else runs.
-- `import express from 'express'` brings in the express library.
-- `const app = express()` creates an express application. This `app` object is how you define routes and configure the server.
-- `const PORT = process.env.PORT || 3000` reads the PORT from `.env`. If it is not set, it defaults to `3000`. The `||` means "or, use this fallback."
-- `app.get('/', ...)` defines a route that responds to GET requests at the root path `/`.
-- `res.json({...})` sends a JSON response back to whoever made the request.
-- `app.listen(PORT, ...)` starts the server on the given port. The callback function runs once the server is ready and listening.
-
-Run it:
-
-```bash
-npm start
-```
-
-Open your browser and go to `http://localhost:3000`. You will see the JSON response.
-
----
-
-## Summary
-
-Here is what you covered today:
-
-- The Node.js runtime is built on V8 (executes JavaScript) and libuv (handles async operations like files and networking).
-- npm is the package manager for Node.js. It lets you install packages from the npm registry.
-- `npm init -y` creates a `package.json` file which tracks your project's name, scripts, and dependencies.
-- `npm install <package>` downloads a package into `node_modules` and adds it to your `package.json`.
-- Environment variables store sensitive configuration like passwords and API keys outside of your code.
-- The dotenv package reads a `.env` file and makes those values available via `process.env`.
-- Adding `"type": "module"` to `package.json` enables modern `import` syntax.
-
----
-
-## Practice Tasks
-
-1. Create a new folder called `day2-practice`.
-2. Run `npm init -y` inside it.
-3. Add `"type": "module"` to `package.json`.
-4. Install the `dotenv` package.
-5. Create a `.env` file with at least four custom variables (your name, age, city, and a favorite language).
-6. Create `app.js` that loads and prints all four variables.
-7. Add a start script to `package.json` and run it with `npm start`.
-
----
-
-## Homework
-
-- Create a new Node.js project from scratch without using any tutorial.
-- Add five environment variables including a PORT, a database name, an API key (any fake value), your name, and your course name.
-- Print all five variables to the console when the app starts.
-- Write a short note explaining: what happens if you delete `node_modules` and run `npm install` again?
+The project has a foundation, but it does not yet have an API design. Level 3 plans the routes before coding them. Continue with [Day 3](<Day3-HTTP Fundamentals and REST API Concepts.md>).

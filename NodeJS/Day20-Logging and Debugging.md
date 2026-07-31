@@ -34,61 +34,20 @@ This tells you exactly what broke and where. You need both types of logs in a re
 
 ---
 
-## 2. Project Setup
+## 2. Continue the Campus Store Project
 
-```bash
-mkdir day20-logging
-cd day20-logging
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg morgan winston
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares src/config src/logs
-```
+Start with the completed Level 19 checkpoint from [Day 19](<Day19-Security Essentials for Node.js APIs.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run `npm install` to install Morgan and Winston.
 
-```json
-{
-  "name": "day20-logging",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Create `src/config/logger.js`**: Configure console and file transports.
+- **Edit `src/middlewares/errorHandler.js`**: Log method, URL, message, and stack before responding.
+- **Edit `src/server.js`**: Connect Morgan output to Winston.
+- **Edit `.gitignore`**: Ignore generated log files.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day20_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day20_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-src/logs/*.log
-```
-
-The last line ignores generated log files so they never get committed to Git.
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 3. Morgan - Automatic Request Logging
 
@@ -371,3 +330,305 @@ cat src/logs/combined.log
 ## Homework
 
 Add Morgan and Winston logging to your mini project. Write down two errors you encountered while building the project so far, and describe what the stack trace told you and how you fixed each one.
+
+---
+
+## Campus Store Storyline Project - Level 20
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 20 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 19 is your starting checkpoint. You can review it in [Day 19](<Day19-Security Essentials for Node.js APIs.md>).
+
+You add Morgan request logs and Winston application and error logs.
+
+### Today’s Project Level
+
+Run `npm install` to install Morgan and Winston.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Edit | `package.json` | Add Morgan and Winston for request and application logging. |
+| Regenerate | `package-lock.json` | Record the installed logging dependency tree. |
+| Create | `src/config/logger.js` | Configure console and file transports. |
+| Edit | `src/middlewares/errorHandler.js` | Log method, URL, message, and stack before responding. |
+| Edit | `src/server.js` | Connect Morgan output to Winston. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 19 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 20 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Edit `package.json`
+
+Add Morgan and Winston for request and application logging.
+
+**File: `package.json`**
+
+~~~json
+{
+  "name": "campus-store-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cumulative Campus Store API course project",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "db:generate": "prisma generate --config prisma/prisma.config.js",
+    "db:migrate": "prisma migrate dev --config prisma/prisma.config.js",
+    "db:studio": "prisma studio --config prisma/prisma.config.js",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "@prisma/adapter-pg": "^6.19.0",
+    "@prisma/client": "^6.19.0",
+    "zod": "^4.1.12",
+    "bcrypt": "^6.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^8.1.0",
+    "morgan": "^1.10.1",
+    "winston": "^3.18.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "prisma": "^6.19.0"
+  }
+}
+~~~
+
+This is the complete Level 20 version of `package.json`. Add Morgan and Winston for request and application logging. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Regenerate `package-lock.json`
+
+Do not type or edit `package-lock.json` by hand. Record the installed logging dependency tree. Run `npm install` from the `campus-store-api/` root; npm will create or refresh this exact file automatically.
+
+#### Step 3 — Create `src/config/logger.js`
+
+Configure console and file transports.
+
+**File: `src/config/logger.js`**
+
+~~~javascript
+import path from 'node:path';
+import winston from 'winston';
+
+const format = winston.format.combine(
+  winston.format.timestamp(),
+  winston.format.json(),
+);
+
+const logger = winston.createLogger({
+  level: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  format,
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
+    }),
+    new winston.transports.File({ filename: path.join('logs', 'error.log'), level: 'error' }),
+    new winston.transports.File({ filename: path.join('logs', 'combined.log') }),
+  ],
+});
+
+export default logger;
+~~~
+
+This is the complete Level 20 version of `src/config/logger.js`. Configure console and file transports. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Edit `src/middlewares/errorHandler.js`
+
+Log method, URL, message, and stack before responding.
+
+**File: `src/middlewares/errorHandler.js`**
+
+~~~javascript
+import logger from '../config/logger.js';
+
+export function errorHandler(err, req, res, next) {
+  logger.error('Request failed', {
+    method: req.method,
+    url: req.originalUrl,
+    message: err.message,
+    stack: err.stack,
+  });
+  if (res.headersSent) return next(err);
+  res.status(err.status || 500).json({
+    message: err.status ? err.message : 'An unexpected server error occurred',
+  });
+}
+~~~
+
+This is the complete Level 20 version of `src/middlewares/errorHandler.js`. Log method, URL, message, and stack before responding. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Edit `src/server.js`
+
+Connect Morgan output to Winston.
+
+**File: `src/server.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import logger from './config/logger.js';
+import { swaggerDocument } from './config/swagger.js';
+import { authLimiter, corsMiddleware, generalLimiter } from './config/security.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+
+const app = express();
+app.use(express.json());
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+app.use(helmet());
+app.use(corsMiddleware);
+app.use(generalLimiter);
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use('/uploads', express.static(path.resolve(currentDir, '../uploads')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/auth', authLimiter, authRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use(errorHandler);
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 20 version of `src/server.js`. Connect Morgan output to Winston. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Call a valid route and an intentionally invalid one, then inspect `logs/combined.log` and `logs/error.log`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 20, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   └── 20260731000600_add_product_image/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   ├── logger.js
+│   │   ├── security.js
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   └── server.js
+├── uploads/
+│   └── .gitkeep
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Records structured request and error events.
+- Keeps sensitive response details away from clients.
+- Provides stack traces during development.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Call a valid route and an intentionally invalid one, then inspect `logs/combined.log` and `logs/error.log`.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Record enough context to reproduce failures instead of guessing what happened.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Logs explain failures after they happen. Level 21 adds automated tests that catch failures earlier. Continue with [Day 21](<Day21-Testing APIs with Jest and Supertest.md>).

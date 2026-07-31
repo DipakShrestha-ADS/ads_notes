@@ -436,455 +436,236 @@ Here is what you covered today:
 
 ---
 
-## 1. Why Project Structure Matters
+## Campus Store Storyline Project - Level 7
 
-When you are just learning, putting everything in one `app.js` file works fine. But in a real project, that file quickly becomes hundreds or thousands of lines long. Finding a bug, adding a feature, or working with a team becomes painful.
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 7 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-Good project structure means:
+### Story So Far
 
-- Every file has one clear responsibility
-- You know exactly where to look when something needs to change
-- New developers on the team can understand the project quickly
-- Testing and debugging become much easier
+Level 6 is your starting checkpoint. You can review it in [Day 6](<Day6-Middleware in Express.md>).
 
-Think of it like a well-organized kitchen. You know exactly which drawer has the spatulas, which cabinet has the plates, and where the spices are. Everything has a place.
+You separate product data, controller logic, routes, middleware, and server startup.
 
-A messy kitchen where everything is thrown together works for one person cooking once. But it does not work for a professional restaurant kitchen running all day.
+### Today’s Project Level
 
----
+No new package is required.
 
-## 2. The Folder Structure
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `src/data/products.js` | Hold temporary product data and ID generation. |
+| Create | `src/controllers/productController.js` | Move product request and response logic out of the server. |
+| Create | `src/routes/productRoutes.js` | Map product URLs to controller functions. |
+| Edit | `src/server.js` | Mount the product router and keep only application wiring. |
 
-Here is the standard folder structure for a Node.js backend project:
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-```
-project/
-  app.js              <- Main entry point, starts the server
-  .env                <- Environment variables
-  package.json        <- Project config and dependencies
-  routes/             <- Defines which controller handles which URL
-    userRoutes.js
-    productRoutes.js
-  controllers/        <- Contains the actual logic for each route
-    userController.js
-    productController.js
-  middlewares/        <- Custom middleware functions
-    logger.js
-    errorHandler.js
-  config/             <- Database connections, app settings
-    db.js
-  utils/              <- Small helper functions used across the app
-    formatDate.js
-```
+### Guided Upgrade
 
-Each folder has a single purpose:
+1. Copy the complete Level 6 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 7 Project** to compare every saved file with the completed checkpoint.
 
-| Folder      | Purpose                                           |
-| ----------- | ------------------------------------------------- |
-| routes      | Maps URLs to the right controller functions       |
-| controllers | Handles requests, runs logic, sends responses     |
-| middlewares | Functions that run before the route handler       |
-| config      | Configuration like database connection setup      |
-| utils       | Small utility functions shared across the project |
+#### Step 1 — Create `src/data/products.js`
 
----
+Hold temporary product data and ID generation.
 
-## 3. What Goes Where
+**File: `src/data/products.js`**
 
-### routes
-
-A route file just says: when this URL is called with this method, run this controller function.
-
-It does not contain any logic. No database queries. No calculations. Just routing.
-
-```javascript
-// routes/userRoutes.js
-import { getAllUsers, getUserById, createUser } from '../controllers/userController.js';
-
-router.get('/', getAllUsers);      // GET /users --> run getAllUsers
-router.get('/:id', getUserById);  // GET /users/:id --> run getUserById
-router.post('/', createUser);     // POST /users --> run createUser
-```
-
-### controllers
-
-A controller file contains the logic. It reads the request, does the work, and sends the response.
-
-```javascript
-// controllers/userController.js
-export function getAllUsers(req, res) {
-  // logic here
-}
-
-export function getUserById(req, res) {
-  // logic here
-}
-```
-
-### middlewares
-
-A middleware file exports a function that can be used in routes or globally.
-
-```javascript
-// middlewares/logger.js
-export function logger(req, res, next) {
-  console.log(`${req.method} ${req.url}`);
-  next();
-}
-```
-
----
-
-## 4. Setting Up Express Router
-
-Express has a built-in `Router` that lets you create mini-apps with their own routes. You create a router, add routes to it, and then mount it on a path in your main app.
-
-```javascript
-// routes/userRoutes.js
-import express from 'express';
-import { getAllUsers, getUserById, createUser, updateUser, deleteUser } from '../controllers/userController.js';
-
-// Create a new router for users
-const router = express.Router();
-
-// Define routes on the router
-// The base path /users is added when we mount this router in app.js
-router.get('/', getAllUsers);       // GET /users
-router.get('/:id', getUserById);   // GET /users/:id
-router.post('/', createUser);      // POST /users
-router.put('/:id', updateUser);    // PUT /users/:id
-router.delete('/:id', deleteUser); // DELETE /users/:id
-
-// Export the router so app.js can use it
-export default router;
-```
-
-Line by line:
-
-- `express.Router()` creates an isolated router instance. You can think of it as a mini Express app.
-- `router.get('/', getAllUsers)` is just like `app.get('/', handler)` but scoped to this router.
-- When you say `router.get('/', ...)`, the `/` refers to whatever base path this router is mounted on in `app.js`. If mounted at `/users`, then `GET /users` hits this route.
-- `export default router` exports the router so `app.js` can import it.
-
----
-
-## 5. Refactoring the CRUD Project
-
-Let us refactor the Day 5 users API step by step.
-
-### Step 1 - Create the folder structure
-
-```bash
-mkdir day7-structured-api
-cd day7-structured-api
-npm init -y
-npm install express dotenv
-```
-
-Create the following folders:
-
-```bash
-mkdir routes controllers middlewares
-```
-
-Your project should look like this:
-
-```
-day7-structured-api/
-  app.js
-  .env
-  package.json
-  routes/
-  controllers/
-  middlewares/
-```
-
-Update `package.json`:
-
-```json
-{
-  "name": "day7-structured-api",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js"
-  }
-}
-```
-
-Create `.env`:
-
-```
-PORT=3000
-```
-
----
-
-### Step 2 - Create the data file
-
-In a real project, data comes from a database. For now, create a file to hold the in-memory data:
-
-```javascript
-// data/users.js
-// This simulates a database for now
-export let users = [
-  { id: 1, name: 'Ali Raza', email: 'ali@example.com', age: 25 },
-  { id: 2, name: 'Priya Sharma', email: 'priya@example.com', age: 22 },
-  { id: 3, name: 'Sita Karki', email: 'sita@example.com', age: 28 }
+~~~javascript
+export const products = [
+  { id: 1, title: 'Notebook', price: 4.5, description: 'A ruled notebook' },
+  { id: 2, title: 'Campus Hoodie', price: 28, description: 'A warm campus hoodie' },
 ];
 
-// Shared counter for auto-incrementing IDs
-export let nextId = 4;
-export function incrementId() {
-  nextId++;
+let nextId = 3;
+
+export function createProductId() {
+  const id = nextId;
+  nextId += 1;
+  return id;
 }
-```
+~~~
 
-Create the `data` folder first: `mkdir data`, then create `data/users.js`.
+This is the complete Level 7 version of `src/data/products.js`. Hold temporary product data and ID generation. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
----
+#### Step 2 — Create `src/controllers/productController.js`
 
-### Step 3 - Create the controller
+Move product request and response logic out of the server.
 
-```javascript
-// controllers/userController.js
-import { users, nextId, incrementId } from '../data/users.js';
+**File: `src/controllers/productController.js`**
 
-// GET /users - Return all users
-export function getAllUsers(req, res) {
-  res.status(200).json({ count: users.length, users });
+~~~javascript
+import { createProductId, products } from '../data/products.js';
+
+export function getAllProducts(req, res) {
+  res.json({ data: products });
 }
 
-// GET /users/:id - Return one user
-export function getUserById(req, res) {
-  const id = parseInt(req.params.id);
-  const user = users.find(u => u.id === id);
+export function getProductById(req, res) {
+  const product = products.find(item => item.id === Number(req.params.id));
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  res.json({ data: product });
+}
 
-  if (!user) {
-    return res.status(404).json({ error: `User ${id} not found` });
+export function createProduct(req, res) {
+  const { title, price, description = '' } = req.body;
+  if (!title || typeof price !== 'number') {
+    return res.status(400).json({ message: 'title and numeric price are required' });
   }
-
-  res.status(200).json(user);
+  const product = { id: createProductId(), title, price, description };
+  products.push(product);
+  res.status(201).json({ data: product });
 }
 
-// POST /users - Create a new user
-export function createUser(req, res) {
-  const { name, email, age } = req.body;
-
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
+export function updateProduct(req, res) {
+  const index = products.findIndex(item => item.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ message: 'Product not found' });
+  const { title, price, description = '' } = req.body;
+  if (!title || typeof price !== 'number') {
+    return res.status(400).json({ message: 'title and numeric price are required' });
   }
-
-  const newUser = { id: nextId, name, email, age: age || null };
-  incrementId();        // Update the shared counter
-  users.push(newUser);  // Add to the array
-
-  res.status(201).json({ message: 'User created', user: newUser });
+  products[index] = { ...products[index], title, price, description };
+  res.json({ data: products[index] });
 }
 
-// PUT /users/:id - Replace a user
-export function updateUser(req, res) {
-  const id = parseInt(req.params.id);
-  const index = users.findIndex(u => u.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ error: `User ${id} not found` });
-  }
-
-  const { name, email, age } = req.body;
-
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-
-  users[index] = { id, name, email, age: age || null };
-
-  res.status(200).json({ message: 'User updated', user: users[index] });
+export function deleteProduct(req, res) {
+  const index = products.findIndex(item => item.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ message: 'Product not found' });
+  products.splice(index, 1);
+  res.status(204).send();
 }
+~~~
 
-// DELETE /users/:id - Remove a user
-export function deleteUser(req, res) {
-  const id = parseInt(req.params.id);
-  const index = users.findIndex(u => u.id === id);
+This is the complete Level 7 version of `src/controllers/productController.js`. Move product request and response logic out of the server. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-  if (index === -1) {
-    return res.status(404).json({ error: `User ${id} not found` });
-  }
+#### Step 3 — Create `src/routes/productRoutes.js`
 
-  users.splice(index, 1);
+Map product URLs to controller functions.
 
-  res.status(200).json({ message: `User ${id} deleted` });
-}
-```
+**File: `src/routes/productRoutes.js`**
 
-Line by line for the module setup:
-
-- `import { users, nextId, incrementId } from '../data/users.js'` imports the shared data. The `..` goes up one folder level, then into `data/users.js`.
-- `export function getAllUsers(req, res)` exports the function so the router can import it.
-- Each function reads `req`, does its job with the data, and sends a response using `res`.
-
----
-
-### Step 4 - Create the route file
-
-```javascript
-// routes/userRoutes.js
-import express from 'express';
+~~~javascript
+import { Router } from 'express';
 import {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser
-} from '../controllers/userController.js';
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+} from '../controllers/productController.js';
 
-// Create the router
-const router = express.Router();
+const router = Router();
 
-// Map each URL pattern and HTTP method to a controller function
-router.get('/', getAllUsers);
-router.get('/:id', getUserById);
-router.post('/', createUser);
-router.put('/:id', updateUser);
-router.delete('/:id', deleteUser);
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
 export default router;
-```
+~~~
 
-This file is clean and simple. Anyone reading it immediately knows what routes exist and which controller handles each one.
+This is the complete Level 7 version of `src/routes/productRoutes.js`. Map product URLs to controller functions. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
----
+#### Step 4 — Edit `src/server.js`
 
-### Step 5 - Create the logger middleware
+Mount the product router and keep only application wiring.
 
-```javascript
-// middlewares/logger.js
+**File: `src/server.js`**
 
-// Logs the HTTP method, URL, and timestamp for every request
-export function logger(req, res, next) {
-  const time = new Date().toISOString();
-  console.log(`[${time}] ${req.method} ${req.url}`);
-  next();
-}
-```
-
----
-
-### Step 6 - Create the main app.js
-
-```javascript
-// app.js - Main entry point
+~~~javascript
 import 'dotenv/config';
 import express from 'express';
-import userRoutes from './routes/userRoutes.js';
-import { logger } from './middlewares/logger.js';
+import productRoutes from './routes/productRoutes.js';
+import { requestLogger } from './middlewares/requestLogger.js';
+import { requireStoreKey } from './middlewares/requireStoreKey.js';
 
 const app = express();
-
-// Built-in middleware
 app.use(express.json());
-
-// Custom global middleware
-app.use(logger);
-
-// Mount the user routes at /users
-// All routes in userRoutes.js will be prefixed with /users
-app.use('/users', userRoutes);
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
+app.use(requestLogger);
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
 });
 
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+app.use('/products', productRoutes);
+app.get('/admin/report', requireStoreKey, (req, res) => {
+  res.json({ status: 'private manager report' });
 });
+
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => {
+  console.log(`Campus Store API running at http://localhost:${port}`);
+});
+~~~
+
+This is the complete Level 7 version of `src/server.js`. Mount the product router and keep only application wiring. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Repeat every Level 5 product request. The responses should be unchanged after the refactor.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 7, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── src/
+│   ├── controllers/
+│   │   └── productController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── middlewares/
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   └── productRoutes.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
-Line by line:
+Your completed checkpoint now:
 
-- `import userRoutes from './routes/userRoutes.js'` imports the router you created.
-- `app.use('/users', userRoutes)` mounts the user router at the `/users` base path. Every route defined in `userRoutes.js` becomes accessible under `/users`. So `router.get('/')` becomes `GET /users`, and `router.get('/:id')` becomes `GET /users/:id`.
-- `app.use(logger)` runs the logger for every incoming request, regardless of route.
-- The 404 handler at the end catches anything that was not matched.
+- Keeps all product CRUD routes working.
+- Makes each file responsible for one part of the request flow.
 
----
+Completion checklist:
 
-## 6. The Final Project Structure
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Repeat every Level 5 product request. The responses should be unchanged after the refactor.
+- You can explain what today’s new files do without reading the code word for word.
 
-After all the steps above, your project looks like this:
+### Use This in Your Assigned Project
 
-```
-day7-structured-api/
-  app.js
-  .env
-  package.json
-  data/
-    users.js
-  routes/
-    userRoutes.js
-  controllers/
-    userController.js
-  middlewares/
-    logger.js
-```
+Use the same folder responsibilities no matter which entities an assigned project contains.
 
-The logic is completely separated:
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
-- `app.js` only wires things together and starts the server.
-- `routes/userRoutes.js` only maps URLs to controllers.
-- `controllers/userController.js` only contains the logic.
-- `middlewares/logger.js` only contains the middleware.
-- `data/users.js` only contains the data.
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-If you want to change how a user is created, you go to `userController.js`. If you want to add a new route, you go to `userRoutes.js`. If you want to change how logging works, you go to `middlewares/logger.js`.
+For your own project:
 
----
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
-## 7. Testing the Structured Project
+### Next Level
 
-After running `npm run dev`, test the same routes as Day 5:
-
-```
-GET    http://localhost:3000/users
-GET    http://localhost:3000/users/1
-POST   http://localhost:3000/users
-PUT    http://localhost:3000/users/1
-DELETE http://localhost:3000/users/1
-```
-
-Everything should work exactly the same as before. The behavior has not changed. Only the organization has improved.
-
----
-
-## Summary
-
-Here is what you covered today:
-
-- Good project structure separates responsibilities into different files and folders.
-- Routes map URLs to controller functions. They contain no logic.
-- Controllers contain the actual logic: reading request data, processing it, and sending a response.
-- Middlewares are isolated in their own folder and imported where needed.
-- `express.Router()` creates a modular router. You mount it in `app.js` with `app.use('/path', router)`.
-- The `app.js` entry file only wires everything together and starts the server.
-
----
-
-## Practice Tasks
-
-1. Take your products CRUD API from Day 5.
-2. Refactor it into the folder structure from today's lesson.
-3. Create `routes/productRoutes.js`, `controllers/productController.js`, and move the data to `data/products.js`.
-4. Wire it all together in a clean `app.js`.
-5. Test all routes to make sure nothing broke during the refactor.
-
----
-
-## Homework
-
-- Refactor your products CRUD API from Day 5 homework using the proper folder structure from today.
-- Make sure your project has: `routes`, `controllers`, `middlewares`, and `data` folders.
-- Write a short note about why you think separating routes and controllers makes the code better.
+The structure is clean, but logs disappear when the terminal closes. Level 8 writes them to a file. Continue with [Day 8](<Day8-Node.js Core Modules for Backend.md>).

@@ -23,58 +23,19 @@ Pagination, filtering, searching, and sorting let the client ask for exactly wha
 
 ---
 
-## 2. Project Setup
+## 2. Continue the Campus Store Project
 
-```bash
-mkdir day16-advanced-api
-cd day16-advanced-api
-npm init -y
-npm i express dotenv pg @prisma/client @prisma/adapter-pg zod
-npm i prisma --save-dev
-npm i -D nodemon
-mkdir -p src/routes src/controllers src/db src/middlewares
-```
+Start with the completed Level 15 checkpoint from [Day 15](<Day15-Authorization and Role-Based Access Control.md>). If you missed that class, open its project preview and copy that checkpoint before continuing.
 
-`package.json`:
+Run the category migration and regenerate Prisma Client.
 
-```json
-{
-  "name": "day16-advanced-api",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "src/server.js",
-  "scripts": {
-    "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
-  }
-}
-```
+For today’s lesson, work only with these project files:
 
-`.env`:
+- **Replace `prisma/schema.prisma`**: Add the Product category field.
+- **Edit `src/schemas/productSchemas.js`**: Validate the new category field.
+- **Replace `src/controllers/productController.js`**: Build Prisma `where`, `orderBy`, `skip`, and `take` values from query parameters.
 
-```
-PORT=8888
-POSTGRES_USER=userdipak
-POSTGRES_PASSWORD=user_password
-POSTGRES_DB=day16_db
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5555
-DATABASE_URL="postgresql://userdipak:user_password@localhost:5555/day16_db?schema=public"
-```
-
-`.gitignore`:
-
-```
-node_modules/
-.env
-dist/
-```
-
-`docker-compose.yaml` - same as previous days.
-
-Start the database: `podman compose up -d`
-
----
+The detailed lesson below explains the new concept. The connected Campus Store upgrade at the end shows how these changes fit into the growing project.
 
 ## 3. Prisma Setup
 
@@ -94,6 +55,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Product {
@@ -107,7 +69,7 @@ model Product {
 ```
 
 ```bash
-npx prisma migrate dev --name create_products
+npx prisma migrate dev --config prisma/prisma.config.js --name create_products
 ```
 
 Create `src/db/prisma.js` (same as Day 11).
@@ -542,3 +504,316 @@ GET /products?search=desk&sortBy=price&order=desc
 ## Homework
 
 Add pagination, filtering by category, and sorting by price to the products API from your mini project. Make sure the response includes the `meta` object with `total`, `page`, `limit`, and `totalPages` on every request.
+
+---
+
+## Campus Store Storyline Project - Level 16
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 16 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 15 is your starting checkpoint. You can review it in [Day 15](<Day15-Authorization and Role-Based Access Control.md>).
+
+You add pagination, category filters, search, price ranges, and sorting.
+
+### Today’s Project Level
+
+Run the category migration and regenerate Prisma Client.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Replace | `prisma/schema.prisma` | Add the Product category field. |
+| Edit | `src/schemas/productSchemas.js` | Validate the new category field. |
+| Replace | `src/controllers/productController.js` | Build Prisma `where`, `orderBy`, `skip`, and `take` values from query parameters. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 15 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 16 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Replace `prisma/schema.prisma`
+
+Add the Product category field.
+
+**File: `prisma/schema.prisma`**
+
+~~~prisma
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(CUSTOMER)
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  title       String
+  price       Float
+  description String?
+  category    String    @default("General")
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+~~~
+
+This is the complete Level 16 version of `prisma/schema.prisma`. Add the Product category field. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Edit `src/schemas/productSchemas.js`
+
+Validate the new category field.
+
+**File: `src/schemas/productSchemas.js`**
+
+~~~javascript
+import { z } from 'zod';
+
+export const createProductSchema = z.object({
+  title: z.string().trim().min(2, 'Title must contain at least 2 characters'),
+  price: z.number().positive('Price must be greater than zero'),
+  description: z.string().trim().optional(),
+  category: z.string().trim().min(2).optional(),
+  userId: z.number().int().positive().nullable().optional(),
+});
+
+export const updateProductSchema = createProductSchema.partial();
+~~~
+
+This is the complete Level 16 version of `src/schemas/productSchemas.js`. Validate the new category field. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Replace `src/controllers/productController.js`
+
+Build Prisma `where`, `orderBy`, `skip`, and `take` values from query parameters.
+
+**File: `src/controllers/productController.js`**
+
+~~~javascript
+import prisma from '../db/prisma.js';
+import { createProductSchema, updateProductSchema } from '../schemas/productSchemas.js';
+
+function invalid(res, result) {
+  return res.status(400).json({ message: 'Validation failed', errors: result.error.flatten().fieldErrors });
+}
+
+export async function getAllProducts(req, res, next) {
+  try {
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(50, Math.max(1, Number(req.query.limit) || 10));
+    const sortBy = ['title', 'price', 'createdAt'].includes(req.query.sortBy) ? req.query.sortBy : 'createdAt';
+    const order = req.query.order === 'asc' ? 'asc' : 'desc';
+    const where = {
+      ...(req.query.category ? { category: req.query.category } : {}),
+      ...(req.query.search ? { title: { contains: req.query.search, mode: 'insensitive' } } : {}),
+      ...((req.query.minPrice || req.query.maxPrice) ? {
+        price: {
+          ...(req.query.minPrice ? { gte: Number(req.query.minPrice) } : {}),
+          ...(req.query.maxPrice ? { lte: Number(req.query.maxPrice) } : {}),
+        },
+      } : {}),
+    };
+    const [data, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        orderBy: { [sortBy]: order },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      prisma.product.count({ where }),
+    ]);
+    res.json({ data, meta: { total, page, limit, totalPages: Math.ceil(total / limit) } });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getProductById(req, res, next) {
+  try {
+    const product = await prisma.product.findUnique({
+      where: { id: Number(req.params.id) },
+      include: { user: { select: { id: true, name: true, email: true } } },
+    });
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function createProduct(req, res, next) {
+  const result = createProductSchema.safeParse(req.body);
+  if (!result.success) return invalid(res, result);
+  try {
+    const product = await prisma.product.create({ data: result.data });
+    res.status(201).json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function updateProduct(req, res, next) {
+  const result = updateProductSchema.safeParse(req.body);
+  if (!result.success) return invalid(res, result);
+  try {
+    const product = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: result.data,
+    });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteProduct(req, res, next) {
+  try {
+    await prisma.product.delete({ where: { id: Number(req.params.id) } });
+    res.status(204).send();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function uploadProductImage(req, res, next) {
+  if (!req.file) return res.status(400).json({ message: 'Select one image file' });
+  try {
+    const product = await prisma.product.update({
+      where: { id: Number(req.params.id) },
+      data: { imageUrl: `/uploads/${req.file.filename}` },
+    });
+    res.json({ data: product });
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 16 version of `src/controllers/productController.js`. Build Prisma `where`, `orderBy`, `skip`, and `take` values from query parameters. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Call `/products?search=book&category=Books&sortBy=price&order=asc&page=1&limit=5`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 16, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   └── 20260731000500_add_category/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   └── requireStoreKey.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Returns pagination metadata.
+- Combines search, category, price, and sorting filters.
+- Rejects invalid pagination values safely.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Call `/products?search=book&category=Books&sortBy=price&order=asc&page=1&limit=5`.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Build flexible list endpoints without creating a separate route for every filter.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+Products are easy to find, but they have no images. Level 17 adds file uploads. Continue with [Day 17](<Day17-File Uploads and Static File Serving.md>).

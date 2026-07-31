@@ -321,25 +321,25 @@ Return 201 when you create something, 200 when you fetch something, 204 when you
 
 ## 9. Designing REST API Routes - Real Example
 
-Let us design the full API for a student management system.
+Let us design the full API for a learner management system.
 
 First, identify your resources:
 
-- students
+- learners
 - courses
 - enrollments
 
 Then design the routes:
 
-**Students API:**
+**Learners API:**
 
 ```
-GET    /students              --> Get all students
-GET    /students/:id          --> Get one student
-POST   /students              --> Create a new student
-PUT    /students/:id          --> Update a student (full update)
-PATCH  /students/:id          --> Update student's specific field
-DELETE /students/:id          --> Delete a student
+GET    /learners              --> Get all learners
+GET    /learners/:id          --> Get one learner
+POST   /learners              --> Create a new learner
+PUT    /learners/:id          --> Update a learner (full update)
+PATCH  /learners/:id          --> Update learner's specific field
+DELETE /learners/:id          --> Delete a learner
 ```
 
 **Courses API:**
@@ -352,12 +352,12 @@ PUT    /courses/:id           --> Update a course
 DELETE /courses/:id           --> Delete a course
 ```
 
-**Enrollments (nested under students):**
+**Enrollments (nested under learners):**
 
 ```
-GET    /students/:id/courses  --> Get all courses a student is enrolled in
-POST   /students/:id/courses  --> Enroll student in a course
-DELETE /students/:id/courses/:courseId  --> Remove enrollment
+GET    /learners/:id/courses  --> Get all courses a learner is enrolled in
+POST   /learners/:id/courses  --> Enroll learner in a course
+DELETE /learners/:id/courses/:courseId  --> Remove enrollment
 ```
 
 This is clean, predictable, and easy for any developer to understand.
@@ -384,7 +384,7 @@ Example of a POST request in Postman / Insomnia / Thunder Client:
 
 ```
 Method: POST
-URL: http://localhost:3000/users
+URL: http://localhost:8888/users
 
 Headers:
   Content-Type: application/json
@@ -427,3 +427,131 @@ Here is what you covered today:
 - Write 10 example API routes using proper REST naming for a job portal application. Include routes for jobs, companies, and applications.
 - Write in your own words: what is the difference between `GET /users/5` and `GET /users?id=5`? When would you use each one?
 - Look at the status code table above and write one real-world sentence for each of these: 200, 201, 400, 401, 403, 404, 500. Describe exactly when you would see that code.
+
+---
+
+## Campus Store Storyline Project - Level 3
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 3 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 2 is your starting checkpoint. You can review it in [Day 2](<Day2-Node.js Runtime, npm, package.json, and Environment Variables.md>).
+
+You design the users, products, and orders API before writing route handlers.
+
+### Today’s Project Level
+
+No new package is required.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `docs/api-plan.md` | Record resources, routes, sample bodies, status codes, and ownership rules. |
+| Keep | `src/server.js` | The runtime checkpoint from Level 2 still runs unchanged. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 2 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 3 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Create `docs/api-plan.md`
+
+Record resources, routes, sample bodies, status codes, and ownership rules.
+
+**File: `docs/api-plan.md`**
+
+~~~markdown
+# Campus Store API Plan
+
+## Resources
+
+- User: a person who registers, logs in, and may own products.
+- Product: the main resource that people browse and administrators manage.
+- Order: a later transaction connecting a user to a product.
+
+## Planned Routes
+
+| Method | Route | Purpose |
+| --- | --- | --- |
+| GET | /products | Browse products |
+| GET | /products/:id | Read one product |
+| POST | /products | Create a product |
+| PUT | /products/:id | Replace product details |
+| DELETE | /products/:id | Delete a product |
+| POST | /auth/register | Register a user |
+| POST | /auth/login | Log in |
+| GET | /orders | Read the current user's orders |
+| POST | /orders | Create an order |
+
+Route parameters identify one resource. Query parameters filter a list. JSON request bodies carry create or update data.
+~~~
+
+This is the complete Level 3 version of `docs/api-plan.md`. Record resources, routes, sample bodies, status codes, and ownership rules. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Keep `src/server.js`
+
+Leave `src/server.js` unchanged. The runtime checkpoint from Level 2 still runs unchanged. Run today’s test after the other steps to prove that this existing file still behaves correctly.
+
+#### Expected result
+
+Review every planned URL and confirm it uses a resource noun such as `/products`, not an action such as `/getProducts`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 3, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── src/
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Documents RESTful product and user URLs.
+- Distinguishes route parameters, query parameters, and request bodies.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Review every planned URL and confirm it uses a resource noun such as `/products`, not an action such as `/getProducts`.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Identify the nouns, URLs, request bodies, and responses for any project before implementation begins.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The route contract is clear, but no client can call it. Level 4 creates the first Express server. Continue with [Day 4](<Day4-Express.js Introduction and First Server.md>).

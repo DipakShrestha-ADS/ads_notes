@@ -73,7 +73,7 @@ COPY . .
 
 # Generate the Prisma client inside the container
 # This is required because node_modules is built fresh inside the container
-RUN npx prisma generate
+RUN npx prisma generate --config prisma/prisma.config.js
 
 # Document which port the app listens on (informational, does not actually open the port)
 EXPOSE 8888
@@ -236,3 +236,227 @@ This is the same idea from Day 19: secrets live in `.env`, never in your code or
 ## Homework
 
 Dockerize your mini project. Write the Dockerfile, `.dockerignore`, and updated `docker-compose.yaml` with both the `postgres` and `app` services. Write down the exact `podman compose` commands you used to build, run, and stop your containers.
+
+---
+
+## Campus Store Storyline Project - Level 22
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 22 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 21 is your starting checkpoint. You can review it in [Day 21](<Day21-Testing APIs with Jest and Supertest.md>).
+
+You package the API and run it beside PostgreSQL through Podman Compose.
+
+### Today’s Project Level
+
+Run `podman compose up --build`.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Create | `Dockerfile` | Build the production Node.js image. |
+| Create | `.dockerignore` | Keep local dependencies, secrets, logs, and uploads out of the image. |
+| Replace | `docker-compose.yaml` | Run the app and database as connected services. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 21 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 22 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Create `Dockerfile`
+
+Build the production Node.js image.
+
+**File: `Dockerfile`**
+
+~~~dockerfile
+FROM node:22-alpine
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+EXPOSE 8888
+CMD ["npm", "start"]
+~~~
+
+This is the complete Level 22 version of `Dockerfile`. Build the production Node.js image. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Create `.dockerignore`
+
+Keep local dependencies, secrets, logs, and uploads out of the image.
+
+**File: `.dockerignore`**
+
+~~~text
+node_modules
+.env
+.git
+logs
+uploads
+coverage
+~~~
+
+This is the complete Level 22 version of `.dockerignore`. Keep local dependencies, secrets, logs, and uploads out of the image. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Replace `docker-compose.yaml`
+
+Run the app and database as connected services.
+
+**File: `docker-compose.yaml`**
+
+~~~yaml
+services:
+  postgres:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      PORT: 8888
+      DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public"
+      JWT_SECRET: ${JWT_SECRET}
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
+      NODE_ENV: production
+    ports:
+      - "8888:8888"
+
+volumes:
+  pgdata:
+~~~
+
+This is the complete Level 22 version of `docker-compose.yaml`. Run the app and database as connected services. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Open `http://localhost:8888` while both compose services are running, then inspect `podman compose logs app`.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 22, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   └── 20260731000600_add_product_image/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   ├── logger.js
+│   │   ├── security.js
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   ├── app.js
+│   └── server.js
+├── tests/
+│   └── health.test.js
+├── uploads/
+│   └── .gitkeep
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── Dockerfile
+├── package-lock.json
+└── package.json
+```
+
+Your completed checkpoint now:
+
+- Builds the API image reproducibly.
+- Connects to PostgreSQL using service hostname `postgres`.
+- Keeps secrets outside the image.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Open `http://localhost:8888` while both compose services are running, then inspect `podman compose logs app`.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Give another machine the same runtime, dependencies, commands, and service network.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The stack is portable, but it is not yet prepared for a public host. Level 23 adds production deployment configuration. Continue with [Day 23](<Day23-Deployment Basics.md>).

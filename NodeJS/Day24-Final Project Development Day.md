@@ -18,7 +18,7 @@ Today is about applying all of it together into one complete project, based on o
 
 Suggested final project ideas from the course:
 
-- Student Management API
+- Learner Management API
 - Course Management API
 - Blog API
 - E-commerce API
@@ -171,3 +171,359 @@ By the end of today and tomorrow, your project should have:
 ## Homework
 
 Complete as many remaining items on your checklist as possible. Make sure your core CRUD routes, authentication, and validation are fully working, since these are the most heavily weighted parts of the final project. Prepare to present your project tomorrow.
+
+---
+
+## Campus Store Storyline Project - Level 24
+
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 24 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
+
+### Story So Far
+
+Level 23 is your starting checkpoint. You can review it in [Day 23](<Day23-Deployment Basics.md>).
+
+You combine users and products through an authenticated order transaction.
+
+### Today’s Project Level
+
+Run the order migration, generate Prisma Client, and restart the API.
+
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Replace | `prisma/schema.prisma` | Add Order and its relationships to User and Product. |
+| Create | `src/schemas/orderSchemas.js` | Validate product ID and quantity. |
+| Create | `src/controllers/orderController.js` | Create and list the current user’s orders. |
+| Create | `src/routes/orderRoutes.js` | Protect order routes with authentication. |
+| Edit | `src/app.js` | Mount `/orders`. |
+
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
+
+### Guided Upgrade
+
+1. Copy the complete Level 23 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 24 Project** to compare every saved file with the completed checkpoint.
+
+#### Step 1 — Replace `prisma/schema.prisma`
+
+Add Order and its relationships to User and Product.
+
+**File: `prisma/schema.prisma`**
+
+~~~prisma
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/generated/prisma"
+  moduleFormat = "esm"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(CUSTOMER)
+  products  Product[]
+  orders    Order[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  title       String
+  price       Float
+  description String?
+  category    String    @default("General")
+  imageUrl    String?
+  userId      Int?
+  user        User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  orders      Order[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  quantity  Int
+  unitPrice Float
+  userId    Int
+  productId Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Restrict)
+  createdAt DateTime @default(now())
+}
+~~~
+
+This is the complete Level 24 version of `prisma/schema.prisma`. Add Order and its relationships to User and Product. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 2 — Create `src/schemas/orderSchemas.js`
+
+Validate product ID and quantity.
+
+**File: `src/schemas/orderSchemas.js`**
+
+~~~javascript
+import { z } from 'zod';
+
+export const createOrderSchema = z.object({
+  productId: z.number().int().positive(),
+  quantity: z.number().int().min(1).max(20),
+});
+~~~
+
+This is the complete Level 24 version of `src/schemas/orderSchemas.js`. Validate product ID and quantity. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 3 — Create `src/controllers/orderController.js`
+
+Create and list the current user’s orders.
+
+**File: `src/controllers/orderController.js`**
+
+~~~javascript
+import prisma from '../db/prisma.js';
+import { createOrderSchema } from '../schemas/orderSchemas.js';
+
+export async function createOrder(req, res, next) {
+  const result = createOrderSchema.safeParse(req.body);
+  if (!result.success) {
+    return res.status(400).json({ message: 'Validation failed', errors: result.error.flatten().fieldErrors });
+  }
+  try {
+    const product = await prisma.product.findUnique({ where: { id: result.data.productId } });
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    const order = await prisma.order.create({
+      data: {
+        userId: req.user.id,
+        productId: product.id,
+        quantity: result.data.quantity,
+        unitPrice: product.price,
+      },
+      include: { product: true },
+    });
+    res.status(201).json({ data: order });
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getMyOrders(req, res, next) {
+  try {
+    const orders = await prisma.order.findMany({
+      where: { userId: req.user.id },
+      include: { product: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    res.json({ data: orders });
+  } catch (error) {
+    next(error);
+  }
+}
+~~~
+
+This is the complete Level 24 version of `src/controllers/orderController.js`. Create and list the current user’s orders. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 4 — Create `src/routes/orderRoutes.js`
+
+Protect order routes with authentication.
+
+**File: `src/routes/orderRoutes.js`**
+
+~~~javascript
+import { Router } from 'express';
+import { createOrder, getMyOrders } from '../controllers/orderController.js';
+import { authenticate } from '../middlewares/authenticate.js';
+
+const router = Router();
+router.use(authenticate);
+router.get('/', getMyOrders);
+router.post('/', createOrder);
+
+export default router;
+~~~
+
+This is the complete Level 24 version of `src/routes/orderRoutes.js`. Protect order routes with authentication. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Step 5 — Edit `src/app.js`
+
+Mount `/orders`.
+
+**File: `src/app.js`**
+
+~~~javascript
+import 'dotenv/config';
+import express from 'express';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import logger from './config/logger.js';
+import { swaggerDocument } from './config/swagger.js';
+import { authLimiter, corsMiddleware, generalLimiter } from './config/security.js';
+import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import { errorHandler } from './middlewares/errorHandler.js';
+
+const app = express();
+app.use(express.json());
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+app.use(helmet());
+app.use(corsMiddleware);
+app.use(generalLimiter);
+app.use(morgan('combined', { stream: { write: message => logger.info(message.trim()) } }));
+app.use('/uploads', express.static(path.resolve(currentDir, '../uploads')));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.get('/', (req, res) => {
+  res.json({ message: 'Campus Store API is running' });
+});
+
+app.use('/auth', authLimiter, authRoutes);
+app.use('/products', productRoutes);
+app.use('/users', userRoutes);
+app.use('/orders', orderRoutes);
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route not found' });
+});
+
+app.use(errorHandler);
+export default app;
+~~~
+
+This is the complete Level 24 version of `src/app.js`. Mount `/orders`. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
+
+#### Expected result
+
+Log in, create an order with a valid product ID, then call `GET /orders` with the same token.
+
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
+
+### Completed Level
+
+At the end of Level 24, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   ├── api-plan.md
+│   └── data-model.md
+├── logs/
+│   └── .gitkeep
+├── prisma/
+│   ├── migrations/
+│   │   ├── 20260731000100_create_products/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000200_add_users/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000300_add_authentication/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000400_add_roles/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000500_add_category/
+│   │   │   └── migration.sql
+│   │   ├── 20260731000600_add_product_image/
+│   │   │   └── migration.sql
+│   │   └── 20260731000700_add_orders/
+│   │       └── migration.sql
+│   ├── prisma.config.js
+│   ├── schema.prisma
+│   └── seed.js
+├── src/
+│   ├── config/
+│   │   ├── logger.js
+│   │   ├── security.js
+│   │   └── swagger.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── orderController.js
+│   │   ├── productController.js
+│   │   └── userController.js
+│   ├── data/
+│   │   └── products.js
+│   ├── db/
+│   │   └── prisma.js
+│   ├── middlewares/
+│   │   ├── authenticate.js
+│   │   ├── authorize.js
+│   │   ├── errorHandler.js
+│   │   ├── fileLogger.js
+│   │   ├── requestLogger.js
+│   │   ├── requireStoreKey.js
+│   │   └── uploadProductImage.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── orderRoutes.js
+│   │   ├── productRoutes.js
+│   │   └── userRoutes.js
+│   ├── schemas/
+│   │   ├── authSchemas.js
+│   │   ├── orderSchemas.js
+│   │   ├── productSchemas.js
+│   │   └── userSchemas.js
+│   ├── app.js
+│   └── server.js
+├── tests/
+│   └── health.test.js
+├── uploads/
+│   └── .gitkeep
+├── .dockerignore
+├── .env.example
+├── .gitignore
+├── docker-compose.yaml
+├── Dockerfile
+├── package-lock.json
+├── package.json
+└── render.yaml
+```
+
+Your completed checkpoint now:
+
+- Creates an order for the authenticated user.
+- Reads only that user’s orders.
+- Returns related product information.
+
+Completion checklist:
+
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Log in, create an order with a valid product ID, then call `GET /orders` with the same token.
+- You can explain what today’s new files do without reading the code word for word.
+
+### Use This in Your Assigned Project
+
+Replace Order with Enrollment, Borrowing, Booking, Application, Submission, Rental, or another project relationship.
+
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
+
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
+
+For your own project:
+
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
+
+### Next Level
+
+The full business flow works. Level 25 verifies, documents, and presents the finished project. Continue with [Day 25](<Day25-Final Project Completion, Presentation, and Course Review.md>).

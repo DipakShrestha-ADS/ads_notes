@@ -398,451 +398,146 @@ Here is what you covered today:
 
 ---
 
-## 1. What Is CRUD
+## Campus Store Storyline Project - Level 5
 
-CRUD is an acronym that represents the four basic operations you can perform on any data:
+This section applies today’s lesson to one project that grows throughout the course. Open **View Day 5 Project** in the notes viewer whenever you want to inspect the complete files for this exact level.
 
-| Letter | Operation | HTTP Method  | What It Does                 |
-| ------ | --------- | ------------ | ---------------------------- |
-| C      | Create    | POST         | Add a new record             |
-| R      | Read      | GET          | Retrieve one or many records |
-| U      | Update    | PUT or PATCH | Modify an existing record    |
-| D      | Delete    | DELETE       | Remove a record              |
+### Story So Far
 
-Every application you build involves CRUD in some form. A blog lets you create, read, update, and delete posts. A user management system lets you create accounts, read profiles, update details, and delete users.
+Level 4 is your starting checkpoint. You can review it in [Day 4](<Day4-Express.js Introduction and First Server.md>).
 
-Today you will build a complete CRUD API for users, using a simple JavaScript array to store the data temporarily. There is no database yet. You are learning the patterns first.
+You add products and let a client create, read, update, and delete them.
 
----
+### Today’s Project Level
 
-## 2. In-Memory Data Storage
+No new package is required.
 
-An in-memory array is just a JavaScript array that lives in your server's memory. When the server restarts, the data resets. It is not permanent, but it is perfect for learning the CRUD pattern before connecting a real database.
+| Action | Path from `campus-store-api/` | Why |
+| --- | --- | --- |
+| Replace | `src/server.js` | Add the product array and all five CRUD route handlers. |
 
-Here is the users array you will work with:
+Use the paths exactly as shown. A path beginning with `src/` belongs inside the `src` folder. A file without a folder prefix belongs in the project root beside `package.json`.
 
-```javascript
-// This is our temporary in-memory storage
-// It acts like a database for now
-let users = [
-  { id: 1, name: 'Ali Raza', email: 'ali@example.com', age: 25 },
-  { id: 2, name: 'Priya Sharma', email: 'priya@example.com', age: 22 },
-  { id: 3, name: 'Sita Karki', email: 'sita@example.com', age: 28 }
-];
+### Guided Upgrade
 
-// This will be used to generate the next user ID
-let nextId = 4;
-```
+1. Copy the complete Level 4 checkpoint into your working `campus-store-api` folder. Keep every existing file unless today’s action table explicitly says to edit, move, or delete it.
+2. Complete the following file steps from top to bottom. Each heading gives the exact action and path.
+3. Run today’s install or migration command from the `campus-store-api/` root.
+4. Open **View Day 5 Project** to compare every saved file with the completed checkpoint.
 
-Line by line:
+#### Step 1 — Replace `src/server.js`
 
-- `let users = [...]` creates an array of user objects. Each user has an `id`, `name`, `email`, and `age`.
-- `let nextId = 4` keeps track of the next ID to assign. Since we already have IDs 1, 2, and 3, the next one is 4. Each time you create a user, you will use this and then increment it.
+Add the product array and all five CRUD route handlers.
 
----
+**File: `src/server.js`**
 
-## 3. Setting Up the Project
-
-Create a new project:
-
-```bash
-mkdir day5-crud-api
-cd day5-crud-api
-npm init -y
-npm install express dotenv
-```
-
-Update `package.json`:
-
-```json
-{
-  "name": "day5-crud-api",
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "node --watch app.js"
-  }
-}
-```
-
-Create `.env`:
-
-```
-PORT=3000
-```
-
----
-
-## 4. Building Each CRUD Route
-
-Create `app.js` and start with the setup:
-
-```javascript
+~~~javascript
 import 'dotenv/config';
 import express from 'express';
 
 const app = express();
 app.use(express.json());
 
-const PORT = process.env.PORT || 3000;
-
-// In-memory users array
-let users = [
-  { id: 1, name: 'Ali Raza', email: 'ali@example.com', age: 25 },
-  { id: 2, name: 'Priya Sharma', email: 'priya@example.com', age: 22 },
-  { id: 3, name: 'Sita Karki', email: 'sita@example.com', age: 28 }
+const products = [
+  { id: 1, title: 'Notebook', price: 4.5 },
+  { id: 2, title: 'Campus Hoodie', price: 28 },
 ];
+let nextId = 3;
 
-let nextId = 4;
-```
-
----
-
-### Route 1: GET /users - Get All Users
-
-```javascript
-// GET /users - Returns the full list of users
-app.get('/users', (req, res) => {
-  // Send all users with status 200
-  res.status(200).json({
-    count: users.length,  // Total number of users in the array
-    users: users          // The users array itself
-  });
+app.get('/', (req, res) => res.json({ message: 'Campus Store API is running' }));
+app.get('/products', (req, res) => res.json({ data: products }));
+app.get('/products/:id', (req, res) => {
+  const product = products.find(item => item.id === Number(req.params.id));
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  res.json({ data: product });
 });
-```
-
-Line by line:
-
-- `users.length` counts how many users are in the array. This is a useful detail to include in list responses.
-- `users: users` sends the entire array. In modern JavaScript, you can shorten this to just `users` when the key and variable name are the same: `res.status(200).json({ count: users.length, users })`.
-
----
-
-### Route 2: GET /users/:id - Get One User
-
-```javascript
-// GET /users/:id - Returns a single user by their ID
-app.get('/users/:id', (req, res) => {
-  // Convert the URL parameter from string to number
-  const id = parseInt(req.params.id);
-
-  // Search the array for a user with matching id
-  const user = users.find(u => u.id === id);
-
-  // If no user was found, return 404
-  if (!user) {
-    return res.status(404).json({ error: `User with id ${id} not found` });
-  }
-
-  // If found, return the user
-  res.status(200).json(user);
+app.post('/products', (req, res) => {
+  const { title, price } = req.body;
+  if (!title || typeof price !== 'number') return res.status(400).json({ message: 'title and numeric price are required' });
+  const product = { id: nextId++, title, price };
+  products.push(product);
+  res.status(201).json({ data: product });
 });
-```
-
-Line by line:
-
-- `req.params.id` reads the `:id` value from the URL. If the URL is `/users/2`, this gives you the string `"2"`.
-- `parseInt(req.params.id)` converts the string `"2"` into the number `2`. This is important because your array has numeric IDs, and comparing `"2" === 2` would be false.
-- `users.find(u => u.id === id)` searches through the array and returns the first user whose `id` matches. If no match is found, `find` returns `undefined`.
-- `if (!user)` checks if the result is `undefined`, meaning no user was found.
-- `return res.status(404).json({...})` sends a 404 and stops the function. The `return` prevents the code below from running.
-
----
-
-### Route 3: POST /users - Create a New User
-
-```javascript
-// POST /users - Creates a new user
-app.post('/users', (req, res) => {
-  // Extract fields from the request body
-  const { name, email, age } = req.body;
-
-  // Validate required fields
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-
-  // Create the new user object with an auto-generated ID
-  const newUser = {
-    id: nextId,    // Assign the current nextId value
-    name,          // Shorthand for name: name
-    email,         // Shorthand for email: email
-    age: age || null  // Age is optional; use null if not provided
-  };
-
-  // Increment nextId so the next user gets a different ID
-  nextId++;
-
-  // Add the new user to the array
-  users.push(newUser);
-
-  // Return 201 Created with the new user
-  res.status(201).json({
-    message: 'User created successfully',
-    user: newUser
-  });
+app.put('/products/:id', (req, res) => {
+  const product = products.find(item => item.id === Number(req.params.id));
+  if (!product) return res.status(404).json({ message: 'Product not found' });
+  const { title, price } = req.body;
+  if (!title || typeof price !== 'number') return res.status(400).json({ message: 'title and numeric price are required' });
+  product.title = title;
+  product.price = price;
+  res.json({ data: product });
 });
-```
-
-Line by line:
-
-- `const { name, email, age } = req.body` uses destructuring to pull three fields out of the request body. This is cleaner than writing `req.body.name`, `req.body.email` separately.
-- `if (!name || !email)` checks that both name and email were provided. The `||` means "or" - if either one is missing, the validation fails.
-- `id: nextId` assigns the current value of `nextId` to the new user.
-- `name,` is shorthand for `name: name`. When the key and variable have the same name, you only need to write it once.
-- `age: age || null` means: use the provided age, but if age was not sent, use `null`.
-- `nextId++` increments the counter by 1. The next user will get ID 5, then 6, and so on.
-- `users.push(newUser)` adds the new user object to the end of the array.
-
----
-
-### Route 4: PUT /users/:id - Update a User
-
-```javascript
-// PUT /users/:id - Replaces all fields of a user
-app.put('/users/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-
-  // Find the index (position) of the user in the array
-  const index = users.findIndex(u => u.id === id);
-
-  // If index is -1, the user was not found
-  if (index === -1) {
-    return res.status(404).json({ error: `User with id ${id} not found` });
-  }
-
-  // Get the new data from the request body
-  const { name, email, age } = req.body;
-
-  // Validate required fields
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-
-  // Replace the old user with the new data
-  // We keep the original id so it does not change
-  users[index] = {
-    id: id,      // Keep the same id
-    name,        // Use new name
-    email,       // Use new email
-    age: age || null
-  };
-
-  // Return the updated user
-  res.status(200).json({
-    message: 'User updated successfully',
-    user: users[index]
-  });
-});
-```
-
-Line by line:
-
-- `users.findIndex(u => u.id === id)` finds the position (index) of the user in the array. If found, it returns a number like `0`, `1`, or `2`. If not found, it returns `-1`.
-- `if (index === -1)` checks if the user was not found.
-- `users[index] = {...}` replaces the entire user object at that position with new data. This is a full replacement, which is what PUT is supposed to do.
-- We keep `id: id` to make sure the user's ID does not change during the update.
-
----
-
-### Route 5: DELETE /users/:id - Delete a User
-
-```javascript
-// DELETE /users/:id - Removes a user from the array
-app.delete('/users/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-
-  // Find the index of the user to delete
-  const index = users.findIndex(u => u.id === id);
-
-  if (index === -1) {
-    return res.status(404).json({ error: `User with id ${id} not found` });
-  }
-
-  // Remove the user at the found index
-  // splice(index, 1) removes exactly 1 element starting from index
-  users.splice(index, 1);
-
-  // Return 200 with a success message
-  // No user data returned since it was deleted
-  res.status(200).json({ message: `User with id ${id} deleted successfully` });
-});
-```
-
-Line by line:
-
-- `users.splice(index, 1)` removes one element from the array at the given position. After this, the user is gone from the in-memory array.
-- The response returns 200 with a confirmation message. Some APIs return 204 (No Content) for deletes, but returning a message with 200 is also acceptable and more user-friendly.
-
----
-
-## 5. The Complete app.js
-
-```javascript
-import 'dotenv/config';
-import express from 'express';
-
-const app = express();
-app.use(express.json());
-
-const PORT = process.env.PORT || 3000;
-
-let users = [
-  { id: 1, name: 'Ali Raza', email: 'ali@example.com', age: 25 },
-  { id: 2, name: 'Priya Sharma', email: 'priya@example.com', age: 22 },
-  { id: 3, name: 'Sita Karki', email: 'sita@example.com', age: 28 }
-];
-
-let nextId = 4;
-
-// Get all users
-app.get('/users', (req, res) => {
-  res.status(200).json({ count: users.length, users });
+app.delete('/products/:id', (req, res) => {
+  const index = products.findIndex(item => item.id === Number(req.params.id));
+  if (index === -1) return res.status(404).json({ message: 'Product not found' });
+  products.splice(index, 1);
+  res.status(204).send();
 });
 
-// Get one user by ID
-app.get('/users/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const user = users.find(u => u.id === id);
-  if (!user) return res.status(404).json({ error: `User ${id} not found` });
-  res.status(200).json(user);
-});
+const port = Number(process.env.PORT) || 8888;
+app.listen(port, () => console.log(`Campus Store API running at http://localhost:${port}`));
+~~~
 
-// Create a new user
-app.post('/users', (req, res) => {
-  const { name, email, age } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-  const newUser = { id: nextId++, name, email, age: age || null };
-  users.push(newUser);
-  res.status(201).json({ message: 'User created', user: newUser });
-});
+This is the complete Level 5 version of `src/server.js`. Add the product array and all five CRUD route handlers. Save it at exactly this path before continuing; imports in the checkpoint assume this location.
 
-// Update a user
-app.put('/users/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = users.findIndex(u => u.id === id);
-  if (index === -1) return res.status(404).json({ error: `User ${id} not found` });
+#### Expected result
 
-  const { name, email, age } = req.body;
-  if (!name || !email) {
-    return res.status(400).json({ error: 'Name and email are required' });
-  }
-  users[index] = { id, name, email, age: age || null };
-  res.status(200).json({ message: 'User updated', user: users[index] });
-});
+Test `GET /products`, `POST /products`, `GET /products/:id`, `PUT /products/:id`, and `DELETE /products/:id`.
 
-// Delete a user
-app.delete('/users/:id', (req, res) => {
-  const id = parseInt(req.params.id);
-  const index = users.findIndex(u => u.id === id);
-  if (index === -1) return res.status(404).json({ error: `User ${id} not found` });
-  users.splice(index, 1);
-  res.status(200).json({ message: `User ${id} deleted` });
-});
+If a request fails, read the status code and response body first. Then check the terminal, confirm the file path and import path, and restart `npm run dev` after configuration changes.
 
-// 404 fallback
-app.use((req, res) => {
-  res.status(404).json({ error: 'Route not found' });
-});
+### Completed Level
 
-app.listen(PORT, () => {
-  console.log(`CRUD server running at http://localhost:${PORT}`);
-});
+At the end of Level 5, your reference project has this cumulative structure:
+
+```text
+campus-store-api/
+├── docs/
+│   └── api-plan.md
+├── src/
+│   └── server.js
+├── .env.example
+├── .gitignore
+├── package-lock.json
+└── package.json
 ```
 
-Note: `{ id: nextId++, name, email, age: age || null }` uses `nextId++` which uses the current value first and then increments it. This is a concise way to assign and increment at the same time.
+Your completed checkpoint now:
 
----
+- Lists and reads products.
+- Creates products with `201 Created`.
+- Updates and deletes products.
+- Returns `404` for missing product IDs.
 
-## 6. Testing the CRUD API in Postman
+Completion checklist:
 
-### Get all users
+- Every file is stored at the path shown above.
+- The project starts without a syntax or missing-module error.
+- Test `GET /products`, `POST /products`, `GET /products/:id`, `PUT /products/:id`, and `DELETE /products/:id`.
+- You can explain what today’s new files do without reading the code word for word.
 
-```
-Method: GET
-URL: http://localhost:3000/users
+### Use This in Your Assigned Project
 
-Expected: All 3 users, status 200
-```
+Apply the same CRUD pattern to books, courses, posts, tasks, jobs, vehicles, or another main resource.
 
-### Get one user
+Keep the architecture and replace the Campus Store nouns with the nouns from your assigned project:
 
-```
-Method: GET
-URL: http://localhost:3000/users/2
+| Example project | Campus Store `Product` becomes | Campus Store `User` becomes | Campus Store `Order` becomes |
+| --- | --- | --- | --- |
+| Library API | Book | Member | Borrowing |
+| Course API | Course | Learner | Enrollment |
+| Blog API | Post | Author | Comment or Subscription |
+| Job Portal API | Job | Applicant | Application |
+| Vehicle Rental API | Vehicle | Customer | Booking |
 
-Expected: Priya Sharma's data, status 200
-```
+For your own project:
 
-### Get non-existent user
+1. Write the name of your main resource.
+2. Write the person or role that uses the system.
+3. Write the transaction or relationship connecting them.
+4. Apply today’s file structure and request flow using those names.
+5. Test the same success, invalid-input, and missing-resource situations shown in the Campus Store reference.
 
-```
-Method: GET
-URL: http://localhost:3000/users/99
+### Next Level
 
-Expected: 404 error with message
-```
-
-### Create a new user
-
-```
-Method: POST
-URL: http://localhost:3000/users
-Body: { "name": "Ramesh", "email": "ramesh@example.com", "age": 30 }
-
-Expected: 201 with the new user
-```
-
-### Update a user
-
-```
-Method: PUT
-URL: http://localhost:3000/users/1
-Body: { "name": "Ali Updated", "email": "ali.updated@example.com", "age": 26 }
-
-Expected: 200 with updated user
-```
-
-### Delete a user
-
-```
-Method: DELETE
-URL: http://localhost:3000/users/3
-
-Expected: 200 with deletion message
-```
-
----
-
-## Summary
-
-Here is what you covered today:
-
-- CRUD stands for Create, Read, Update, Delete. These are the four fundamental operations on any dataset.
-- GET retrieves data, POST creates data, PUT replaces data, DELETE removes data.
-- Route parameters like `:id` let you target specific records by their identifier.
-- `parseInt(req.params.id)` converts the URL string to a number for comparison.
-- `find()` returns the matching object. `findIndex()` returns its position in the array. Both return a falsy value (`undefined` or `-1`) when nothing matches.
-- Always validate required fields and return appropriate error status codes like 400 and 404 when something is wrong.
-
----
-
-## Practice Tasks
-
-1. Create a fresh CRUD API for `products` instead of users.
-2. Each product should have: `id`, `name`, `price`, and `category`.
-3. Pre-populate the array with at least 5 products.
-4. Build all 5 routes: GET all, GET one, POST, PUT, DELETE.
-5. Test every route in Postman and verify the correct status codes.
-
----
-
-## Homework
-
-- Build CRUD APIs for a `products` array.
-- Each product should have id, name, price, category, and inStock (true or false).
-- Add at least five sample product records.
-- Make sure that if someone tries to get or delete a product that does not exist, they get a 404 with a clear message.
+CRUD works, but every request reaches a route without common checks. Level 6 introduces middleware. Continue with [Day 6](<Day6-Middleware in Express.md>).
